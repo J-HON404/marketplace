@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.controller.order;
 
-import com.unicam.cs.progettoweb.marketplace.model.Order;
+import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

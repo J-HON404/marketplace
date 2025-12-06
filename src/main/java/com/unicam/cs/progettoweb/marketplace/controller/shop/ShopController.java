@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.controller.shop;
 
-import com.unicam.cs.progettoweb.marketplace.model.Shop;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

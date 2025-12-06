@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.repository.user;
 
-import com.unicam.cs.progettoweb.marketplace.model.User;
+import com.unicam.cs.progettoweb.marketplace.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

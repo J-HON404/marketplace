@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.service.order;
 
-import com.unicam.cs.progettoweb.marketplace.model.Order;
+import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,7 @@
-package com.unicam.cs.progettoweb.marketplace.model;
+package com.unicam.cs.progettoweb.marketplace.model.order;
 
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
+import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

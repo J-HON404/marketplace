@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.controller.cart;
 
-import com.unicam.cs.progettoweb.marketplace.model.Cart;
+import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

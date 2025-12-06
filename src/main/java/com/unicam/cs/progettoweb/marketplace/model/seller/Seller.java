@@ -1,11 +1,15 @@
-package com.unicam.cs.progettoweb.marketplace.model;
+package com.unicam.cs.progettoweb.marketplace.model.seller;
 
+import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(name = "sellers")

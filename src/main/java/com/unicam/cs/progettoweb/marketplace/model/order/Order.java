@@ -1,5 +1,7 @@
-package com.unicam.cs.progettoweb.marketplace.model;
+package com.unicam.cs.progettoweb.marketplace.model.order;
 
+import com.unicam.cs.progettoweb.marketplace.model.customer.Customer;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
