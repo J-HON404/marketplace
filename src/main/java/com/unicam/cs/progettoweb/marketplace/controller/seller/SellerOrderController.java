@@ -27,8 +27,7 @@ public class SellerOrderController {
     }
 
     @PutMapping("/{orderId}")
-    public Order updateOrder(@PathVariable Long sellerId,
-                             @PathVariable Long orderId,
+    public Order updateOrder(@PathVariable Long orderId,
                              @RequestParam String trackingCode,
                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
         // sellerId passato per eventuali controlli nel service
