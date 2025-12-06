@@ -1,8 +1,11 @@
 package com.unicam.cs.progettoweb.marketplace.model;
 
+import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +18,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false) //fk verso cutomer_id
@@ -32,4 +38,10 @@ public class Order {
 
     @Column(nullable = false)
     private Double total;
+
+    @Column
+    private String trackingCode;
+
+    @Column
+    private LocalDate estimatedDeliveryDate;
 }
