@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.repository;
+package com.unicam.cs.progettoweb.marketplace.repository.product;
 
 import com.unicam.cs.progettoweb.marketplace.model.Product;
 import com.unicam.cs.progettoweb.marketplace.model.ProductNotice;

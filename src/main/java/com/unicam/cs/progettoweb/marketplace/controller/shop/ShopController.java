@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.controller;
+package com.unicam.cs.progettoweb.marketplace.controller.shop;
 
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopService;

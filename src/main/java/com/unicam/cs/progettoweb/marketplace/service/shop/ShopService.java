@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
-import com.unicam.cs.progettoweb.marketplace.repository.ShopRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

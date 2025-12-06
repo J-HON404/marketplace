@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.repository;
+package com.unicam.cs.progettoweb.marketplace.repository.order;
 
 import com.unicam.cs.progettoweb.marketplace.model.OrderNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
