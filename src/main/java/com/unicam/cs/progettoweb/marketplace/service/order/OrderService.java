@@ -24,6 +24,14 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
+    public List<Order> getOrdersByShopId(Long shopId) {
+        return orderRepository.findByShopId(shopId);
+    }
+
+    public List<Order> getOrdersByCustomerId(Long customerId){
+        return orderRepository.findByCustomerId(customerId);
+    }
+
     public Order addOrder(Order order) {
         return orderRepository.save(order);
     }
@@ -38,7 +46,7 @@ public class OrderService {
         order.setItems(orderDetails.getItems()); //Cascade persist
         order.setOrderDate(orderDetails.getOrderDate());
         order.setTotal(orderDetails.getTotal());
-        order.setTrackingCode(orderDetails.getTrackingCode());
+        order.setTrackingId(orderDetails.getTrackingId());
         order.setEstimatedDeliveryDate(orderDetails.getEstimatedDeliveryDate());
 
         return orderRepository.save(order);

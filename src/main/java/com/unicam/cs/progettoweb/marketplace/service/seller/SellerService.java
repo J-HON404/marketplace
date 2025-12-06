@@ -2,26 +2,17 @@ package com.unicam.cs.progettoweb.marketplace.service.seller;
 
 import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
 import com.unicam.cs.progettoweb.marketplace.repository.seller.SellerRepository;
-import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
-import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
-import com.unicam.cs.progettoweb.marketplace.service.user.DefaultUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class SellerService {
-    private final DefaultUserService defaultUserService;
+
     private final SellerRepository sellerRepository;
-    private final ProductService productService;
-    private final OrderService orderService;
 
-
-    public SellerService(DefaultUserService defaultUserService, SellerRepository sellerRepository, ProductService productService, OrderService orderService) {
-        this.defaultUserService = defaultUserService;
+    public SellerService(SellerRepository sellerRepository) {
         this.sellerRepository = sellerRepository;
-        this.productService = productService;
-        this.orderService = orderService;
     }
 
     public List<Seller> getAllSellers() {

@@ -14,6 +14,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByShop(Shop shop);
     // prodotti disponibili per uno shop specifico
     List<Product> findByShopAndAvailabilityDateLessThanEqual(Shop shop, LocalDate date);
-    // Tutti i prodotti degli shop già disponibili (availabilityDate <= oggi)
+    // tutti i prodotti degli shop già disponibili (availabilityDate <= oggi)
     List<Product> findByAvailabilityDateLessThanEqual(LocalDate date);
+    // trova un prdotti da uno shop
+    List<Product> findByShopId(Long shopId);
 }

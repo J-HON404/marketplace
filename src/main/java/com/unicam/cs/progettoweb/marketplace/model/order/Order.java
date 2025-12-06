@@ -42,7 +42,7 @@ public class Order {
     private Double total;
 
     @Column
-    private String trackingCode;
+    private String trackingId;
 
     @Column
     private LocalDate estimatedDeliveryDate;
