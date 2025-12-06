@@ -13,7 +13,7 @@ public interface BaseUserService {
 
     List<NotificationMessage> getReceivedMessages(Long userId);
 
-    List<Shop> getShopList();
+    List<Shop> getShopsList();
 
     List<Product> getProductsList();
 }

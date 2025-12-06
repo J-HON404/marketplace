@@ -21,7 +21,7 @@ public class DefaultUserService implements BaseUserService{
     }
 
     @Override
-    public List<Shop> getShopList() {
+    public List<Shop> getShopsList() {
         return null;
     }
 
