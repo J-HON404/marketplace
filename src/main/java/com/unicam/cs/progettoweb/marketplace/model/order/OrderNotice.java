@@ -26,7 +26,6 @@ public class OrderNotice {
     @JoinColumn(name = "order_id") // fk verso order_id
     private Order order;
 
-    // Costruttore comodo
     public OrderNotice(Order order, TypeOrderNotice typeNotice, String text) {
         this.order = order;
         this.typeNotice = typeNotice;

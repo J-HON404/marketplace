@@ -24,12 +24,12 @@ public class ShopOrderController {
 
     @PutMapping("/{orderId}/shipping")
     public Order elaborateToShipping(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
-        return shopOrderService.elaborateOrderToShipping(sellerId, shopId, orderId, trackingId, estimatedDeliveryDate);
+        return shopOrderService.elaborateOrder(sellerId, shopId, orderId, trackingId, estimatedDeliveryDate);
     }
 
     @PutMapping("/{orderId}/consigned")
     public Order signAsConsigned(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId) {
-        return shopOrderService.signOrderAsConsigned(sellerId, shopId, orderId);
+        return shopOrderService.signConsigned(sellerId, shopId, orderId);
     }
 
     @DeleteMapping("/{orderId}")

@@ -1,12 +1,12 @@
 package com.unicam.cs.progettoweb.marketplace.service.customer;
 
 import com.unicam.cs.progettoweb.marketplace.events.OrderEvent;
+import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -22,30 +22,31 @@ public class CustomerOrderService {
         this.eventPublisher = eventPublisher;
     }
 
-    private void ensureCustomerExists(Long customerId){
+    private void ensureCustomerExists(Long customerId) {
         customerService.getCustomerById(customerId);
     }
 
-    public List<Order> getOrdersOfCustomer(Long customerId){
+    public List<Order> getOrdersOfCustomer(Long customerId) {
         ensureCustomerExists(customerId);
         return orderService.getOrdersByCustomerId(customerId);
     }
 
     public Order createOrder(Long customerId, Order orderDetails) {
-        ensureCustomerExists(customerId);
         orderDetails.setCustomer(customerService.getCustomerById(customerId));
-        Order savedOrder = orderService.createOrder(orderDetails);
-        eventPublisher.publishEvent(new OrderEvent(savedOrder.getId(), TypeOrderNotice.READY_TO_ELABORATING));
-        return savedOrder;
+        Order saved = orderService.createOrder(orderDetails);
+        eventPublisher.publishEvent(new OrderEvent(saved.getId(), TypeOrderNotice.READY_TO_ELABORATING));
+        return saved;
     }
 
-    public void confirmDelivered(Long customerId, Long orderId){
+    public void confirmDelivered(Long customerId, Long orderId) {
         ensureCustomerExists(customerId);
         Order order = orderService.getOrderById(orderId);
         if (!order.getCustomer().getId().equals(customerId)) {
-            throw new RuntimeException("Customer is not allowed to confirm delivery for this order");
+            throw new RuntimeException("Unauthorized");
         }
-        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.CONFIRMED_DELIVERED));
+        order.setStatus(OrderStatus.CONSIGNED);
+        orderService.updateOrder(order);
+        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.CONFIRMED_DELIVERED)
+        );
     }
-
 }
