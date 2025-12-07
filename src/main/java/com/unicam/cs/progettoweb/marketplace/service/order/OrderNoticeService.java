@@ -1,5 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.order;
 
+import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
+import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.model.order.OrderNotice;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderNoticeRepository;
 import org.springframework.stereotype.Service;
@@ -10,36 +12,24 @@ import java.util.List;
 public class OrderNoticeService {
 
     private final OrderNoticeRepository orderNoticeRepository;
+    private final OrderService orderService;
 
-    public OrderNoticeService(OrderNoticeRepository orderNoticeRepository) {
+    public OrderNoticeService(OrderNoticeRepository orderNoticeRepository, OrderService orderService) {
         this.orderNoticeRepository = orderNoticeRepository;
+        this.orderService = orderService;
     }
 
-    public List<OrderNotice> getAllOrderNotices() {
-        return orderNoticeRepository.findAll();
+    public List<OrderNotice> getNoticesForOrder(Long orderId) {
+        return orderNoticeRepository.findOrderNoticeByOrderId(orderId);
     }
 
-    public OrderNotice getOrderNoticeById(Long orderNoticeId) {
-        return orderNoticeRepository.findById(orderNoticeId)
-                .orElseThrow(() -> new RuntimeException("Order notice not found with id: " + orderNoticeId));
-    }
-
-    public OrderNotice addOrderNotice(OrderNotice order) {
-        return orderNoticeRepository.save(order);
-    }
-
-    public OrderNotice updateOrderNotice(Long orderNoticeId, OrderNotice orderNoticeDetails) {
-
-        OrderNotice orderNotice = getOrderNoticeById(orderNoticeId);
-
-        orderNotice.setText(orderNoticeDetails.getText());
-        orderNotice.setTypeNotice(orderNoticeDetails.getTypeNotice());
-        orderNotice.setOrder(orderNoticeDetails.getOrder());
-
-        return orderNoticeRepository.save(orderNotice);
-    }
-
-    public void deleteOrderNotice(Long orderNoticeId) {
-        orderNoticeRepository.deleteById(orderNoticeId);
+    public OrderNotice createOrderNotice(Long orderId, TypeOrderNotice type, String text) {
+        Order order = orderService.getOrderById(orderId);
+        OrderNotice notice = new OrderNotice();
+        notice.setOrder(order);
+        notice.setTypeNotice(type);
+        notice.setText(text);
+        return orderNoticeRepository.save(notice);
     }
 }
+

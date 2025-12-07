@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.service.order;
 
+import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,19 @@ public class OrderService {
 
         return orderRepository.save(order);
     }
+
+    /*
+    public void advanceOrderStatus(Long orderId){
+        Order order = getOrderById(orderId);
+        switch(order.getStatus()) {
+            case CREATED -> order.setStatus(OrderStatus.READY);
+            case READY -> order.setStatus(OrderStatus.SHIPPED);
+            case SHIPPED -> order.setStatus(OrderStatus.CONSIGNED);
+            case CONSIGNED -> throw new RuntimeException("Order already consigned");
+        }
+        orderRepository.save(order);
+    }
+       */
 
     public void deleteOrder(Long orderId) {
         orderRepository.deleteById(orderId);
