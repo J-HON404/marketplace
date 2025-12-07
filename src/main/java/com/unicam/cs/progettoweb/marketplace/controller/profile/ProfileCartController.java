@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.controller.cart;
+package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/carts")
-public class CartController {
+public class ProfileCartController {
 
     private final CartService cartService;
 
-    public CartController(CartService cartService) {
+    public ProfileCartController(CartService cartService) {
         this.cartService = cartService;
     }
 
