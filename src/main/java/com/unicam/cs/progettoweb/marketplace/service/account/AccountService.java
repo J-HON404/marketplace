@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface AccountService {
 
-    Profile getProfile(Long id);
+    Profile getProfile(Long profileId);
 
-    Profile updateProfile(Long id, Profile updatedProfile);
+    Profile updateProfile(Long profileId, Profile updatedProfile);
 
     Profile createProfile(Profile profile);
 
-    void deleteProfile(Long id);
+    void deleteProfile(Long profileId);
 
-    List<NotificationMessage> getReceivedMessages(Long userId);
+    List<NotificationMessage> getReceivedMessages(Long profileId);
 
     List<Shop> getShopsList();
 

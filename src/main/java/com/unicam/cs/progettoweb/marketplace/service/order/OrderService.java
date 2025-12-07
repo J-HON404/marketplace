@@ -19,9 +19,9 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
     }
 
     public List<Order> getOrdersByShopId(Long shopId) {
@@ -36,9 +36,9 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Order updateOrder(Long id, Order orderDetails) {
+    public Order updateOrder(Long orderId, Order orderDetails) {
 
-        Order order = getOrderById(id);
+        Order order = getOrderById(orderId);
 
         order.setStatus(orderDetails.getStatus());
         order.setCustomer(orderDetails.getCustomer());
@@ -52,7 +52,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
     }
 }

@@ -18,7 +18,7 @@ public class CustomerFollowProductService {
 
     private void checkCustomerExists(Long customerId) {
         customerRepository.findById(customerId)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id: " + customerId));
     }
 
 

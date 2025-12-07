@@ -19,8 +19,8 @@ public class ShopService {
         return shopRepository.findAll();
     }
 
-    public Shop getShopById(Long id) {
-        return shopRepository.findById(id)
+    public Shop getShopById(Long shopId) {
+        return shopRepository.findById(shopId)
                 .orElseThrow(() -> new RuntimeException("Shop not found"));
     }
 
@@ -28,9 +28,9 @@ public class ShopService {
         return shopRepository.save(shop);
     }
 
-    public Shop updateShop(Long id, Shop shopDetails) {
+    public Shop updateShop(Long shopId, Shop shopDetails) {
 
-        Shop shop = getShopById(id);
+        Shop shop = getShopById(shopId);
 
         shop.setName(shopDetails.getName());
         shop.setSeller(shopDetails.getSeller());

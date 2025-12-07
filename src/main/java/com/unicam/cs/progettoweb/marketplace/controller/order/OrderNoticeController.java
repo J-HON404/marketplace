@@ -22,9 +22,9 @@ public class OrderNoticeController {
         return orderNoticeService.getAllOrderNotices();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderNotice> getOrderNotice(@PathVariable Long id) {
-        OrderNotice orderNotice = orderNoticeService.getOrderNoticeById(id);
+    @GetMapping("/{orderNoticeId}")
+    public ResponseEntity<OrderNotice> getOrderNotice(@PathVariable Long orderNoticeId) {
+        OrderNotice orderNotice = orderNoticeService.getOrderNoticeById(orderNoticeId);
         return ResponseEntity.ok(orderNotice);
     }
 
@@ -34,15 +34,15 @@ public class OrderNoticeController {
         return ResponseEntity.ok(createdOrderNotice);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderNotice> updateOrderNotice(@PathVariable Long id, @RequestBody OrderNotice orderNoticeDetails) {
-        OrderNotice updatedOrderNotice = orderNoticeService.updateOrderNotice(id, orderNoticeDetails);
+    @PutMapping("/{orderNoticeId}")
+    public ResponseEntity<OrderNotice> updateOrderNotice(@PathVariable Long orderNoticeId, @RequestBody OrderNotice orderNoticeDetails) {
+        OrderNotice updatedOrderNotice = orderNoticeService.updateOrderNotice(orderNoticeId, orderNoticeDetails);
         return ResponseEntity.ok(updatedOrderNotice);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrderNotice(@PathVariable Long id) {
-        orderNoticeService.deleteOrderNotice(id);
+    @DeleteMapping("/{orderNoticeId}")
+    public ResponseEntity<Void> deleteOrderNotice(@PathVariable Long orderNoticeId) {
+        orderNoticeService.deleteOrderNotice(orderNoticeId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -23,23 +23,23 @@ public class SellerProductService {
         return productService.getProductsByShopId(seller.getShop().getId());
     }
 
-    public Product createProduct(Long sellerId, Product p) {
+    public Product createProduct(Long sellerId, Product product) {
         Seller seller = sellerService.getSellerById(sellerId);
-        p.setShop(seller.getShop());
-        return productService.addProduct(p);
+        product.setShop(seller.getShop());
+        return productService.addProduct(product);
     }
 
-    public Product updateProduct(Long sellerId, Long productId, Product updated) {
+    public Product updateProduct(Long sellerId, Long productId, Product updatedProduct) {
         Seller seller = sellerService.getSellerById(sellerId);
         Product existing = productService.getProductById(productId);
         // un seller può modificare solo prodotti del suo shop
         if (!existing.getShop().getId().equals(seller.getShop().getId())) {
             throw new RuntimeException("Seller not allowed to modify this product");
         }
-        existing.setName(updated.getName());
-        existing.setDescription(updated.getDescription());
-        existing.setPrice(updated.getPrice());
-        existing.setQuantity(updated.getQuantity());
+        existing.setName(updatedProduct.getName());
+        existing.setDescription(updatedProduct.getDescription());
+        existing.setPrice(updatedProduct.getPrice());
+        existing.setQuantity(updatedProduct.getQuantity());
         return productService.addProduct(existing);
     }
 

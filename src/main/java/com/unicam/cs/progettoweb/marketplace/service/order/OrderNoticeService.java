@@ -19,18 +19,18 @@ public class OrderNoticeService {
         return orderNoticeRepository.findAll();
     }
 
-    public OrderNotice getOrderNoticeById(Long id) {
-        return orderNoticeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    public OrderNotice getOrderNoticeById(Long orderNoticeId) {
+        return orderNoticeRepository.findById(orderNoticeId)
+                .orElseThrow(() -> new RuntimeException("Order notice not found with id: " + orderNoticeId));
     }
 
     public OrderNotice addOrderNotice(OrderNotice order) {
         return orderNoticeRepository.save(order);
     }
 
-    public OrderNotice updateOrderNotice(Long id, OrderNotice orderNoticeDetails) {
+    public OrderNotice updateOrderNotice(Long orderNoticeId, OrderNotice orderNoticeDetails) {
 
-        OrderNotice orderNotice = getOrderNoticeById(id);
+        OrderNotice orderNotice = getOrderNoticeById(orderNoticeId);
 
         orderNotice.setText(orderNoticeDetails.getText());
         orderNotice.setTypeNotice(orderNoticeDetails.getTypeNotice());
@@ -39,7 +39,7 @@ public class OrderNoticeService {
         return orderNoticeRepository.save(orderNotice);
     }
 
-    public void deleteOrderNotice(Long id) {
-        orderNoticeRepository.deleteById(id);
+    public void deleteOrderNotice(Long orderNoticeId) {
+        orderNoticeRepository.deleteById(orderNoticeId);
     }
 }

@@ -19,12 +19,12 @@ public class DefaultAccountService implements AccountService {
     }
 
     @Override
-    public Profile getProfile(Long id) {
+    public Profile getProfile(Long profileId) {
         return null;
     }
 
     @Override
-    public Profile updateProfile(Long id, Profile updatedProfile) {
+    public Profile updateProfile(Long profileId, Profile updatedProfile) {
         return null;
     }
 
@@ -34,7 +34,7 @@ public class DefaultAccountService implements AccountService {
     }
 
     @Override
-    public void deleteProfile(Long id) {
+    public void deleteProfile(Long profileId) {
 
     }
 
@@ -53,9 +53,9 @@ public class DefaultAccountService implements AccountService {
         return null;
     }
 
-    public Profile getUserById(Long id){
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    public Profile getUserById(Long profileId){
+        return userRepository.findById(profileId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + profileId));
     }
 
 }

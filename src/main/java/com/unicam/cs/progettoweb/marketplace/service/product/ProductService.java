@@ -28,9 +28,9 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long id, Product productDetails) {
+    public Product updateProduct(Long productId, Product productDetails) {
 
-        Product product = getProductById(id);
+        Product product = getProductById(productId);
 
         product.setName(productDetails.getName());
         product.setDescription(productDetails.getDescription());
@@ -42,8 +42,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
     }
 
     public List<Product> getProductsByShopId(Long shopId) {

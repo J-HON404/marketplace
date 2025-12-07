@@ -39,9 +39,15 @@ public class ProductFollowerService {
     }
 
     public void unfollowProduct(Long userId, Long productId) {
-        Optional<ProductFollower> productFollower = followerRepository.findByProductIdAndUserId(productId, userId);
-        productFollower.ifPresent(followerRepository::delete);
+        Optional<ProductFollower> productFollowerOpt = followerRepository.findByProductIdAndUserId(productId, userId);
+        if (productFollowerOpt.isPresent()) {
+            ProductFollower productFollower = productFollowerOpt.get();
+            followerRepository.delete(productFollower);
+        } else {
+            throw new RuntimeException("No follow relationship found for userId " + userId + " and productId " + productId);
+        }
     }
+
 
     public boolean isFollowing(Long userId, Long productId) {
         return followerRepository.existsByProductIdAndUserId(productId, userId);

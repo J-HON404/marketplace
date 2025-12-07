@@ -19,9 +19,9 @@ public class SellerService {
         return sellerRepository.findAll();
     }
 
-    public Seller getSellerById(Long id) {
-        return sellerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Seller not found with id: " + id));
+    public Seller getSellerById(Long sellerId) {
+        return sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new RuntimeException("Seller not found with id: " + sellerId));
     }
 
     public Seller getSellerByShopId(Long shopId) {
@@ -33,11 +33,11 @@ public class SellerService {
         return sellerRepository.save(seller);
     }
 
-    public void deleteSeller(Long id) {
-        if (!sellerRepository.existsById(id)) {
-            throw new RuntimeException("Seller not found with id: " + id);
+    public void deleteSeller(Long sellerId) {
+        if (!sellerRepository.existsById(sellerId)) {
+            throw new RuntimeException("Seller not found with id: " + sellerId);
         }
-        sellerRepository.deleteById(id);
+        sellerRepository.deleteById(sellerId);
     }
 
 }

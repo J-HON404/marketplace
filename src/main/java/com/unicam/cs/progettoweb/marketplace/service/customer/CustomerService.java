@@ -19,19 +19,19 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public Customer getCustomerById(Long id){
-        return customerRepository.findById(id)
-                .orElseThrow( ()-> new RuntimeException("Customer not found with id: " + id));
+    public Customer getCustomerById(Long customerId){
+        return customerRepository.findById(customerId)
+                .orElseThrow( ()-> new RuntimeException("Customer not found with id: " + customerId));
     }
 
     public Customer saveCustomer(Customer customer){
         return customerRepository.save(customer);
     }
 
-    public void deleteCustomer(Long id) {
-        if (!customerRepository.existsById(id)) {
-            throw new RuntimeException("Customer not found with id: " + id);
+    public void deleteCustomer(Long customerId) {
+        if (!customerRepository.existsById(customerId)) {
+            throw new RuntimeException("Customer not found with id: " + customerId);
         }
-        customerRepository.deleteById(id);
+        customerRepository.deleteById(customerId);
     }
 }

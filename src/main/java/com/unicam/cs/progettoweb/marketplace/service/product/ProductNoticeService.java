@@ -26,17 +26,17 @@ public class ProductNoticeService {
                 .toList();
     }
 
-    public ProductNotice getProductNoticeById(Long id) {
-        return productNoticeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ProductNotice not found with id: " + id));
+    public ProductNotice getProductNoticeById(Long productNoticeId) {
+        return productNoticeRepository.findById(productNoticeId)
+                .orElseThrow(() -> new RuntimeException("ProductNotice not found with id: " + productNoticeId));
     }
 
     public ProductNotice addProductNotice(ProductNotice productNotice) {
         return productNoticeRepository.save(productNotice);
     }
 
-    public ProductNotice updateProductNotice(Long id, ProductNotice updatedNotice) {
-        ProductNotice existingNotice = getProductNoticeById(id);
+    public ProductNotice updateProductNotice(Long productNoticeId, ProductNotice updatedNotice) {
+        ProductNotice existingNotice = getProductNoticeById(productNoticeId);
         existingNotice.setText(updatedNotice.getText());
         existingNotice.setTypeNotice(updatedNotice.getTypeNotice());
         existingNotice.setExpireDate(updatedNotice.getExpireDate());
@@ -44,8 +44,8 @@ public class ProductNoticeService {
         return productNoticeRepository.save(existingNotice);
     }
 
-    public void deleteProductNotice(Long id) {
-        ProductNotice existingNotice = getProductNoticeById(id);
+    public void deleteProductNotice(Long productNoticeId) {
+        ProductNotice existingNotice = getProductNoticeById(productNoticeId);
         productNoticeRepository.delete(existingNotice);
     }
 
