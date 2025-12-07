@@ -1,7 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.order;
 
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
-import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,13 @@ public class OrderNotice {
     private TypeOrderNotice typeNotice;
 
     @ManyToOne
-    @JoinColumn(name = "order_id") //fk verso order_id
+    @JoinColumn(name = "order_id") // fk verso order_id
     private Order order;
+
+    // Costruttore comodo
+    public OrderNotice(Order order, TypeOrderNotice typeNotice, String text) {
+        this.order = order;
+        this.typeNotice = typeNotice;
+        this.text = text;
+    }
 }

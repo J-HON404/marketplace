@@ -1,23 +1,26 @@
 package com.unicam.cs.progettoweb.marketplace.service.order;
 
+import com.unicam.cs.progettoweb.marketplace.events.OrderEvent;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderNoticeService orderNoticeService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public OrderService(OrderRepository orderRepository, OrderNoticeService orderNoticeService) {
+    public OrderService(OrderRepository orderRepository, ApplicationEventPublisher eventPublisher) {
         this.orderRepository = orderRepository;
-        this.orderNoticeService = orderNoticeService;
+        this.eventPublisher = eventPublisher;
     }
 
     public Order getOrderById(Long orderId) {
@@ -35,10 +38,9 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         order.setStatus(OrderStatus.READY);
-        order.setOrderDate(java.time.LocalDateTime.now());
+        order.setOrderDate(LocalDateTime.now());
         Order saved = orderRepository.save(order);
-        //settare altri parametri ordine come prezzo ecc...!!!!!!!
-        orderNoticeService.createOrderNotice(saved.getId(), TypeOrderNotice.READY_TO_ELABORATING, "New order received from customer");
+        eventPublisher.publishEvent(new OrderEvent(saved.getId(), TypeOrderNotice.READY_TO_ELABORATING));
         return saved;
     }
 
@@ -50,7 +52,7 @@ public class OrderService {
         order.setEstimatedDeliveryDate(estimatedDeliveryDate);
         order.setStatus(OrderStatus.SHIPPED);
         Order saved = orderRepository.save(order);
-        orderNoticeService.createOrderNotice(saved.getId(), TypeOrderNotice.SHIPPING_DETAILS_SET, "Order shipped");
+        eventPublisher.publishEvent(new OrderEvent(saved.getId(), TypeOrderNotice.SHIPPING_DETAILS_SET));
         return saved;
     }
 
@@ -60,7 +62,7 @@ public class OrderService {
         }
         order.setStatus(OrderStatus.CONSIGNED);
         Order saved = orderRepository.save(order);
-        orderNoticeService.createOrderNotice(saved.getId(), TypeOrderNotice.CONFIRMED_DELIVERED, "Order consigned");
+        eventPublisher.publishEvent(new OrderEvent(saved.getId(), TypeOrderNotice.CONFIRMED_DELIVERED));
         return saved;
     }
 
@@ -69,6 +71,6 @@ public class OrderService {
             throw new RuntimeException("Order not found");
         }
         orderRepository.deleteById(orderId);
-        orderNoticeService.createOrderNotice(orderId, TypeOrderNotice.ORDER_DELETED, "Order deleted");
+        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.ORDER_DELETED));
     }
 }

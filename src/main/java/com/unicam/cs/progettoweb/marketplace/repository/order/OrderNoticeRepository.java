@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface OrderNoticeRepository extends JpaRepository<OrderNotice,Long> {
     Optional<OrderNotice> findOrderNoticeById(Long id);
     List<OrderNotice> findOrderNoticeByOrderId(Long id);
+    List<OrderNotice> findByOrderId(Long orderId);
 }

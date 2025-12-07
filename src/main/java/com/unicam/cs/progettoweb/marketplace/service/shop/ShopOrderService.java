@@ -20,38 +20,42 @@ public class ShopOrderService {
         this.sellerService = sellerService;
     }
 
-    private Order ensureOrderAccess(Long sellerId, Long shopId, Long orderId) {
+    private void validateSellerAccess(Long sellerId, Long shopId) {
         Shop shop = sellerService.getSellerById(sellerId).getShop();
         if (!shop.getId().equals(shopId)) {
             throw new RuntimeException("Seller cannot manage this shop");
         }
-        Order order = orderService.getOrderById(orderId);
-        if (!order.getShop().getId().equals(shopId)) {
-            throw new RuntimeException("Order does not belong to shop");
-        }
-        return order;
     }
 
     public List<Order> getOrdersOfShop(Long sellerId, Long shopId) {
-        Shop shop = sellerService.getSellerById(sellerId).getShop();
-        if (!shop.getId().equals(shopId)) {
-            throw new RuntimeException("Seller cannot manage this shop");
-        }
+        validateSellerAccess(sellerId, shopId);
         return orderService.getOrdersByShopId(shopId);
     }
 
     public Order elaborateOrderToShipping(Long sellerId, Long shopId, Long orderId, String trackingId, LocalDate estimatedDeliveryDate) {
-        Order order = ensureOrderAccess(sellerId, shopId, orderId);
+        validateSellerAccess(sellerId, shopId);
+        Order order = orderService.getOrderById(orderId);
+        if (!order.getShop().getId().equals(shopId)) {
+            throw new RuntimeException("Order does not belong to shop");
+        }
         return orderService.elaborateOrderToShipping(order, trackingId, estimatedDeliveryDate);
     }
 
     public Order signOrderAsConsigned(Long sellerId, Long shopId, Long orderId) {
-        Order order = ensureOrderAccess(sellerId, shopId, orderId);
+        validateSellerAccess(sellerId, shopId);
+        Order order = orderService.getOrderById(orderId);
+        if (!order.getShop().getId().equals(shopId)) {
+            throw new RuntimeException("Order does not belong to shop");
+        }
         return orderService.signOrderAsConsigned(order);
     }
 
     public void deleteOrder(Long sellerId, Long shopId, Long orderId) {
-        Order order = ensureOrderAccess(sellerId, shopId, orderId);
+        validateSellerAccess(sellerId, shopId);
+        Order order = orderService.getOrderById(orderId);
+        if (!order.getShop().getId().equals(shopId)) {
+            throw new RuntimeException("Order does not belong to shop");
+        }
         orderService.deleteOrder(orderId);
     }
 }

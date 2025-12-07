@@ -1,10 +1,12 @@
 package com.unicam.cs.progettoweb.marketplace.service.customer;
 
+import com.unicam.cs.progettoweb.marketplace.events.OrderEvent;
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
-import com.unicam.cs.progettoweb.marketplace.service.order.OrderNoticeService;
 import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -12,12 +14,12 @@ public class CustomerOrderService {
 
     private final OrderService orderService;
     private final CustomerService customerService;
-    private final OrderNoticeService orderNoticeService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public CustomerOrderService(OrderService orderService, CustomerService customerService, OrderNoticeService orderNoticeService) {
+    public CustomerOrderService(OrderService orderService, CustomerService customerService, ApplicationEventPublisher eventPublisher) {
         this.orderService = orderService;
         this.customerService = customerService;
-        this.orderNoticeService = orderNoticeService;
+        this.eventPublisher = eventPublisher;
     }
 
     private void ensureCustomerExists(Long customerId){
@@ -33,7 +35,7 @@ public class CustomerOrderService {
         ensureCustomerExists(customerId);
         orderDetails.setCustomer(customerService.getCustomerById(customerId));
         Order savedOrder = orderService.createOrder(orderDetails);
-        orderNoticeService.createOrderNotice(savedOrder.getId(), TypeOrderNotice.READY_TO_ELABORATING, "NEW ORDER");
+        eventPublisher.publishEvent(new OrderEvent(savedOrder.getId(), TypeOrderNotice.READY_TO_ELABORATING));
         return savedOrder;
     }
 
@@ -43,7 +45,7 @@ public class CustomerOrderService {
         if (!order.getCustomer().getId().equals(customerId)) {
             throw new RuntimeException("Customer is not allowed to confirm delivery for this order");
         }
-        orderNoticeService.createOrderNotice(orderId, TypeOrderNotice.CONFIRMED_DELIVERED, "CONFIRMED DELIVERED");
+        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.CONFIRMED_DELIVERED));
     }
 
 }
