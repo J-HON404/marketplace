@@ -7,6 +7,9 @@ import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -31,6 +34,7 @@ public class CustomerOrderService {
         return orderService.getOrdersByCustomerId(customerId);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE) //accesso db atomico!
     public Order createOrder(Long customerId, Order orderDetails) {
         orderDetails.setCustomer(customerService.getCustomerById(customerId));
         Order saved = orderService.createOrder(orderDetails);
