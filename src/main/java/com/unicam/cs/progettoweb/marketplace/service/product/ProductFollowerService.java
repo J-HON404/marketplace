@@ -9,51 +9,52 @@ import com.unicam.cs.progettoweb.marketplace.repository.account.AccountRepositor
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductFollowerService {
 
-    private final ProductFollowerRepository followerRepo;
-    private final ProductRepository productRepo;
-    private final AccountRepository userRepo;
+    private final ProductFollowerRepository followerRepository;
+    private final ProductRepository productRepository;
+    private final AccountRepository userRepository;
 
-    public ProductFollowerService(ProductFollowerRepository followerRepo, ProductRepository productRepo, AccountRepository userRepo) {
-        this.followerRepo = followerRepo;
-        this.productRepo = productRepo;
-        this.userRepo = userRepo;
+    public ProductFollowerService(ProductFollowerRepository followerRepository, ProductRepository productRepository, AccountRepository userRepository) {
+        this.followerRepository = followerRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     public ProductFollower followProduct(Long userId, Long productId) {
-        return followerRepo.findByProductIdAndUserId(productId, userId)
+        return followerRepository.findByProductIdAndUserId(productId, userId)
                 .orElseGet(() -> {
-                    Profile user = userRepo.findById(userId)
+                    Profile user = userRepository.findById(userId)
                             .orElseThrow(() -> new RuntimeException("User not found"));
-                    Product product = productRepo.findById(productId)
+                    Product product = productRepository.findById(productId)
                             .orElseThrow(() -> new RuntimeException("Product not found"));
                     ProductFollower follower = new ProductFollower();
                     follower.setUser(user);
                     follower.setProduct(product);
-                    return followerRepo.save(follower);
+                    return followerRepository.save(follower);
                 });
     }
 
     public void unfollowProduct(Long userId, Long productId) {
-        followerRepo.findByProductIdAndUserId(productId, userId)
-                .ifPresent(followerRepo::delete);
+        Optional<ProductFollower> productFollower = followerRepository.findByProductIdAndUserId(productId, userId);
+        productFollower.ifPresent(followerRepository::delete);
     }
 
     public boolean isFollowing(Long userId, Long productId) {
-        return followerRepo.existsByProductIdAndUserId(productId, userId);
+        return followerRepository.existsByProductIdAndUserId(productId, userId);
     }
 
     public List<Long> getFollowedProductIds(Long userId) {
-        return followerRepo.findByUserId(userId).stream()
+        return followerRepository.findByUserId(userId).stream()
                 .map(f -> f.getProduct().getId())
                 .toList();
     }
 
     public List<Long> getFollowerUserIds(Long productId) {
-        return followerRepo.findByProductId(productId).stream()
+        return followerRepository.findByProductId(productId).stream()
                 .map(f -> f.getUser().getId())
                 .toList();
     }
