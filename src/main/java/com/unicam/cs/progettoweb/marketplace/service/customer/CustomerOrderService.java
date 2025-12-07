@@ -34,7 +34,14 @@ public class CustomerOrderService {
         return orderService.getOrdersByCustomerId(customerId);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE) //accesso db atomico!
+
+    /*  accesso db atomico con lock! senza interruzioni durante la transazione
+        più utenti possono tentare di acquistare contemporaneamente.
+       ma se due transazioni modificano lo stesso prodotto nello stesso momento:
+        Una transazione acquisisce il “lock” sul dato e procede e
+        l’altra deve attendere finché la prima non termina.
+     */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Order createOrder(Long customerId, Order orderDetails) {
         orderDetails.setCustomer(customerService.getCustomerById(customerId));
         Order saved = orderService.createOrder(orderDetails);
