@@ -2,7 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.controller.seller;
 
 import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
 import com.unicam.cs.progettoweb.marketplace.service.seller.SellerService;
-import com.unicam.cs.progettoweb.marketplace.service.user.DefaultUserService;
+import com.unicam.cs.progettoweb.marketplace.service.account.DefaultAccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,16 +11,16 @@ import java.util.List;
 @RequestMapping("/api/sellers")
 public class SellerController {
 
-    private final DefaultUserService defaultUserService;
+    private final DefaultAccountService defaultAccountService;
     private final SellerService sellerService;
 
-    public SellerController(DefaultUserService defaultUserService, SellerService sellerService){
-        this.defaultUserService = defaultUserService;
+    public SellerController(DefaultAccountService defaultAccountService, SellerService sellerService){
+        this.defaultAccountService = defaultAccountService;
         this.sellerService = sellerService;
     }
 
     @GetMapping("/{sellerId}")
-    public Seller getSellerProfile(@PathVariable Long sellerId) {
+    public Seller getSeller(@PathVariable Long sellerId) {
         return sellerService.getSellerById(sellerId);
     }
 

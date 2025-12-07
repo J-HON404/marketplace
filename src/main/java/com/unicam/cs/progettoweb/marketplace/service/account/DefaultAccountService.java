@@ -1,26 +1,41 @@
-package com.unicam.cs.progettoweb.marketplace.service.user;
+package com.unicam.cs.progettoweb.marketplace.service.account;
 
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
-import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.notification.NotificationMessage;
-import com.unicam.cs.progettoweb.marketplace.repository.user.UserRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.account.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DefaultUserService implements BaseUserService{
+public class DefaultAccountService implements AccountService {
 
-    private final UserRepository userRepository;
+    private final AccountRepository userRepository;
 
-    public DefaultUserService(UserRepository userRepository) {
+    public DefaultAccountService(AccountRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public User getProfile(Long id) {
+    public Profile getProfile(Long id) {
         return null;
+    }
+
+    @Override
+    public Profile updateProfile(Long id, Profile updatedProfile) {
+        return null;
+    }
+
+    @Override
+    public Profile createProfile(Profile profile) {
+        return null;
+    }
+
+    @Override
+    public void deleteProfile(Long id) {
+
     }
 
     @Override
@@ -38,7 +53,7 @@ public class DefaultUserService implements BaseUserService{
         return null;
     }
 
-    public User getUserById(Long id){
+    public Profile getUserById(Long id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }

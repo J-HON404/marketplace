@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.customer;
 
-import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Table(name = "customers")
-public class Customer extends User {
+public class Customer extends Profile {
     @Column(nullable = false)
     private String address;
 }

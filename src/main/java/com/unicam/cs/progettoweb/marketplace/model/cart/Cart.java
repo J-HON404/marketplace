@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.cart;
 
-import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true) //fk verso user_id
-    private User user;
+    private Profile user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //cartItem ha riferimento con FK su Cart
     private List<CartItem> items = new ArrayList<>();

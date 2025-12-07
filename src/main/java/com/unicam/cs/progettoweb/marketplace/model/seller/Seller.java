@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.seller;
 
-import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "sellers")
 @NoArgsConstructor
-public class Seller extends User {
+public class Seller extends Profile {
     @OneToOne(mappedBy = "seller") //shop ha riferimento con FK su seller
     private Shop shop;
 }

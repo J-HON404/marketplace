@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.product;
 
-import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,5 +23,5 @@ public class ProductFollower {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Profile user;
 }

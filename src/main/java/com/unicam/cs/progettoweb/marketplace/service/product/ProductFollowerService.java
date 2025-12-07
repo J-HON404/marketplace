@@ -2,10 +2,10 @@ package com.unicam.cs.progettoweb.marketplace.service.product;
 
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.product.ProductFollower;
-import com.unicam.cs.progettoweb.marketplace.model.user.User;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductFollowerRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
-import com.unicam.cs.progettoweb.marketplace.repository.user.UserRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.account.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +15,9 @@ public class ProductFollowerService {
 
     private final ProductFollowerRepository followerRepo;
     private final ProductRepository productRepo;
-    private final UserRepository userRepo;
+    private final AccountRepository userRepo;
 
-    public ProductFollowerService(ProductFollowerRepository followerRepo, ProductRepository productRepo, UserRepository userRepo) {
+    public ProductFollowerService(ProductFollowerRepository followerRepo, ProductRepository productRepo, AccountRepository userRepo) {
         this.followerRepo = followerRepo;
         this.productRepo = productRepo;
         this.userRepo = userRepo;
@@ -26,7 +26,7 @@ public class ProductFollowerService {
     public ProductFollower followProduct(Long userId, Long productId) {
         return followerRepo.findByProductIdAndUserId(productId, userId)
                 .orElseGet(() -> {
-                    User user = userRepo.findById(userId)
+                    Profile user = userRepo.findById(userId)
                             .orElseThrow(() -> new RuntimeException("User not found"));
                     Product product = productRepo.findById(productId)
                             .orElseThrow(() -> new RuntimeException("Product not found"));
