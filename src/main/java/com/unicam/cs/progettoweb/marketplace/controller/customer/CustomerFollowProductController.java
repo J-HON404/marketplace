@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.model.customer;
+package com.unicam.cs.progettoweb.marketplace.controller.customer;
 
 import com.unicam.cs.progettoweb.marketplace.service.customer.CustomerFollowProductService;
 import org.springframework.web.bind.annotation.*;
