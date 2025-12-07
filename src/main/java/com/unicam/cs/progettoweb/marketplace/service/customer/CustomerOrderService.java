@@ -31,11 +31,8 @@ public class CustomerOrderService {
 
     public Order createOrder(Long customerId, Order orderDetails) {
         ensureCustomerExists(customerId);
-        // associa il customer all'ordine
         orderDetails.setCustomer(customerService.getCustomerById(customerId));
-        // salva l'ordine prima
-        Order savedOrder = orderService.addOrder(orderDetails);
-        // crea la notifica associata all'ordine salvato
+        Order savedOrder = orderService.createOrder(orderDetails);
         orderNoticeService.createOrderNotice(savedOrder.getId(), TypeOrderNotice.READY_TO_ELABORATING, "NEW ORDER");
         return savedOrder;
     }
@@ -43,7 +40,6 @@ public class CustomerOrderService {
     public void confirmDelivered(Long customerId, Long orderId){
         ensureCustomerExists(customerId);
         Order order = orderService.getOrderById(orderId);
-        // controlla che l'ordine appartenga al customer
         if (!order.getCustomer().getId().equals(customerId)) {
             throw new RuntimeException("Customer is not allowed to confirm delivery for this order");
         }
