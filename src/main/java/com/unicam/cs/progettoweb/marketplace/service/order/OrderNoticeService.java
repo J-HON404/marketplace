@@ -4,6 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.events.OrderEvent;
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.model.order.OrderNotice;
+import com.unicam.cs.progettoweb.marketplace.notification.NotificationService;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderNoticeRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
 import org.springframework.context.event.EventListener;
@@ -16,10 +17,12 @@ public class OrderNoticeService {
 
     private final OrderNoticeRepository orderNoticeRepository;
     private final OrderRepository orderRepository;
+    private final NotificationService notificationService;
 
-    public OrderNoticeService(OrderNoticeRepository orderNoticeRepository, OrderRepository orderRepository) {
+    public OrderNoticeService(OrderNoticeRepository orderNoticeRepository, OrderRepository orderRepository, NotificationService notificationService) {
         this.orderNoticeRepository = orderNoticeRepository;
         this.orderRepository = orderRepository;
+        this.notificationService = notificationService;
     }
 
     @EventListener
@@ -28,6 +31,7 @@ public class OrderNoticeService {
                 .orElseThrow(() -> new RuntimeException("Order not found: " + event.getOrderId()));
         OrderNotice notice = new OrderNotice(order, event.getType(), "Event: " + event.getType());
         orderNoticeRepository.save(notice);
+        notificationService.notifyNotice(notice);
     }
 
     public List<OrderNotice> getNoticesForOrder(Long orderId) {
