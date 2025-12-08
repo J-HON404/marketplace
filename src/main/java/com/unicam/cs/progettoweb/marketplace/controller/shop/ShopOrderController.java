@@ -4,6 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopOrderService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +32,12 @@ public class ShopOrderController {
     public Order signAsConsigned(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId) {
         return shopOrderService.signConsigned(sellerId, shopId, orderId);
     }
+
+    @PutMapping("/remind-expired-deliveries")
+    public void alertExpiredDeliveries(@PathVariable Long shopId, @RequestParam Long sellerId) {
+        shopOrderService.alertUnconfirmedDeliveries(sellerId, shopId);
+    }
+
 
     @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId) {

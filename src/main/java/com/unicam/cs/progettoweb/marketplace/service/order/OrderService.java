@@ -1,9 +1,11 @@
 package com.unicam.cs.progettoweb.marketplace.service.order;
 
+import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,6 +32,10 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         return orderRepository.save(order);
+    }
+
+    public List<Order> getExpiredDeliveryConfirmation(Long shopId){
+        return orderRepository.findByShopIdAndStatusAndEstimatedDeliveryDateBefore(shopId, OrderStatus.SHIPPED, LocalDate.now());
     }
 
     public Order updateOrder(Order order) {
