@@ -5,7 +5,7 @@ import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.repository.cart.CartRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
-import com.unicam.cs.progettoweb.marketplace.service.account.DefaultAccountService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,9 +15,9 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    private final DefaultAccountService userService;
+    private final DefaultProfileService userService;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, DefaultAccountService userService) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, DefaultProfileService userService) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.userService = userService;
@@ -25,10 +25,10 @@ public class CartService {
 
 
     public Cart getUserCart(Long profileId) {
-        return cartRepository.findByUserId(profileId)
+        return cartRepository.findByUser_Id(profileId)
                 .orElseGet(() -> {
                     Cart cart = new Cart();
-                    cart.setUser(userService.getUserById(profileId));
+                    cart.setUser(userService.findProfileById(profileId));
                     return cartRepository.save(cart);
                 });
     }

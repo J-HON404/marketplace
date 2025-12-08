@@ -17,32 +17,42 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
     }
 
     public List<Order> getOrdersByCustomerId(Long customerId) {
-        return orderRepository.findByCustomerId(customerId);
+        return orderRepository.findByCustomer_Id(customerId);
     }
 
     public List<Order> getOrdersByShopId(Long shopId) {
-        return orderRepository.findByShopId(shopId);
+        return orderRepository.findByShop_Id(shopId);
     }
+
+    public List<Order> getOrdersForProfile(Long profileId) {
+        return orderRepository.findByShop_IdOrCustomer_Id(profileId, profileId);
+    }
+
+    public List<Order> getExpiredDeliveryOrders(Long shopId) {
+        return orderRepository.findByShop_IdAndStatusAndEstimatedDeliveryDateBefore(
+                shopId, OrderStatus.SHIPPED, LocalDate.now()
+        );
+    }
+
 
     public Order createOrder(Order order) {
         return orderRepository.save(order);
-    }
-
-    public List<Order> getExpiredDeliveryConfirmation(Long shopId){
-        return orderRepository.findByShopIdAndStatusAndEstimatedDeliveryDateBefore(shopId, OrderStatus.SHIPPED, LocalDate.now());
     }
 
     public Order updateOrder(Order order) {
         return orderRepository.save(order);
     }
 
-    public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+    public void deleteOrder(Long orderId) {
+        if (!orderRepository.existsById(orderId)) {
+            throw new RuntimeException("Order not found with id: " + orderId);
+        }
+        orderRepository.deleteById(orderId);
     }
 }

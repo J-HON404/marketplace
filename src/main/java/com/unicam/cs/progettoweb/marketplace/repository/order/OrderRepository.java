@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByCustomerId(Long customerId);
-    List<Order> findByShopId(Long shopId);
-    List<Order> findByShopIdAndStatusAndEstimatedDeliveryDateBefore(Long shopId, OrderStatus status, LocalDate date);
+    List<Order> findByCustomer_Id(Long customerId);
+    List<Order> findByShop_Id(Long shopId);
+    List<Order> findByShop_IdOrCustomer_Id(Long shopId, Long customerId);
+    List<Order> findByShop_IdAndStatusAndEstimatedDeliveryDateBefore(Long shopId, OrderStatus status, LocalDate date);
 }
+

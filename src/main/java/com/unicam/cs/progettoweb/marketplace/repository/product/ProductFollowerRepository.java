@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductFollowerRepository extends JpaRepository<ProductFollower,Long> {
-    Optional<ProductFollower> findByProductIdAndUserId(Long productId, Long userId);
-    List<ProductFollower> findByProductId(Long productId);
-    List<ProductFollower> findByUserId(Long userId);
-    boolean existsByProductIdAndUserId(Long productId, Long userId);
+    Optional<ProductFollower> findByProduct_IdAndUser_Id(Long productId, Long userId);
+    List<ProductFollower> findByProduct_Id(Long productId);
+    List<ProductFollower> findByUser_Id(Long userId);
+    boolean existsByProduct_IdAndUser_Id(Long productId, Long userId);
 }

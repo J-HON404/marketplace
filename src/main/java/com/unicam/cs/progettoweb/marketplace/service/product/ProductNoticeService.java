@@ -1,6 +1,5 @@
 package com.unicam.cs.progettoweb.marketplace.service.product;
 
-import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductNoticeRepository;
 import org.springframework.stereotype.Service;

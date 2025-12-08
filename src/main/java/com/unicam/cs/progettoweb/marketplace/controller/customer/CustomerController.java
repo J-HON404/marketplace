@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.controller.customer;
 
 import com.unicam.cs.progettoweb.marketplace.model.customer.Customer;
-import com.unicam.cs.progettoweb.marketplace.service.account.DefaultAccountService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import com.unicam.cs.progettoweb.marketplace.service.customer.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +11,10 @@ import java.util.List;
 @RequestMapping("/api/customers")
 public class CustomerController {
 
-    private final DefaultAccountService defaultAccountService;
+    private final DefaultProfileService defaultAccountService;
     private final CustomerService customerService;
 
-    public CustomerController(DefaultAccountService defaultAccountService, CustomerService customerService) {
+    public CustomerController(DefaultProfileService defaultAccountService, CustomerService customerService) {
         this.defaultAccountService = defaultAccountService;
         this.customerService = customerService;
     }

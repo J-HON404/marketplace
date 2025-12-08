@@ -24,4 +24,7 @@ public class Profile {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String address;
+
 }

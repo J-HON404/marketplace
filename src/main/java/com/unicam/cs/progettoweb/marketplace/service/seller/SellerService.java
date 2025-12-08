@@ -25,7 +25,7 @@ public class SellerService {
     }
 
     public Seller getSellerByShopId(Long shopId) {
-        return sellerRepository.findByShopId(shopId)
+        return sellerRepository.findByShop_Id(shopId)
                 .orElseThrow(() -> new RuntimeException("Seller not found for shopId: " + shopId));
     }
 

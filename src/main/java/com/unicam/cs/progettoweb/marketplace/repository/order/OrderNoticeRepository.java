@@ -4,10 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.model.order.OrderNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderNoticeRepository extends JpaRepository<OrderNotice,Long> {
-    Optional<OrderNotice> findOrderNoticeById(Long id);
-    List<OrderNotice> findOrderNoticeByOrderId(Long id);
-    List<OrderNotice> findByOrderId(Long orderId);
+    List<OrderNotice> findByOrder_Id(Long orderId);
 }

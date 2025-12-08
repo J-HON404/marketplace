@@ -17,7 +17,6 @@ public class OrderNoticeController {
         this.orderNoticeService = orderNoticeService;
     }
 
-    // Restituisce tutte le notifiche associate a un ordine
     @GetMapping
     public ResponseEntity<List<OrderNotice>> getNotices(@PathVariable Long orderId) {
         List<OrderNotice> notices = orderNoticeService.getNoticesForOrder(orderId);

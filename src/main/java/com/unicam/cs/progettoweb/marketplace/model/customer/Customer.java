@@ -15,6 +15,5 @@ import lombok.NoArgsConstructor;
 @Table(name = "customers")
 public class Customer extends Profile {
 
-    @Column(nullable = false)
-    private String address;
+
 }

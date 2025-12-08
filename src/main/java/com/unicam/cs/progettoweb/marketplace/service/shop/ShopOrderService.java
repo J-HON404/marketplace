@@ -59,10 +59,8 @@ public class ShopOrderService {
 
     public void alertUnconfirmedDeliveries(Long sellerId, Long shopId) {
         checkShopAccess(sellerId, shopId);
-        List<Order> expiredOrders = orderService.getExpiredDeliveryConfirmation(shopId);
-        expiredOrders.forEach(o -> eventPublisher.publishEvent(
-                new OrderEvent(o.getId(), TypeOrderNotice.REMIND_DELIVERY)
-        ));
+        List<Order> expiredOrders = orderService.getExpiredDeliveryOrders(shopId);
+        expiredOrders.forEach(o -> eventPublisher.publishEvent(new OrderEvent(o.getId(), TypeOrderNotice.REMIND_DELIVERY)));
     }
 
 
