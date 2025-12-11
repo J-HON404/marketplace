@@ -21,7 +21,7 @@ public class ShopService {
 
     public Shop getShopById(Long shopId) {
         return shopRepository.findById(shopId)
-                .orElseThrow(() -> new RuntimeException("Shop not found"));
+                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
     }
 
     public Shop addShop(Shop shop) {
@@ -29,16 +29,25 @@ public class ShopService {
     }
 
     public Shop updateShop(Long shopId, Shop shopDetails) {
-
         Shop shop = getShopById(shopId);
-
         shop.setName(shopDetails.getName());
         shop.setSeller(shopDetails.getSeller());
-
         return shopRepository.save(shop);
     }
 
-    public void deleteShop(Long id) {
-        shopRepository.deleteById(id);
+    public void deleteShop(Long shopId) {
+        if (!shopRepository.existsById(shopId)) {
+            throw new RuntimeException("Shop not found with id: " + shopId);
+        }
+        shopRepository.deleteById(shopId);
+    }
+
+    public List<Shop> getShopsBySellerId(Long sellerId) {
+        return shopRepository.findBySeller_Id(sellerId);
+    }
+
+    public Shop getShopByName(String name) {
+        return shopRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Shop not found with name: " + name));
     }
 }

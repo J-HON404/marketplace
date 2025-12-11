@@ -1,13 +1,8 @@
 package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
 import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
-import com.unicam.cs.progettoweb.marketplace.model.order.OrderNotice;
-import com.unicam.cs.progettoweb.marketplace.model.product.Product;
-import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -40,21 +35,6 @@ public class ProfileController {
     @DeleteMapping("/{profileId}")
     public void deleteProfile(@PathVariable Long profileId) {
         profileService.deleteProfile(profileId);
-    }
-
-    @GetMapping("/{profileId}/orders-notices")
-    public List<OrderNotice> getOrdersAndNotices(@PathVariable Long profileId) {
-        return profileService.findOrdersAndNoticesByProfile(profileId);
-    }
-
-    @GetMapping("/shops")
-    public List<Shop> getAllShops() {
-        return profileService.findAllShops();
-    }
-
-    @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        return profileService.findAllProducts();
     }
 
     @GetMapping("/{profileId}/address")

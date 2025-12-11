@@ -5,24 +5,29 @@ import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.repository.cart.CartRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
+import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
 public class CartService {
-
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final ProductService productService;
     private final DefaultProfileService userService;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, DefaultProfileService userService) {
+    public CartService(CartRepository cartRepository,
+                       ProductRepository productRepository,
+                       ProductService productService,
+                       DefaultProfileService userService) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
+        this.productService = productService;
         this.userService = userService;
     }
-
 
     public Cart getUserCart(Long profileId) {
         return cartRepository.findByUser_Id(profileId)
@@ -38,10 +43,12 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
+        // Controllo disponibilità
+        checkProductAvailability(product);
+
         Optional<CartItem> existing = cart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
                 .findFirst();
-
         if (existing.isPresent()) {
             existing.get().setQuantity(existing.get().getQuantity() + quantity);
         } else {
@@ -51,7 +58,6 @@ public class CartService {
             item.setQuantity(quantity);
             cart.getItems().add(item);
         }
-
         return cartRepository.save(cart);
     }
 
@@ -74,5 +80,11 @@ public class CartService {
         Cart cart = getUserCart(profileId);
         cart.getItems().clear();
         cartRepository.save(cart);
+    }
+
+    private void checkProductAvailability(Product product) {
+        if (product.getAvailabilityDate().isAfter(LocalDate.now())) {
+            throw new RuntimeException("Product '" + product.getName() + "' is not available yet. Available from: " + product.getAvailabilityDate());
+        }
     }
 }

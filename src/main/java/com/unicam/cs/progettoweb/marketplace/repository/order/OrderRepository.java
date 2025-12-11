@@ -12,5 +12,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByShop_Id(Long shopId);
     List<Order> findByShop_IdOrCustomer_Id(Long shopId, Long customerId);
     List<Order> findByShop_IdAndStatusAndEstimatedDeliveryDateBefore(Long shopId, OrderStatus status, LocalDate date);
+    List<Order> findByShop_IdAndStatus(Long shopId, OrderStatus status);
 }
-

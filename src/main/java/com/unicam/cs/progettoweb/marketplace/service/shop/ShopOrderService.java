@@ -1,14 +1,10 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
-import com.unicam.cs.progettoweb.marketplace.events.OrderEvent;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
-import com.unicam.cs.progettoweb.marketplace.model.enums.TypeOrderNotice;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
-import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
-import com.unicam.cs.progettoweb.marketplace.service.seller.SellerService;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,58 +12,50 @@ import java.util.List;
 public class ShopOrderService {
 
     private final OrderService orderService;
-    private final SellerService sellerService;
-    private final ApplicationEventPublisher eventPublisher;
+    private final ShopService shopService;
 
-    public ShopOrderService(OrderService orderService, SellerService sellerService, ApplicationEventPublisher eventPublisher) {
+    public ShopOrderService(OrderService orderService, ShopService shopService) {
         this.orderService = orderService;
-        this.sellerService = sellerService;
-        this.eventPublisher = eventPublisher;
-    }
-
-    private void checkShopAccess(Long sellerId, Long shopId) {
-        Shop shop = sellerService.getSellerById(sellerId).getShop();
-        if (!shop.getId().equals(shopId)) {
-            throw new RuntimeException("Unauthorized shop access");
-        }
+        this.shopService = shopService;
     }
 
     public List<Order> getOrdersOfShop(Long sellerId, Long shopId) {
-        checkShopAccess(sellerId, shopId);
+        checkSellerOwnsShop(sellerId, shopId);
         return orderService.getOrdersByShopId(shopId);
     }
 
-    public Order elaborateOrder(Long sellerId, Long shopId, Long orderId, String tracking, LocalDate estimatedDeliveryDate) {
-        checkShopAccess(sellerId, shopId);
+    public Order elaborateOrder(Long sellerId, Long orderId, String tracking, LocalDate estimatedDeliveryDate) {
         Order order = orderService.getOrderById(orderId);
+        authorizeSellerForOrder(sellerId, order);
+        if (order.getStatus() != OrderStatus.READY_TO_ELABORATING) {
+            throw new RuntimeException("Cannot set shipping details. Order is not ready to be elaborated. Current state: " + order.getStatus());
+        }
         order.setTrackingId(tracking);
         order.setEstimatedDeliveryDate(estimatedDeliveryDate);
-        order.setStatus(OrderStatus.SHIPPED);
-        Order saved = orderService.updateOrder(order);
-        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.SHIPPING_DETAILS_SET));
-        return saved;
+        order.setStatus(OrderStatus.SHIPPING_DETAILS_SET);
+        return orderService.updateOrderStatus(orderId, OrderStatus.SHIPPING_DETAILS_SET); // salva aggiornamenti
     }
 
-    public Order signConsigned(Long sellerId, Long shopId, Long orderId) {
-        checkShopAccess(sellerId, shopId);
+    public List<Order> getExpiredOrdersToConfirmDelivery(Long sellerId, Long shopId) {
+        checkSellerOwnsShop(sellerId, shopId);
+        return orderService.getExpiredOrdersByShopId(shopId);
+    }
+
+    public void deleteOrder(Long sellerId, Long orderId) {
         Order order = orderService.getOrderById(orderId);
-        order.setStatus(OrderStatus.CONSIGNED);
-        Order saved = orderService.updateOrder(order);
-        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.CONFIRMED_DELIVERED));
-        return saved;
-    }
-
-    public void alertUnconfirmedDeliveries(Long sellerId, Long shopId) {
-        checkShopAccess(sellerId, shopId);
-        List<Order> expiredOrders = orderService.getExpiredDeliveryOrders(shopId);
-        expiredOrders.forEach(o -> eventPublisher.publishEvent(new OrderEvent(o.getId(), TypeOrderNotice.REMIND_DELIVERY)));
-    }
-
-
-    public void deleteOrder(Long sellerId, Long shopId, Long orderId) {
-        checkShopAccess(sellerId, shopId);
+        authorizeSellerForOrder(sellerId, order);
         orderService.deleteOrder(orderId);
-        eventPublisher.publishEvent(new OrderEvent(orderId, TypeOrderNotice.ORDER_DELETED));
+    }
+
+    private void checkSellerOwnsShop(Long sellerId, Long shopId) {
+        if (!shopService.getShopById(shopId).getSeller().getId().equals(sellerId)) {
+            throw new RuntimeException("Seller does not own this shop");
+        }
+    }
+
+    private void authorizeSellerForOrder(Long sellerId, Order order) {
+        if (!order.getShop().getSeller().getId().equals(sellerId)) {
+            throw new RuntimeException("Seller not authorized to manage this order");
+        }
     }
 }
-

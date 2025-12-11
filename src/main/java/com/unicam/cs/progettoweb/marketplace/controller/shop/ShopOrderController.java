@@ -24,23 +24,17 @@ public class ShopOrderController {
     }
 
     @PutMapping("/{orderId}/shipping")
-    public Order elaborateToShipping(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
-        return shopOrderService.elaborateOrder(sellerId, shopId, orderId, trackingId, estimatedDeliveryDate);
+    public Order elaborateToShipping(@PathVariable Long shopId, @RequestParam Long sellerId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
+        return shopOrderService.elaborateOrder(sellerId, shopId, trackingId, estimatedDeliveryDate);
     }
 
-    @PutMapping("/{orderId}/consigned")
-    public Order signAsConsigned(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId) {
-        return shopOrderService.signConsigned(sellerId, shopId, orderId);
+    @PutMapping("/expired-deliveries")
+    public List<Order> getExpiredDeliveries(@PathVariable Long shopId, @RequestParam Long sellerId) {
+        return shopOrderService.getExpiredOrdersToConfirmDelivery(sellerId, shopId);
     }
-
-    @PutMapping("/remind-expired-deliveries")
-    public void alertExpiredDeliveries(@PathVariable Long shopId, @RequestParam Long sellerId) {
-        shopOrderService.alertUnconfirmedDeliveries(sellerId, shopId);
-    }
-
 
     @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam Long sellerId) {
-        shopOrderService.deleteOrder(sellerId, shopId, orderId);
+    public void deleteOrder(@PathVariable Long orderId, @RequestParam Long sellerId) {
+        shopOrderService.deleteOrder(sellerId, orderId);
     }
 }

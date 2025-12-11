@@ -1,8 +1,8 @@
 package com.unicam.cs.progettoweb.marketplace.controller.customer;
 
 import com.unicam.cs.progettoweb.marketplace.model.customer.Customer;
-import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import com.unicam.cs.progettoweb.marketplace.service.customer.CustomerService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
