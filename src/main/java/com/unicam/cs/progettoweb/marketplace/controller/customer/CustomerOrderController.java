@@ -15,11 +15,11 @@ public class CustomerOrderController {
     private final CustomerOrderService customerOrderService;
 
     public CustomerOrderController(CustomerOrderService customerOrderService){
-        this.customerOrderService=customerOrderService;
+        this.customerOrderService = customerOrderService;
     }
 
     @GetMapping
-    public List<Order> getOrdersOfCustomer(Long customerId){
+    public List<Order> getOrdersOfCustomer(@PathVariable Long customerId){
         return customerOrderService.getOrdersOfCustomer(customerId);
     }
 
@@ -33,5 +33,4 @@ public class CustomerOrderController {
     public void confirmDelivered(@PathVariable Long customerId, @PathVariable Long orderId){
         customerOrderService.confirmDelivered(customerId, orderId);
     }
-
 }

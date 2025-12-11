@@ -4,7 +4,6 @@ import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopProductNoticeService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -30,17 +29,17 @@ public class ShopProductNoticeController {
     }
 
     @PostMapping
-    public ProductNotice addProductNotice(@PathVariable Long productId, @RequestBody ProductNotice notice) {
-        return shopProductNoticeService.addProductNoticeToProduct(productId, notice);
+    public ProductNotice addProductNotice(@PathVariable Long shopId, @PathVariable Long productId, @RequestBody ProductNotice notice) {
+        return shopProductNoticeService.addProductNoticeToProduct(shopId, notice);
     }
 
     @PutMapping("/{noticeId}")
-    public ProductNotice updateProductNotice(@PathVariable Long noticeId, @RequestBody ProductNotice updatedNotice) {
+    public ProductNotice updateProductNotice(@PathVariable Long shopId, @PathVariable Long noticeId, @RequestBody ProductNotice updatedNotice) {
         return shopProductNoticeService.updateProductNotice(noticeId, updatedNotice);
     }
 
     @DeleteMapping("/{noticeId}")
-    public void deleteProductNotice(@PathVariable Long noticeId) {
+    public void deleteProductNotice(@PathVariable Long shopId, @PathVariable Long noticeId) {
         shopProductNoticeService.deleteProductNotice(noticeId);
     }
 }

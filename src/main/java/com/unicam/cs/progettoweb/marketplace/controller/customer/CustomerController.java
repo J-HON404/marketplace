@@ -4,9 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.model.customer.Customer;
 import com.unicam.cs.progettoweb.marketplace.service.customer.CustomerService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
@@ -20,7 +18,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public Customer getCustomer(Long customerId){
+    public Customer getCustomer(@PathVariable Long customerId){
         return customerService.getCustomerById(customerId);
     }
 
@@ -35,7 +33,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{customerId}")
-    public void deleteCustomer(Long customerId){
-         customerService.deleteCustomer(customerId);
+    public void deleteCustomer(@PathVariable Long customerId){
+        customerService.deleteCustomer(customerId);
     }
 }

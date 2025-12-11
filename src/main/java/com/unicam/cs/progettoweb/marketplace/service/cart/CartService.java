@@ -43,8 +43,8 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Controllo disponibilità
-        checkProductAvailability(product);
+
+        checkDateAvailability(product);
 
         Optional<CartItem> existing = cart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
@@ -82,7 +82,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    private void checkProductAvailability(Product product) {
+    private void checkDateAvailability(Product product) {
         if (product.getAvailabilityDate().isAfter(LocalDate.now())) {
             throw new RuntimeException("Product '" + product.getName() + "' is not available yet. Available from: " + product.getAvailabilityDate());
         }
