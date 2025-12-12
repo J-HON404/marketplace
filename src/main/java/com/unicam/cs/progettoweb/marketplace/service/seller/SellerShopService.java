@@ -4,6 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
 import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.seller.SellerRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +25,23 @@ public class SellerShopService {
         return shopRepository.findBySeller_Id(sellerId);
     }
 
-    public Shop getShopByIdForSeller(Long sellerId, Long shopId) {
-        Shop shop = shopRepository.findById(shopId)
+    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Shop getShopByIdForSeller(Long shopId) {
+        return shopRepository.findById(shopId)
                 .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
-        verifyShopBelongsToSeller(sellerId, shop);
-        return shop;
+    }
+
+    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Shop updateShopForSeller(Long shopId, Shop updatedShop) {
+        Shop existingShop = getShopByIdForSeller(shopId);
+        existingShop.setName(updatedShop.getName());
+        return shopRepository.save(existingShop);
+    }
+
+    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public void deleteShopForSeller(Long shopId) {
+        Shop existingShop = getShopByIdForSeller(shopId);
+        shopRepository.delete(existingShop);
     }
 
     public Shop createShopForSeller(Long sellerId, Shop shop) {
@@ -37,25 +50,8 @@ public class SellerShopService {
         return shopRepository.save(shop);
     }
 
-    public Shop updateShopForSeller(Long sellerId, Long shopId, Shop updatedShop) {
-        Shop existingShop = getShopByIdForSeller(sellerId, shopId);
-        existingShop.setName(updatedShop.getName());
-        return shopRepository.save(existingShop);
-    }
-
-    public void deleteShopForSeller(Long sellerId, Long shopId) {
-        Shop existingShop = getShopByIdForSeller(sellerId, shopId);
-        shopRepository.delete(existingShop);
-    }
-
     private Seller verifySellerExists(Long sellerId) {
         return sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new RuntimeException("Seller not found with id: " + sellerId));
-    }
-
-    private void verifyShopBelongsToSeller(Long sellerId, Shop shop) {
-        if (!shop.getSeller().getId().equals(sellerId)) {
-            throw new RuntimeException("This shop does not belong to the seller");
-        }
     }
 }

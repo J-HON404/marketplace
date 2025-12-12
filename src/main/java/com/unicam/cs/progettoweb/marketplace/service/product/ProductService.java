@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.product;
 
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,10 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
     }
 
+    public List<Product> getProductsByShopId(Long shopId) {
+        return productRepository.findByShop_Id(shopId);
+    }
+
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
@@ -46,13 +51,18 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public List<Product> getProductsByShopId(Long shopId) {
-        return productRepository.findByShopId(shopId);
-    }
-
-    public void checkProductAvailability(Product product) {
+    public void checkProductDateAvailability(Product product) {
         if (product.getAvailabilityDate().isAfter(LocalDate.now())) {
-            throw new RuntimeException("Product is not available yet");
+            throw new RuntimeException("Product '" + product.getName() + "' is not available yet. Available from: " + product.getAvailabilityDate());
         }
     }
+
+    public List<Product> getUnavailableProductsByShop(Shop shop) {
+        return productRepository.findByShopAndQuantityEquals(shop, 0);
+    }
+
+    public List<Product> getFutureProductsByShop(Shop shop, LocalDate today) {
+        return productRepository.findByShopAndAvailabilityDateGreaterThan(shop, today);
+    }
+
 }

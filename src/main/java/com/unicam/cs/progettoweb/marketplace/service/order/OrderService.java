@@ -46,13 +46,10 @@ public class OrderService {
         if (newStatus == null) {
             throw new IllegalArgumentException("OrderStatus cannot be null");
         }
-
         Order order = getOrderById(orderId);
-
         if (order.getStatus() == newStatus) {
             return order;
         }
-
         order.setStatus(newStatus);
         return orderRepository.save(order);
     }

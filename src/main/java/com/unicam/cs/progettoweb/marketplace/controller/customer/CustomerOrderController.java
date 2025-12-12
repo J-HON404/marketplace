@@ -29,6 +29,12 @@ public class CustomerOrderController {
         return ResponseEntity.ok(createdOrder);
     }
 
+    @PostMapping("/from-cart")
+    public ResponseEntity<Order> createOrderFromCart(@PathVariable Long customerId){
+        Order createdOrder = customerOrderService.createOrderFromCart(customerId);
+        return ResponseEntity.ok(createdOrder);
+    }
+
     @PutMapping("/{orderId}/confirm-delivered")
     public void confirmDelivered(@PathVariable Long customerId, @PathVariable Long orderId){
         customerOrderService.confirmDelivered(customerId, orderId);

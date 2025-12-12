@@ -8,23 +8,16 @@ import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepositor
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
 public class CartService {
     private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
     private final ProductService productService;
     private final DefaultProfileService userService;
 
-    public CartService(CartRepository cartRepository,
-                       ProductRepository productRepository,
-                       ProductService productService,
-                       DefaultProfileService userService) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, ProductService productService, DefaultProfileService userService) {
         this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
         this.productService = productService;
         this.userService = userService;
     }
@@ -40,12 +33,8 @@ public class CartService {
 
     public Cart addProduct(Long profileId, Long productId, int quantity) {
         Cart cart = getUserCart(profileId);
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-
-        checkDateAvailability(product);
-
+        Product product = productService.getProductById(productId);
+        productService.checkProductDateAvailability(product);
         Optional<CartItem> existing = cart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
                 .findFirst();
@@ -82,9 +71,4 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    private void checkDateAvailability(Product product) {
-        if (product.getAvailabilityDate().isAfter(LocalDate.now())) {
-            throw new RuntimeException("Product '" + product.getName() + "' is not available yet. Available from: " + product.getAvailabilityDate());
-        }
-    }
 }

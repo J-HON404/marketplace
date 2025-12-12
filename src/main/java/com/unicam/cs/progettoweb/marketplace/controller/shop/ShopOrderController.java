@@ -19,22 +19,22 @@ public class ShopOrderController {
     }
 
     @GetMapping
-    public List<Order> getOrders(@PathVariable Long shopId, @RequestParam Long sellerId) {
-        return shopOrderService.getOrdersOfShop(sellerId, shopId);
+    public List<Order> getOrders(@PathVariable Long shopId) {
+        return shopOrderService.getOrdersOfShop(shopId);
     }
 
     @PutMapping("/{orderId}/shipping")
-    public Order elaborateToShipping(@PathVariable Long shopId, @RequestParam Long sellerId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
-        return shopOrderService.elaborateOrder(sellerId, shopId, trackingId, estimatedDeliveryDate);
+    public Order elaborateToShipping(@PathVariable Long orderId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
+        return shopOrderService.elaborateOrder(orderId, trackingId, estimatedDeliveryDate);
     }
 
-    @PutMapping("/expired-deliveries")
-    public List<Order> getExpiredDeliveries(@PathVariable Long shopId, @RequestParam Long sellerId) {
-        return shopOrderService.getExpiredOrdersToConfirmDelivery(sellerId, shopId);
+    @GetMapping("/expired-deliveries")
+    public List<Order> getExpiredDeliveries(@PathVariable Long shopId) {
+        return shopOrderService.getExpiredOrdersToConfirmDelivery(shopId);
     }
 
     @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId, @RequestParam Long sellerId) {
-        shopOrderService.deleteOrder(sellerId, orderId);
+    public void deleteOrder(@PathVariable Long orderId) {
+        shopOrderService.deleteOrder(orderId);
     }
 }

@@ -22,8 +22,8 @@ public class SellerShopController {
     }
 
     @GetMapping("/{shopId}")
-    public Shop getShop(@PathVariable Long sellerId, @PathVariable Long shopId) {
-        return sellerShopService.getShopByIdForSeller(sellerId, shopId);
+    public Shop getShop(@PathVariable Long shopId) {
+        return sellerShopService.getShopByIdForSeller(shopId);
     }
 
     @PostMapping
@@ -32,12 +32,12 @@ public class SellerShopController {
     }
 
     @PutMapping("/{shopId}")
-    public Shop updateShop(@PathVariable Long sellerId, @PathVariable Long shopId, @RequestBody Shop shop) {
-        return sellerShopService.updateShopForSeller(sellerId, shopId, shop);
+    public Shop updateShop(@PathVariable Long shopId, @RequestBody Shop shop) {
+        return sellerShopService.updateShopForSeller(shopId, shop);
     }
 
     @DeleteMapping("/{shopId}")
-    public void deleteShop(@PathVariable Long sellerId, @PathVariable Long shopId) {
-        sellerShopService.deleteShopForSeller(sellerId, shopId);
+    public void deleteShop(@PathVariable Long shopId) {
+        sellerShopService.deleteShopForSeller(shopId);
     }
 }
