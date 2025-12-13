@@ -1,6 +1,7 @@
-package com.unicam.cs.progettoweb.marketplace.service.customer;
+package com.unicam.cs.progettoweb.marketplace.service.profile;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
@@ -17,50 +18,52 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CustomerOrderService {
+public class ProfileOrderService {
 
     private final OrderService orderService;
-    private final CustomerService customerService;
+    private final ProfileService profileService;
     private final CartService cartService;
 
-    public CustomerOrderService(OrderService orderService, CustomerService customerService, CartService cartService) {
+    public ProfileOrderService(OrderService orderService, ProfileService profileService, CartService cartService) {
         this.orderService = orderService;
-        this.customerService = customerService;
+        this.profileService = profileService;
         this.cartService = cartService;
     }
 
-    private void ensureCustomerExists(Long customerId) {
-        customerService.getCustomerById(customerId);
+    private void ensureProfileExists(Long profileId) {
+        profileService.findProfileById(profileId);
     }
 
-    public List<Order> getOrdersOfCustomer(Long customerId) {
-        ensureCustomerExists(customerId);
-        return orderService.getOrdersByCustomerId(customerId);
+    public List<Order> getOrdersOfProfile(Long profileId) {
+        ensureProfileExists(profileId);
+        return orderService.getOrdersByProfileId(profileId);
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Order createOrder(Long customerId, Order orderDetails) {
-        orderDetails.setCustomer(customerService.getCustomerById(customerId));
+    public Order createOrder(Long profileId, Order orderDetails) {
+        Profile profile = profileService.findProfileById(profileId);
+        orderDetails.setCustomer(profile);
         return orderService.createOrder(orderDetails);
     }
 
     @Transactional
-    public Order createOrderFromCart(Long customerId){
-        ensureCustomerExists(customerId);
-        Cart customerCart = cartService.getUserCart(customerId);
+    public Order createOrderFromCart(Long profileId){
+        ensureProfileExists(profileId);
+        Cart customerCart = cartService.getUserCart(profileId);
         if(customerCart.getItems().isEmpty()){
             throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty");
         }
         List<OrderItem> orderItems = getOrderItemsFromCart(customerCart);
         Order order = new Order();
-        order.setCustomer(customerService.getCustomerById(customerId));
+        Profile profile = profileService.findProfileById(profileId);
+        order.setCustomer(profile);
         order.setShop(customerCart.getShop());
         order.setItems(orderItems);
         order.setOrderDate(LocalDateTime.now());
         order.setTotal(getTotalPriceFromOrderItems(orderItems));
         orderItems.forEach(item -> item.setOrder(order));
         Order createdOrder = orderService.createOrder(order);
-        cartService.clearCart(customerId);
+        cartService.clearCart(profileId);
         return createdOrder;
     }
 
@@ -83,8 +86,8 @@ public class CustomerOrderService {
     }
 
     @PreAuthorize("@customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
-    public void confirmDelivered(Long customerId, Long orderId) {
-        ensureCustomerExists(customerId);
+    public void confirmDelivered(Long profileId, Long orderId) {
+        ensureProfileExists(profileId);
         orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);
     }
 }

@@ -1,12 +1,13 @@
 package com.unicam.cs.progettoweb.marketplace.model.account;
 
+import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileType;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "profiles")
-@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @NoArgsConstructor
 public class Profile {
@@ -27,4 +28,10 @@ public class Profile {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProfileType type;
+
+    @OneToOne(mappedBy = "seller")
+    private Shop shop; // solo se il profilo è SELLER
 }

@@ -24,8 +24,8 @@ public class OrderService {
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "order not found with id: " + orderId));
     }
 
-    public List<Order> getOrdersByCustomerId(Long customerId) {
-        return orderRepository.findByCustomer_Id(customerId);
+    public List<Order> getOrdersByProfileId(Long profileId) {
+        return orderRepository.findByCustomer_Id(profileId);
     }
 
     public List<Order> getOrdersByShopId(Long shopId) {

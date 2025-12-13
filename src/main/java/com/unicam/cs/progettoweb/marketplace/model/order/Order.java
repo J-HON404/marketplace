@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.order;
 
-import com.unicam.cs.progettoweb.marketplace.model.customer.Customer;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import jakarta.persistence.*;
@@ -25,11 +25,11 @@ public class Order {
     private OrderStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false) //fk verso cutomer_id
-    private Customer customer;
+    @JoinColumn(name = "profile_id", nullable = false) // fk verso profile_id
+    private Profile customer; // prima era Customer, ora Profile
 
     @ManyToOne
-    @JoinColumn(name = "shop_id", nullable = false) //fk verso shop_id
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)

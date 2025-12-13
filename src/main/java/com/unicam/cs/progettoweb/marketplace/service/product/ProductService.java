@@ -19,10 +19,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
     public Product getProductById(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "product not found with id: " + productId));

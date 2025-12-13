@@ -4,6 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileShopService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,9 @@ import java.util.List;
 public class ShopProductService {
 
     private final ProductService productService;
-    private final ShopService shopService;
+    private final ProfileShopService shopService;
 
-    public ShopProductService(ProductService productService, ShopService shopService) {
+    public ShopProductService(ProductService productService, ProfileShopService shopService) {
         this.productService = productService;
         this.shopService = shopService;
     }

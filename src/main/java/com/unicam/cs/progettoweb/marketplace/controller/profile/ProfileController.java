@@ -2,7 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
-import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
-    private final DefaultProfileService profileService;
+    private final ProfileService profileService;
 
-    public ProfileController(DefaultProfileService profileService) {
+    public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
 
@@ -33,13 +33,7 @@ public class ProfileController {
         Profile profile = profileService.updateProfile(profileId, updatedProfile);
         return ResponseEntity.ok(ApiResponse.success(profile));
     }
-
-    @GetMapping("/{profileId}/address")
-    public ResponseEntity<ApiResponse<String>> getProfileAddress(@PathVariable Long profileId) {
-        String address = profileService.getProfileAddress(profileId);
-        return ResponseEntity.ok(ApiResponse.success(address));
-    }
-
+    
     @DeleteMapping("/{profileId}")
     public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable Long profileId) {
         profileService.deleteProfile(profileId);

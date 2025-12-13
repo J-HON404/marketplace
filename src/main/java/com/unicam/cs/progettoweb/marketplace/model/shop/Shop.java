@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.shop;
 
-import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
+import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +18,6 @@ public class Shop {
     private String name;
 
     @OneToOne
-    @JoinColumn(name = "seller_id") //fk verso seller_id
-    private Seller seller;
+    @JoinColumn(name = "seller_id") //fk verso profile_id
+    private Profile seller;
 }
