@@ -1,8 +1,10 @@
 package com.unicam.cs.progettoweb.marketplace.service.order;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +21,7 @@ public class OrderService {
 
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "order not found with id: " + orderId));
     }
 
     public List<Order> getOrdersByCustomerId(Long customerId) {
@@ -37,14 +39,14 @@ public class OrderService {
 
     public void deleteOrder(Long orderId) {
         if (!orderRepository.existsById(orderId)) {
-            throw new RuntimeException("Order not found with id: " + orderId);
+            throw new MarketplaceException(HttpStatus.NOT_FOUND, "order not found with id: " + orderId);
         }
         orderRepository.deleteById(orderId);
     }
 
     public Order updateOrderStatus(Long orderId, OrderStatus newStatus) {
         if (newStatus == null) {
-            throw new IllegalArgumentException("OrderStatus cannot be null");
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "orderStatus can't be null");
         }
         Order order = getOrderById(orderId);
         if (order.getStatus() == newStatus) {
@@ -69,7 +71,7 @@ public class OrderService {
     public Order setShippingDetails(Long orderId, String trackingId, LocalDate estimatedDeliveryDate) {
         Order order = getOrderById(orderId);
         if (order.getStatus() != OrderStatus.READY_TO_ELABORATING) {
-            throw new RuntimeException("Cannot set shipping details. Order is not ready to be elaborated. Current state: " + order.getStatus());
+            throw new MarketplaceException(HttpStatus.CONFLICT, "order is not ready to be elaborated. Current state: " + order.getStatus());
         }
         order.setTrackingId(trackingId);
         order.setEstimatedDeliveryDate(estimatedDeliveryDate);

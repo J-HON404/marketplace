@@ -1,8 +1,10 @@
 package com.unicam.cs.progettoweb.marketplace.service.product;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +25,7 @@ public class ProductService {
 
     public Product getProductById(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "product not found with id: " + productId));
     }
 
     public List<Product> getProductsByShopId(Long shopId) {
@@ -34,26 +36,28 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long productId, Product productDetails) {
-        Product product = getProductById(productId);
-        product.setName(productDetails.getName());
-        product.setDescription(productDetails.getDescription());
-        product.setPrice(productDetails.getPrice());
-        product.setQuantity(productDetails.getQuantity());
-        product.setAvailabilityDate(productDetails.getAvailabilityDate());
-        return productRepository.save(product);
+    public Product updateProduct(Long productId, Product updatedProduct) {
+        Product existing = getProductById(productId);
+        copyProductDetails(existing, updatedProduct);
+        return productRepository.save(existing);
+    }
+
+    private void copyProductDetails(Product existing, Product updated) {
+        existing.setName(updated.getName());
+        existing.setDescription(updated.getDescription());
+        existing.setPrice(updated.getPrice());
+        existing.setQuantity(updated.getQuantity());
+        existing.setAvailabilityDate(updated.getAvailabilityDate());
     }
 
     public void deleteProduct(Long productId) {
-        if (!productRepository.existsById(productId)) {
-            throw new RuntimeException("Product not found with id: " + productId);
-        }
+        getProductById(productId);
         productRepository.deleteById(productId);
     }
 
     public void checkProductDateAvailability(Product product) {
         if (product.getAvailabilityDate().isAfter(LocalDate.now())) {
-            throw new RuntimeException("Product '" + product.getName() + "' is not available yet. Available from: " + product.getAvailabilityDate());
+            throw new MarketplaceException(HttpStatus.CONFLICT, "product '" + product.getName() + "' is not available yet. Available from: " + product.getAvailabilityDate());
         }
     }
 
@@ -64,5 +68,4 @@ public class ProductService {
     public List<Product> getFutureProductsByShop(Shop shop, LocalDate today) {
         return productRepository.findByShopAndAvailabilityDateGreaterThan(shop, today);
     }
-
 }

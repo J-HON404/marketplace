@@ -1,9 +1,11 @@
 package com.unicam.cs.progettoweb.marketplace.service.seller;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
 import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.seller.SellerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class SellerShopService {
     @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Shop getShopByIdForSeller(Long shopId) {
         return shopRepository.findById(shopId)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"shop not found with id: " + shopId));
     }
 
     @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
@@ -52,6 +54,6 @@ public class SellerShopService {
 
     private Seller verifySellerExists(Long sellerId) {
         return sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new RuntimeException("Seller not found with id: " + sellerId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"seller not found with id: " + sellerId));
     }
 }

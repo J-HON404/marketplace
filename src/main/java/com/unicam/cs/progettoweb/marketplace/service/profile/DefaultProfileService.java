@@ -1,7 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.service.profile;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -17,7 +19,7 @@ public class DefaultProfileService implements ProfileService {
     @Override
     public Profile findProfileById(Long profileId) {
         return accountRepository.findById(profileId)
-                .orElseThrow(() -> new RuntimeException("Profile not found with id: " + profileId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"profile not found with id: " + profileId));
     }
 
     @Override
@@ -37,9 +39,7 @@ public class DefaultProfileService implements ProfileService {
 
     @Override
     public void deleteProfile(Long profileId) {
-        if (!accountRepository.existsById(profileId)) {
-            throw new RuntimeException("Profile not found with id: " + profileId);
-        }
+      findProfileById(profileId);
         accountRepository.deleteById(profileId);
     }
 

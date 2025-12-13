@@ -1,7 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,12 @@ public class ShopService {
 
     public Shop getShopById(Long shopId) {
         return shopRepository.findById(shopId)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id: " + shopId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "shop not found with id: " + shopId));
+    }
+
+    public Shop getShopByName(String name) {
+        return shopRepository.findByName(name)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "shop not found with name: " + name));
     }
 
     public Shop addShop(Shop shop) {
@@ -29,25 +36,18 @@ public class ShopService {
     }
 
     public Shop updateShop(Long shopId, Shop shopDetails) {
-        Shop shop = getShopById(shopId);
-        shop.setName(shopDetails.getName());
-        shop.setSeller(shopDetails.getSeller());
-        return shopRepository.save(shop);
+        Shop existingShop = getShopById(shopId);
+        existingShop.setName(shopDetails.getName());
+        existingShop.setSeller(shopDetails.getSeller());
+        return shopRepository.save(existingShop);
     }
 
     public void deleteShop(Long shopId) {
-        if (!shopRepository.existsById(shopId)) {
-            throw new RuntimeException("Shop not found with id: " + shopId);
-        }
+        getShopById(shopId);
         shopRepository.deleteById(shopId);
     }
 
     public List<Shop> getShopsBySellerId(Long sellerId) {
         return shopRepository.findBySeller_Id(sellerId);
-    }
-
-    public Shop getShopByName(String name) {
-        return shopRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Shop not found with name: " + name));
     }
 }

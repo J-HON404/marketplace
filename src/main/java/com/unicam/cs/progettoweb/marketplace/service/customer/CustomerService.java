@@ -1,7 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.service.customer;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.customer.Customer;
 import com.unicam.cs.progettoweb.marketplace.repository.customer.CustomerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class CustomerService {
 
     public Customer getCustomerById(Long customerId){
         return customerRepository.findById(customerId)
-                .orElseThrow( ()-> new RuntimeException("Customer not found with id: " + customerId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "customer not found with id: " + customerId));
     }
 
     public Customer saveCustomer(Customer customer){
@@ -30,7 +32,7 @@ public class CustomerService {
 
     public void deleteCustomer(Long customerId) {
         if (!customerRepository.existsById(customerId)) {
-            throw new RuntimeException("Customer not found with id: " + customerId);
+            throw new MarketplaceException(HttpStatus.NOT_FOUND, "customer not found with id: " + customerId);
         }
         customerRepository.deleteById(customerId);
     }

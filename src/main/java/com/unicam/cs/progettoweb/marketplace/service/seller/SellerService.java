@@ -1,7 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.service.seller;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
 import com.unicam.cs.progettoweb.marketplace.repository.seller.SellerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +23,12 @@ public class SellerService {
 
     public Seller getSellerById(Long sellerId) {
         return sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new RuntimeException("Seller not found with id: " + sellerId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"seller not found with id: " + sellerId));
     }
 
     public List<Seller> getSellerByShopId(Long shopId) {
         return sellerRepository.findByShop_Id(shopId)
-                .orElseThrow(() -> new RuntimeException("Seller not found for shopId: " + shopId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"seller not found for shopId: " + shopId));
     }
 
     public Seller saveSeller(Seller seller) {
@@ -34,9 +36,7 @@ public class SellerService {
     }
 
     public void deleteSeller(Long sellerId) {
-        if (!sellerRepository.existsById(sellerId)) {
-            throw new RuntimeException("Seller not found with id: " + sellerId);
-        }
+        getSellerById(sellerId);
         sellerRepository.deleteById(sellerId);
     }
 }

@@ -2,7 +2,6 @@ package com.unicam.cs.progettoweb.marketplace.controller.customer;
 
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.customer.CustomerOrderService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +23,13 @@ public class CustomerOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@PathVariable Long customerId, @RequestBody Order orderDetails) {
-        Order createdOrder = customerOrderService.createOrder(customerId, orderDetails);
-        return ResponseEntity.ok(createdOrder);
+    public Order createOrder(@PathVariable Long customerId, @RequestBody Order orderDetails) {
+        return customerOrderService.createOrder(customerId, orderDetails);
     }
 
     @PostMapping("/from-cart")
-    public ResponseEntity<Order> createOrderFromCart(@PathVariable Long customerId){
-        Order createdOrder = customerOrderService.createOrderFromCart(customerId);
-        return ResponseEntity.ok(createdOrder);
+    public Order createOrderFromCart(@PathVariable Long customerId){
+        return customerOrderService.createOrderFromCart(customerId);
     }
 
     @PutMapping("/{orderId}/confirm-delivered")

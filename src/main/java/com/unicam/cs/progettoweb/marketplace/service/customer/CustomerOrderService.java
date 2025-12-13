@@ -1,11 +1,13 @@
 package com.unicam.cs.progettoweb.marketplace.service.customer;
 
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.model.order.OrderItem;
 import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
 import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -16,11 +18,10 @@ import java.util.List;
 
 @Service
 public class CustomerOrderService {
-    
+
     private final OrderService orderService;
     private final CustomerService customerService;
     private final CartService cartService;
-
 
     public CustomerOrderService(OrderService orderService, CustomerService customerService, CartService cartService) {
         this.orderService = orderService;
@@ -32,19 +33,11 @@ public class CustomerOrderService {
         customerService.getCustomerById(customerId);
     }
 
-
     public List<Order> getOrdersOfCustomer(Long customerId) {
         ensureCustomerExists(customerId);
         return orderService.getOrdersByCustomerId(customerId);
     }
 
-
-    /*  accesso db atomico con lock! senza interruzioni durante la transazione
-        più utenti possono tentare di acquistare contemporaneamente.
-       ma se due transazioni modificano lo stesso prodotto nello stesso momento:
-        Una transazione acquisisce il “lock” sul dato e procede e
-        l’altra deve attendere finché la prima non termina.
-     */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Order createOrder(Long customerId, Order orderDetails) {
         orderDetails.setCustomer(customerService.getCustomerById(customerId));
@@ -56,7 +49,7 @@ public class CustomerOrderService {
         ensureCustomerExists(customerId);
         Cart customerCart = cartService.getUserCart(customerId);
         if(customerCart.getItems().isEmpty()){
-            throw new RuntimeException("Cart is empty");
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty");
         }
         List<OrderItem> orderItems = getOrderItemsFromCart(customerCart);
         Order order = new Order();
@@ -64,14 +57,12 @@ public class CustomerOrderService {
         order.setShop(customerCart.getShop());
         order.setItems(orderItems);
         order.setOrderDate(LocalDateTime.now());
-        double total = getTotalPriceFromOrderItems(orderItems);
-        order.setTotal(total);
+        order.setTotal(getTotalPriceFromOrderItems(orderItems));
         orderItems.forEach(item -> item.setOrder(order));
         Order createdOrder = orderService.createOrder(order);
         cartService.clearCart(customerId);
         return createdOrder;
     }
-
 
     private List<OrderItem> getOrderItemsFromCart(Cart customerCart) {
         return customerCart.getItems().stream()

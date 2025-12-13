@@ -2,9 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.controller.shop;
 
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -23,26 +21,22 @@ public class ShopController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Shop> getShop(@PathVariable Long id) {
-        Shop shop = shopService.getShopById(id);
-        return ResponseEntity.ok(shop);
+    public Shop getShop(@PathVariable Long id) {
+        return shopService.getShopById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Shop> createShop(@RequestBody Shop shop) {
-        Shop createdShop = shopService.addShop(shop);
-        return ResponseEntity.ok(createdShop);
+    public Shop createShop(@RequestBody Shop shop) {
+        return shopService.addShop(shop);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Shop> updateShop(@PathVariable Long id, @RequestBody Shop shopDetails) {
-        Shop updatedShop = shopService.updateShop(id,shopDetails);
-        return ResponseEntity.ok(updatedShop);
+    public Shop updateShop(@PathVariable Long id, @RequestBody Shop shopDetails) {
+        return shopService.updateShop(id,shopDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
+    public void deleteShop(@PathVariable Long id) {
         shopService.deleteShop(id);
-        return ResponseEntity.noContent().build();
     }
 }
