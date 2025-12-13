@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.exception;
 
-import org.springframework.http.ProblemDetail;
+import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -8,10 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MarketplaceException.class)
-    public ProblemDetail handleBusinessException(MarketplaceException ex) {
-        ProblemDetail problem = ProblemDetail.forStatus(ex.getStatus());
-        problem.setTitle(ex.getStatus().getReasonPhrase());
-        problem.setDetail(ex.getMessage());
-        return problem;
+    public ResponseEntity<ApiResponse<Object>> handleMarketplaceException(MarketplaceException ex) {
+        ApiResponse<Object> message = ApiResponse.error(ex.getMessage());
+        return ResponseEntity.status(ex.getStatus()).body(message);
     }
 }
