@@ -1,7 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
+import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
 import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,30 +17,33 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}")
-    public Profile getProfile(@PathVariable Long profileId) {
-        return profileService.findProfileById(profileId);
+    public ResponseEntity<ApiResponse<Profile>> getProfile(@PathVariable Long profileId) {
+        Profile profile = profileService.findProfileById(profileId);
+        return ResponseEntity.ok(ApiResponse.success(profile));
     }
 
     @PostMapping
-    public Profile createProfile(@RequestBody Profile profile) {
-        return profileService.createProfile(profile);
+    public ResponseEntity<ApiResponse<Profile>> createProfile(@RequestBody Profile profile) {
+        Profile created = profileService.createProfile(profile);
+        return ResponseEntity.ok(ApiResponse.success(created));
     }
 
     @PutMapping("/{profileId}")
-    public Profile updateProfile(
-            @PathVariable Long profileId,
-            @RequestBody Profile updatedProfile
-    ) {
-        return profileService.updateProfile(profileId, updatedProfile);
-    }
-
-    @DeleteMapping("/{profileId}")
-    public void deleteProfile(@PathVariable Long profileId) {
-        profileService.deleteProfile(profileId);
+    public ResponseEntity<ApiResponse<Profile>> updateProfile(@PathVariable Long profileId, @RequestBody Profile updatedProfile) {
+        Profile profile = profileService.updateProfile(profileId, updatedProfile);
+        return ResponseEntity.ok(ApiResponse.success(profile));
     }
 
     @GetMapping("/{profileId}/address")
-    public String getProfileAddress(@PathVariable Long profileId) {
-        return profileService.getProfileAddress(profileId);
+    public ResponseEntity<ApiResponse<String>> getProfileAddress(@PathVariable Long profileId) {
+        String address = profileService.getProfileAddress(profileId);
+        return ResponseEntity.ok(ApiResponse.success(address));
     }
+
+    @DeleteMapping("/{profileId}")
+    public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable Long profileId) {
+        profileService.deleteProfile(profileId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

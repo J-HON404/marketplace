@@ -49,7 +49,6 @@ public class ShopProductService {
         return productService.addProduct(product);
     }
 
-    // ShopProductService.java
     @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Product updateProduct(Long shopId, Long productId, Product updatedProduct) {
         Product existing = productService.getProductById(productId);

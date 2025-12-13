@@ -4,7 +4,6 @@ import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.repository.cart.CartRepository;
-import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class CartService {
     private final ProductService productService;
     private final DefaultProfileService userService;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, ProductService productService, DefaultProfileService userService) {
+    public CartService(CartRepository cartRepository, ProductService productService, DefaultProfileService userService) {
         this.cartRepository = cartRepository;
         this.productService = productService;
         this.userService = userService;

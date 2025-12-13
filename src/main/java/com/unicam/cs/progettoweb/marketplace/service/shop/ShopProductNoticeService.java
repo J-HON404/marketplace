@@ -24,23 +24,25 @@ public class ShopProductNoticeService {
     }
 
     @PreAuthorize("@shopSecurity.isSellerOfProduct(principal.id, #productId)")
+    public ProductNotice getProductNoticeByIdAndProductId(Long noticeId, Long productId) {
+        return productNoticeService.getProductNoticeByIdAndProductId(noticeId, productId);
+    }
+
+
+    @PreAuthorize("@shopSecurity.isSellerOfProduct(principal.id, #productId)")
     public ProductNotice addProductNoticeToProduct(Long productId, ProductNotice notice) {
         notice.setProduct(productService.getProductById(productId));
         return productNoticeService.addProductNotice(notice);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfProductForNotice(principal.id, #noticeId)")
-    public ProductNotice updateProductNotice(Long noticeId, ProductNotice updatedNotice) {
-        return productNoticeService.updateProductNotice(noticeId, updatedNotice);
+    @PreAuthorize("@shopSecurity.isSellerOfProduct(principal.id, #productId)")
+    public ProductNotice updateProductNotice(Long noticeId, Long productId, ProductNotice updatedNotice) {
+        return productNoticeService.updateProductNotice(noticeId, productId, updatedNotice);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfProductForNotice(principal.id, #noticeId)")
-    public void deleteProductNotice(Long noticeId) {
-        productNoticeService.deleteProductNotice(noticeId);
+    @PreAuthorize("@shopSecurity.isSellerOfProduct(principal.id, #productId)")
+    public void deleteProductNotice(Long noticeId, Long productId) {
+        productNoticeService.deleteProductNotice(noticeId, productId);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfProductForNotice(principal.id, #noticeId)")
-    public ProductNotice getProductNoticeById(Long noticeId) {
-        return productNoticeService.getProductNoticeById(noticeId);
-    }
 }

@@ -1,6 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.controller.profile;
+
+import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,27 +17,32 @@ public class ProfileCartController {
     }
 
     @GetMapping
-    public Cart getCart(@PathVariable Long profileId) {
-        return cartService.getUserCart(profileId);
+    public ResponseEntity<ApiResponse<Cart>> getCart(@PathVariable Long profileId) {
+        Cart cart = cartService.getUserCart(profileId);
+        return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
     @PostMapping("/add")
-    public Cart addProductToCart(@PathVariable Long profileId, @RequestParam Long productId, @RequestParam int quantity) {
-        return cartService.addProduct(profileId, productId, quantity);
+    public ResponseEntity<ApiResponse<Cart>> addProductToCart(@PathVariable Long profileId, @RequestParam Long productId, @RequestParam int quantity) {
+        Cart cart = cartService.addProduct(profileId, productId, quantity);
+        return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
     @PutMapping("/update")
-    public Cart updateProductQuantity(@PathVariable Long profileId, @RequestParam Long productId, @RequestParam int quantity) {
-        return cartService.updateQuantity(profileId, productId, quantity);
+    public ResponseEntity<ApiResponse<Cart>> updateProductQuantity(@PathVariable Long profileId, @RequestParam Long productId, @RequestParam int quantity) {
+        Cart cart = cartService.updateQuantity(profileId, productId, quantity);
+        return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
     @DeleteMapping("/remove")
-    public Cart removeProductFromCart(@PathVariable Long profileId, @RequestParam Long productId) {
-        return cartService.removeProduct(profileId, productId);
+    public ResponseEntity<ApiResponse<Cart>> removeProductFromCart(@PathVariable Long profileId, @RequestParam Long productId) {
+        cartService.removeProduct(profileId, productId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/clear")
-    public void clearCart(@PathVariable Long profileId) {
+    public ResponseEntity<ApiResponse<Void>> clearCart(@PathVariable Long profileId) {
         cartService.clearCart(profileId);
+        return ResponseEntity.noContent().build();
     }
 }

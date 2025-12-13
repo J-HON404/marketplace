@@ -1,8 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.controller.seller;
 
+import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.seller.Seller;
 import com.unicam.cs.progettoweb.marketplace.service.seller.SellerService;
-import com.unicam.cs.progettoweb.marketplace.service.profile.DefaultProfileService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,31 +12,39 @@ import java.util.List;
 @RequestMapping("/api/sellers")
 public class SellerController {
 
-    private final DefaultProfileService defaultAccountService;
     private final SellerService sellerService;
 
-    public SellerController(DefaultProfileService defaultAccountService, SellerService sellerService){
-        this.defaultAccountService = defaultAccountService;
+    public SellerController(SellerService sellerService){
         this.sellerService = sellerService;
     }
 
     @GetMapping("/{sellerId}")
-    public Seller getSeller(@PathVariable Long sellerId) {
-        return sellerService.getSellerById(sellerId);
+    public ResponseEntity<ApiResponse<Seller>> getSeller(@PathVariable Long sellerId) {
+        Seller seller = sellerService.getSellerById(sellerId);
+        return ResponseEntity.ok(ApiResponse.success(seller));
     }
 
     @GetMapping
-    public List<Seller> getAllSellers() {
-        return sellerService.getAllSellers();
+    public ResponseEntity<ApiResponse<List<Seller>>> getAllSellers() {
+        List<Seller> sellers = sellerService.getAllSellers();
+        return ResponseEntity.ok(ApiResponse.success(sellers));
+    }
+
+    @GetMapping("/by-shopId")
+    public ResponseEntity<ApiResponse<Seller>> getSellerByShopId(@RequestParam Long shopId) {
+        Seller seller = sellerService.getSellerByShopId(shopId);
+        return ResponseEntity.ok(ApiResponse.success(seller));
     }
 
     @PostMapping
-    public Seller createSeller(@RequestBody Seller seller) {
-        return sellerService.saveSeller(seller);
+    public ResponseEntity<ApiResponse<Seller>> createSeller(@RequestBody Seller seller) {
+        Seller created = sellerService.saveSeller(seller);
+        return ResponseEntity.ok(ApiResponse.success(created));
     }
 
     @DeleteMapping("/{sellerId}")
-    public void deleteSeller(@PathVariable Long sellerId) {
+    public ResponseEntity<ApiResponse<Void>> deleteSeller(@PathVariable Long sellerId) {
         sellerService.deleteSeller(sellerId);
+        return ResponseEntity.noContent().build();
     }
 }

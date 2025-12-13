@@ -1,13 +1,15 @@
 package com.unicam.cs.progettoweb.marketplace.controller.seller;
 
+import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.seller.SellerShopService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sellers/{sellerId}/shops")
+@RequestMapping("/api/sellers")
 public class SellerShopController {
 
     private final SellerShopService sellerShopService;
@@ -16,28 +18,34 @@ public class SellerShopController {
         this.sellerShopService = sellerShopService;
     }
 
-    @GetMapping
-    public List<Shop> getShopsOfSeller(@PathVariable Long sellerId) {
-        return sellerShopService.getShopsBySellerId(sellerId);
+    @GetMapping("/{sellerId}/shops")
+    public ResponseEntity<ApiResponse<List<Shop>>> getShopsOfSeller(@PathVariable Long sellerId) {
+        List<Shop> shops = sellerShopService.getShopsBySellerId(sellerId);
+        return ResponseEntity.ok(ApiResponse.success(shops));
     }
 
-    @GetMapping("/{shopId}")
-    public Shop getShop(@PathVariable Long shopId) {
-        return sellerShopService.getShopByIdForSeller(shopId);
+    @GetMapping("/shops/{shopId}")
+    public ResponseEntity<ApiResponse<Shop>> getShop(@PathVariable Long shopId) {
+        Shop shop = sellerShopService.getShopByIdForSeller(shopId);
+        return ResponseEntity.ok(ApiResponse.success(shop));
     }
 
-    @PostMapping
-    public Shop createShop(@PathVariable Long sellerId, @RequestBody Shop shop) {
-        return sellerShopService.createShopForSeller(sellerId, shop);
+    @PostMapping("/{sellerId}/shops")
+    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long sellerId, @RequestBody Shop shop) {
+        Shop created = sellerShopService.createShopForSeller(sellerId, shop);
+        return ResponseEntity.ok(ApiResponse.success(created));
     }
 
-    @PutMapping("/{shopId}")
-    public Shop updateShop(@PathVariable Long shopId, @RequestBody Shop shop) {
-        return sellerShopService.updateShopForSeller(shopId, shop);
+    @PutMapping("/shops/{shopId}")
+    public ResponseEntity<ApiResponse<Shop>> updateShop(@PathVariable Long shopId, @RequestBody Shop shop) {
+        Shop updated = sellerShopService.updateShopForSeller(shopId, shop);
+        return ResponseEntity.ok(ApiResponse.success(updated));
     }
 
-    @DeleteMapping("/{shopId}")
-    public void deleteShop(@PathVariable Long shopId) {
+    @DeleteMapping("/shops/{shopId}")
+    public ResponseEntity<ApiResponse<Void>> deleteShop(@PathVariable Long shopId) {
         sellerShopService.deleteShopForSeller(shopId);
+        return ResponseEntity.noContent().build();
     }
 }
+

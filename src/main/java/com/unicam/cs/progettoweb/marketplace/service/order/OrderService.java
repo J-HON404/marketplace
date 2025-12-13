@@ -44,16 +44,16 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
-    public Order updateOrderStatus(Long orderId, OrderStatus newStatus) {
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
         if (newStatus == null) {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST, "orderStatus can't be null");
         }
         Order order = getOrderById(orderId);
         if (order.getStatus() == newStatus) {
-            return order;
+            return;
         }
         order.setStatus(newStatus);
-        return orderRepository.save(order);
+        orderRepository.save(order);
     }
 
     public List<Order> getOrdersByShopIdAndStatus(Long shopId, OrderStatus status) {

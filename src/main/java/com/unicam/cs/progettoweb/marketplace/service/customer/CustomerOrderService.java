@@ -85,7 +85,6 @@ public class CustomerOrderService {
     @PreAuthorize("@customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
     public void confirmDelivered(Long customerId, Long orderId) {
         ensureCustomerExists(customerId);
-        Order order = orderService.getOrderById(orderId);
         orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);
     }
 }

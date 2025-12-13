@@ -31,6 +31,10 @@ public class ShopService {
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "shop not found with name: " + name));
     }
 
+    public List<Shop> getShopsBySellerId(Long sellerId) {
+        return shopRepository.findBySeller_Id(sellerId);
+    }
+
     public Shop addShop(Shop shop) {
         return shopRepository.save(shop);
     }
@@ -47,7 +51,4 @@ public class ShopService {
         shopRepository.deleteById(shopId);
     }
 
-    public List<Shop> getShopsBySellerId(Long sellerId) {
-        return shopRepository.findBySeller_Id(sellerId);
-    }
 }

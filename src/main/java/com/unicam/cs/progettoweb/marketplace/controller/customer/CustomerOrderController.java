@@ -1,10 +1,10 @@
 package com.unicam.cs.progettoweb.marketplace.controller.customer;
 
+import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.customer.CustomerOrderService;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -18,22 +18,26 @@ public class CustomerOrderController {
     }
 
     @GetMapping
-    public List<Order> getOrdersOfCustomer(@PathVariable Long customerId){
-        return customerOrderService.getOrdersOfCustomer(customerId);
+    public ResponseEntity<ApiResponse<List<Order>>> getOrdersOfCustomer(@PathVariable Long customerId){
+        List<Order> orders = customerOrderService.getOrdersOfCustomer(customerId);
+        return ResponseEntity.ok(ApiResponse.success(orders));
     }
 
     @PostMapping
-    public Order createOrder(@PathVariable Long customerId, @RequestBody Order orderDetails) {
-        return customerOrderService.createOrder(customerId, orderDetails);
+    public ResponseEntity<ApiResponse<Order>> createOrder(@PathVariable Long customerId, @RequestBody Order orderDetails) {
+        Order order = customerOrderService.createOrder(customerId, orderDetails);
+        return ResponseEntity.ok(ApiResponse.success(order));
     }
 
     @PostMapping("/from-cart")
-    public Order createOrderFromCart(@PathVariable Long customerId){
-        return customerOrderService.createOrderFromCart(customerId);
+    public ResponseEntity<ApiResponse<Order>> createOrderFromCart(@PathVariable Long customerId){
+        Order order = customerOrderService.createOrderFromCart(customerId);
+        return ResponseEntity.ok(ApiResponse.success(order));
     }
 
     @PutMapping("/{orderId}/confirm-delivered")
-    public void confirmDelivered(@PathVariable Long customerId, @PathVariable Long orderId){
+    public ResponseEntity<ApiResponse<Void>> confirmDelivered(@PathVariable Long customerId, @PathVariable Long orderId){
         customerOrderService.confirmDelivered(customerId, orderId);
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 }

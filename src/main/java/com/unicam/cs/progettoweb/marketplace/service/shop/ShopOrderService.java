@@ -24,6 +24,11 @@ public class ShopOrderService {
         return orderService.getOrdersByShopId(shopId);
     }
 
+    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public List<Order> getOrdersByShopIdAndStatus(Long shopId, OrderStatus status) {
+        return orderService.getOrdersByShopIdAndStatus(shopId,status);
+    }
+
     @PreAuthorize("@shopSecurity.isSellerOfOrder(principal.id, #orderId)")
     public Order elaborateOrder(Long orderId, String tracking, LocalDate estimatedDeliveryDate) {
         Order order = orderService.getOrderById(orderId);

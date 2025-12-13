@@ -26,9 +26,9 @@ public class SellerService {
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"seller not found with id: " + sellerId));
     }
 
-    public List<Seller> getSellerByShopId(Long shopId) {
+    public Seller getSellerByShopId(Long shopId) {
         return sellerRepository.findByShop_Id(shopId)
-                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"seller not found for shopId: " + shopId));
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Seller not found for shopId: " + shopId));
     }
 
     public Seller saveSeller(Seller seller) {
