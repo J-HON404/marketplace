@@ -1,39 +1,35 @@
 package com.unicam.cs.progettoweb.marketplace.security;
 
-import com.unicam.cs.progettoweb.marketplace.model.order.Order;
-import com.unicam.cs.progettoweb.marketplace.model.product.Product;
-import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
-import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
-import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
-import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
+import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("shopSecurity")
 public class ShopSecurity {
 
-    private final SellerShopService shopService;
-    private final OrderService orderService;
-    private final ProductService productService;
+    private final ShopRepository shopRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
-    public ShopSecurity(SellerShopService shopService, OrderService orderService, ProductService productService) {
-        this.shopService = shopService;
-        this.orderService = orderService;
-        this.productService = productService;
+    public ShopSecurity(
+            ShopRepository shopRepository,
+            OrderRepository orderRepository,
+            ProductRepository productRepository) {
+        this.shopRepository = shopRepository;
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
 
     public boolean isSellerOfShop(Long sellerId, Long shopId) {
-        Shop shop = shopService.getShopById(shopId);
-        return shop.getSeller().getId().equals(sellerId);
+        return shopRepository.existsByIdAndSeller_Id(shopId, sellerId);
     }
 
     public boolean isSellerOfOrder(Long sellerId, Long orderId) {
-        Order order = orderService.getOrderById(orderId);
-        return order.getShop().getSeller().getId().equals(sellerId);
+        return orderRepository.existsByIdAndShop_Seller_Id(orderId, sellerId);
     }
 
     public boolean isSellerOfProduct(Long sellerId, Long productId) {
-        Product product = productService.getProductById(productId);
-        return product.getShop().getSeller().getId().equals(sellerId);
+        return productRepository.existsByIdAndShop_Seller_Id(productId, sellerId);
     }
-
 }

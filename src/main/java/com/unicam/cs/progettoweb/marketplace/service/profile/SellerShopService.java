@@ -37,6 +37,26 @@ public class SellerShopService {
                         "Shop not found with id: " + shopId));
     }
 
+    @PreAuthorize("hasRole('SELLER') and principal.id == #sellerId")
+    public Shop createShop(Long sellerId, String shopName) {
+        Profile seller = validateSeller(sellerId);
+        if (shopRepository.findByName(shopName).isPresent()) {
+            throw new MarketplaceException(HttpStatus.CONFLICT, "Shop with name " + shopName + " already exists");
+        }
+        Shop shop = new Shop();
+        shop.setName(shopName);
+        shop.setSeller(seller);
+        seller.setShop(shop);
+        return shopRepository.save(shop);
+    }
+
+    @PreAuthorize("hasRole('SELLER')")
+    public Shop assignShop(Long profileId, Shop shop) {
+        Profile profile = validateSeller(profileId);
+        shop.setSeller(profile);
+        return shopRepository.save(shop);
+    }
+
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Shop updateShop(Long shopId, Shop updatedShop) {
         Shop existingShop = getShopById(shopId);
@@ -50,16 +70,14 @@ public class SellerShopService {
         shopRepository.delete(shop);
     }
 
-    @PreAuthorize("hasRole('SELLER')")
-    public Shop createShop(Long profileId, Shop shop) {
-        Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new MarketplaceException(
-                        HttpStatus.NOT_FOUND,
-                        "Profile not found with id: " + profileId));
-        if (shopRepository.existsBySeller_Id(profileId)) {
-            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Seller already owns a shop");
+    private Profile validateSeller(Long sellerId) {
+        Profile seller = profileRepository.findById(sellerId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Seller not found with id " + sellerId));
+        if (shopRepository.existsBySeller_Id(sellerId)) {
+            throw new MarketplaceException(
+                    HttpStatus.BAD_REQUEST,
+                    "Seller already owns a shop");
         }
-        shop.setSeller(profile);
-        return shopRepository.save(shop);
+        return seller;
     }
 }

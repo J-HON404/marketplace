@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.model.product;
 
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
-import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class Product {
     private Double price;
 
     @Column(nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false) // fk verso shop_id

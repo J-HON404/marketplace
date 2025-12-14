@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.product;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductNoticeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,6 @@ public class ProductNoticeService {
 
     public List<ProductNotice> getProductNoticesByProductId(Long productId) {
         return productNoticeRepository.findByProduct_Id(productId);
-    }
-
-    public ProductNotice getProductNoticeById(Long productNoticeId) {
-        return productNoticeRepository.findById(productNoticeId)
-                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,
-                        "productNotice not found with id: " + productNoticeId));
     }
 
     public ProductNotice addProductNotice(ProductNotice productNotice) {

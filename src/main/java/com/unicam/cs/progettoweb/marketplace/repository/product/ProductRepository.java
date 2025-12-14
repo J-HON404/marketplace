@@ -23,4 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     }
     // prodotti di uno shop con disponibilità futura (availabilityDate > oggi)
     List<Product> findByShopAndAvailabilityDateGreaterThan(Shop shop, LocalDate date);
+    boolean existsByIdAndShop_Seller_Id(Long productId, Long sellerId);
+    boolean existsByName(String name);
 }

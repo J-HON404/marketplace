@@ -57,6 +57,10 @@ public class ProductService {
         }
     }
 
+    public boolean checkIfProductAlreadyExists(String productName){
+        return productRepository.existsByName(productName);
+    }
+
     public List<Product> getUnavailableProductsByShop(Shop shop) {
         return productRepository.findByShopAndQuantityEquals(shop, 0);
     }

@@ -2,6 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.controller.authentication;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.dto.LoginRequest;
+import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileRole;
 import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import com.unicam.cs.progettoweb.marketplace.security.JwtUtil;
 import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
@@ -24,11 +25,22 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Profile>> register(@RequestBody Profile profile) {
+    public ResponseEntity<ApiResponse<Profile>> register(@RequestParam(required = false) String role, @RequestBody Profile profile) {
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
+        if (role == null || role.isEmpty()) {
+            profile.setRole(ProfileRole.CUSTOMER);
+        } else {
+            try {
+                profile.setRole(ProfileRole.valueOf(role.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(ApiResponse.error("Invalid role: " + role));
+            }
+        }
         Profile created = profileService.createProfile(profile);
         return ResponseEntity.ok(ApiResponse.success(created));
     }
+
+
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginRequest request) {

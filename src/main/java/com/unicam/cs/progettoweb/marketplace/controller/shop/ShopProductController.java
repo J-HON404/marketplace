@@ -1,10 +1,13 @@
 package com.unicam.cs.progettoweb.marketplace.controller.shop;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
+import com.unicam.cs.progettoweb.marketplace.dto.ProductRequest;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,6 +25,11 @@ public class ShopProductController {
         return ResponseEntity.ok(ApiResponse.success(shopProductService.getProductsOfShop(shopId)));
     }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<ApiResponse<Product>> getProductOfShop(@PathVariable Long shopId, @PathVariable Long productId) {
+        return ResponseEntity.ok(ApiResponse.success(shopProductService.getProductOfShop(shopId, productId)));
+    }
+
     @GetMapping("/not-available")
     public ResponseEntity<ApiResponse<List<Product>>> getProductsOfShopNotAvailable(@PathVariable Long shopId) {
         return ResponseEntity.ok(ApiResponse.success(shopProductService.getProductsOfShopNotAvailable(shopId)));
@@ -33,8 +41,13 @@ public class ShopProductController {
     }
 
     @PostMapping
+    public ResponseEntity<ApiResponse<Product>> createProduct(@PathVariable Long shopId, @RequestBody ProductRequest productRequest) {
+        return ResponseEntity.ok(ApiResponse.success(shopProductService.createProduct(shopId, productRequest)));
+    }
+
+    @PostMapping("/add")
     public ResponseEntity<ApiResponse<Product>> addProduct(@PathVariable Long shopId, @RequestBody Product product) {
-        return ResponseEntity.ok(ApiResponse.success(shopProductService.createProduct(shopId, product)));
+        return ResponseEntity.ok(ApiResponse.success(shopProductService.addProduct(shopId, product)));
     }
 
     @PutMapping("/{productId}")
@@ -48,4 +61,5 @@ public class ShopProductController {
         return ResponseEntity.noContent().build();
     }
 }
+
 

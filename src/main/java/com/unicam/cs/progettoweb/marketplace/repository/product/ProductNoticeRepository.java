@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.repository.product;
 
-import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

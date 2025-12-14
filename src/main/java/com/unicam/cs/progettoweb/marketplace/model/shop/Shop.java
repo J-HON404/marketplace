@@ -18,6 +18,6 @@ public class Shop {
     private String name;
 
     @OneToOne
-    @JoinColumn(name = "seller_id") //fk verso profile_id
+    @JoinColumn(name = "profile_id") //fk verso profile_id
     private Profile seller;
 }

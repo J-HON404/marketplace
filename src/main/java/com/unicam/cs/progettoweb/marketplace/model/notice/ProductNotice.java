@@ -1,6 +1,7 @@
-package com.unicam.cs.progettoweb.marketplace.model.product;
+package com.unicam.cs.progettoweb.marketplace.model.notice;
 
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class ProductNotice {
     private String text;
 
     @Column
-    private LocalDate expireDate;
+    private LocalDate expireDate; //è solo a titolo informativo!
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

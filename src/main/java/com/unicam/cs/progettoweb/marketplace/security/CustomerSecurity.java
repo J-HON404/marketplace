@@ -1,21 +1,19 @@
 package com.unicam.cs.progettoweb.marketplace.security;
 
-import com.unicam.cs.progettoweb.marketplace.model.order.Order;
-import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
+import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("customerSecurity")
 public class CustomerSecurity {
 
-    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
-    public CustomerSecurity(OrderService orderService) {
-        this.orderService = orderService;
+    public CustomerSecurity(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     public boolean isOwnerOfOrder(Long customerId, Long orderId) {
-        Order order = orderService.getOrderById(orderId);
-        return order.getCustomer().getId().equals(customerId);
+        return orderRepository.existsByIdAndCustomer_Id(orderId, customerId);
     }
-
 }
+

@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
-import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.dto.ProductNoticeRequest;
+import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductNoticeService;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,15 @@ public class ShopProductNoticeService {
         return productNoticeService.getProductNoticeByIdAndProductId(noticeId, productId);
     }
 
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfProduct(principal.id, #productId)")
+    public ProductNotice createProductNotice(Long productId, ProductNoticeRequest productNoticeRequest) {
+        ProductNotice notice = new ProductNotice();
+        notice.setText(productNoticeRequest.text);
+        notice.setExpireDate(productNoticeRequest.expireDate);
+        notice.setTypeNotice(productNoticeRequest.type);
+        notice.setProduct(productService.getProductById(productId));
+        return productNoticeService.addProductNotice(notice);
+    }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfProduct(principal.id, #productId)")
     public ProductNotice addProductNoticeToProduct(Long productId, ProductNotice notice) {

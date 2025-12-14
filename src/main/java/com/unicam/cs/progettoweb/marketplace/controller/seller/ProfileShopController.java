@@ -23,8 +23,14 @@ public class ProfileShopController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestBody Shop shop) {
-        Shop created = sellerShopService.createShop(profileId, shop);
+    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestParam String name) {
+        Shop shop = sellerShopService.createShop(profileId, name);
+        return ResponseEntity.ok(ApiResponse.success(shop));
+    }
+
+    @PostMapping("profile/assign")
+    public ResponseEntity<ApiResponse<Shop>> assignShop(@PathVariable Long profileId, @RequestBody Shop shop) {
+        Shop created = sellerShopService.assignShop(profileId, shop);
         return ResponseEntity.ok(ApiResponse.success(created));
     }
 

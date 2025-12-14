@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
+import com.unicam.cs.progettoweb.marketplace.dto.ProductRequest;
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
@@ -28,6 +29,13 @@ public class ShopProductService {
     }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Product getProductOfShop(Long shopId, Long productId) {
+        Product product = productService.getProductById(productId);
+        ensureProductBelongsToShop(product, shopId);
+        return product;
+    }
+
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Product> getProductsOfShopNotAvailable(Long shopId) {
         Shop shop = shopService.getShopById(shopId);
         return productService.getUnavailableProductsByShop(shop);
@@ -40,11 +48,27 @@ public class ShopProductService {
     }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
-    public Product createProduct(Long shopId, Product product) {
+    public Product createProduct(Long shopId, ProductRequest productRequest) {
+        Shop shop = shopService.getShopById(shopId);
+        Product product = new Product();
+        product.setName(productRequest.name);
+        product.setDescription(productRequest.description);
+        product.setPrice(productRequest.price);
+        product.setQuantity(productRequest.quantity);
+        product.setAvailabilityDate(productRequest.availabilityDate);
+        product.setShop(shop);
+        return productService.addProduct(product);
+    }
+
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Product addProduct(Long shopId, Product product) {
         Shop shop = shopService.getShopById(shopId);
         if (product.getShop() != null && product.getShop().getId() != null &&
                 !product.getShop().getId().equals(shopId)) {
-            throw new MarketplaceException(HttpStatus.CONFLICT, "this product belongs to another shop");
+            throw new MarketplaceException(HttpStatus.CONFLICT, "This product belongs to another shop");
+        }
+        if(productService.checkIfProductAlreadyExists(product.getName())){
+            throw new MarketplaceException(HttpStatus.CONFLICT, "Product's name already exists");
         }
         product.setShop(shop);
         return productService.addProduct(product);
@@ -57,7 +81,6 @@ public class ShopProductService {
         return productService.updateProduct(existing.getId(), updatedProduct);
     }
 
-
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public void deleteProduct(Long shopId, Long productId) {
         Product existing = productService.getProductById(productId);
@@ -67,7 +90,7 @@ public class ShopProductService {
 
     private void ensureProductBelongsToShop(Product product, Long shopId) {
         if (!product.getShop().getId().equals(shopId)) {
-            throw new MarketplaceException(HttpStatus.CONFLICT, "product does not belong to this shop");
+            throw new MarketplaceException(HttpStatus.CONFLICT, "Product does not belong to this shop");
         }
     }
 }
