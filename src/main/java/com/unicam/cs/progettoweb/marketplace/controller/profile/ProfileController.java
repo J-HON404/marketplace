@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
-import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

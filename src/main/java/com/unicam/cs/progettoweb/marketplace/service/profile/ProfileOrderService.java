@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.profile;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
@@ -34,12 +34,14 @@ public class ProfileOrderService {
         profileService.findProfileById(profileId);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public List<Order> getOrdersOfProfile(Long profileId) {
         ensureProfileExists(profileId);
         return orderService.getOrdersByProfileId(profileId);
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Order createOrder(Long profileId, Order orderDetails) {
         Profile profile = profileService.findProfileById(profileId);
         orderDetails.setCustomer(profile);
@@ -47,6 +49,7 @@ public class ProfileOrderService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Order createOrderFromCart(Long profileId){
         ensureProfileExists(profileId);
         Cart customerCart = cartService.getUserCart(profileId);
@@ -85,7 +88,7 @@ public class ProfileOrderService {
                 .sum();
     }
 
-    @PreAuthorize("@customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
+    @PreAuthorize("hasRole('CUSTOMER') and @customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
     public void confirmDelivered(Long profileId, Long orderId) {
         ensureProfileExists(profileId);
         orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);

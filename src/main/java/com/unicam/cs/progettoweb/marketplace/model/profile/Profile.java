@@ -1,6 +1,6 @@
-package com.unicam.cs.progettoweb.marketplace.model.account;
+package com.unicam.cs.progettoweb.marketplace.model.profile;
 
-import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileType;
+import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileRole;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -30,7 +30,7 @@ public class Profile {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProfileType type;
+    private ProfileRole role;
 
     @OneToOne(mappedBy = "seller")
     private Shop shop; // solo se il profilo è SELLER

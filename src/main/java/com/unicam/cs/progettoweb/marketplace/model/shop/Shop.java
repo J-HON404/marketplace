@@ -1,6 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.shop;
 
-import com.unicam.cs.progettoweb.marketplace.model.account.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

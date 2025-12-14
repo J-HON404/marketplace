@@ -19,17 +19,17 @@ public class ShopOrderService {
         this.orderService = orderService;
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Order> getOrdersOfShop(Long shopId) {
         return orderService.getOrdersByShopId(shopId);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Order> getOrdersByShopIdAndStatus(Long shopId, OrderStatus status) {
         return orderService.getOrdersByShopIdAndStatus(shopId,status);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfOrder(principal.id, #orderId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfOrder(principal.id, #orderId)")
     public Order elaborateOrder(Long orderId, String tracking, LocalDate estimatedDeliveryDate) {
         Order order = orderService.getOrderById(orderId);
         if (order.getStatus() != OrderStatus.READY_TO_ELABORATING) {
@@ -38,12 +38,12 @@ public class ShopOrderService {
       return orderService.setShippingDetails(orderId,tracking,estimatedDeliveryDate);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Order> getExpiredOrdersToConfirmDelivery(Long shopId) {
         return orderService.getExpiredOrdersByShopId(shopId);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfOrder(principal.id, #orderId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfOrder(principal.id, #orderId)")
     public void deleteOrder(Long orderId) {
         orderService.deleteOrder(orderId);
     }

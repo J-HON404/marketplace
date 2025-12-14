@@ -1,5 +1,5 @@
 package com.unicam.cs.progettoweb.marketplace.model.enums;
 
-public enum ProfileType {
+public enum ProfileRole {
     CUSTOMER, SELLER
 }

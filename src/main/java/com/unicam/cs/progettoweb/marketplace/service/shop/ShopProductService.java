@@ -4,7 +4,7 @@ import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
-import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileShopService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -15,31 +15,31 @@ import java.util.List;
 public class ShopProductService {
 
     private final ProductService productService;
-    private final ProfileShopService shopService;
+    private final SellerShopService shopService;
 
-    public ShopProductService(ProductService productService, ProfileShopService shopService) {
+    public ShopProductService(ProductService productService, SellerShopService shopService) {
         this.productService = productService;
         this.shopService = shopService;
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Product> getProductsOfShop(Long shopId) {
         return productService.getProductsByShopId(shopId);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Product> getProductsOfShopNotAvailable(Long shopId) {
         Shop shop = shopService.getShopById(shopId);
         return productService.getUnavailableProductsByShop(shop);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Product> getFutureAvailableProducts(Long shopId) {
         Shop shop = shopService.getShopById(shopId);
         return productService.getFutureProductsByShop(shop, LocalDate.now());
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Product createProduct(Long shopId, Product product) {
         Shop shop = shopService.getShopById(shopId);
         if (product.getShop() != null && product.getShop().getId() != null &&
@@ -50,7 +50,7 @@ public class ShopProductService {
         return productService.addProduct(product);
     }
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Product updateProduct(Long shopId, Long productId, Product updatedProduct) {
         Product existing = productService.getProductById(productId);
         ensureProductBelongsToShop(existing, shopId);
@@ -58,7 +58,7 @@ public class ShopProductService {
     }
 
 
-    @PreAuthorize("@shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public void deleteProduct(Long shopId, Long productId) {
         Product existing = productService.getProductById(productId);
         ensureProductBelongsToShop(existing, shopId);

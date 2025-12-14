@@ -2,7 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.controller.seller;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
-import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileShopService;
+import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/profiles/{profileId}/shop")
 public class ProfileShopController {
 
-    private final ProfileShopService sellerShopService;
+    private final SellerShopService sellerShopService;
 
-    public ProfileShopController(ProfileShopService sellerShopService) {
+    public ProfileShopController(SellerShopService sellerShopService) {
         this.sellerShopService = sellerShopService;
     }
 
