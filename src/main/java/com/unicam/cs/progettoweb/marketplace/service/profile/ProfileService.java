@@ -20,6 +20,11 @@ public class ProfileService  {
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "profile not found with id: " + profileId));
     }
 
+    public Profile findProfileByUsername(String username){
+        return accountRepository.findByUsername(username)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND,"profile not found with username: " + username));
+    }
+
     public Profile updateProfile(Long profileId, Profile updatedProfile) {
         Profile profile = findProfileById(profileId);
         profile.setUsername(updatedProfile.getUsername());
