@@ -1,0 +1,50 @@
+package com.unicam.cs.progettoweb.marketplace.model.order;
+
+import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
+import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@Entity
+@NoArgsConstructor
+@Table(name = "orders")
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false) // fk verso profile_id
+    private Profile customer; // prima era Customer, ora Profile
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id", nullable = false)
+    private Shop shop;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<OrderItem> items;
+
+    @Column(nullable = false)
+    private LocalDateTime orderDate;
+
+    @Column(nullable = false)
+    private Double total;
+
+    @Column
+    private String trackingId;
+
+    @Column
+    private LocalDate estimatedDeliveryDate;
+
+}

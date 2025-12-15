@@ -1,0 +1,83 @@
+package com.unicam.cs.progettoweb.marketplace.service.profile;
+
+import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
+import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
+import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class SellerShopService {
+
+    private final ShopRepository shopRepository;
+    private final ProfileRepository profileRepository;
+
+    public SellerShopService(ShopRepository shopRepository, ProfileRepository profileRepository) {
+        this.shopRepository = shopRepository;
+        this.profileRepository = profileRepository;
+    }
+
+    @PreAuthorize("hasRole('SELLER')")
+    public Shop getShopOfProfile(Long profileId) {
+        return shopRepository.findBySeller_Id(profileId)
+                .orElseThrow(() -> new MarketplaceException(
+                        HttpStatus.NOT_FOUND,
+                        "Shop not found for profile id: " + profileId));
+    }
+
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Shop getShopById(Long shopId) {
+        return shopRepository.findById(shopId)
+                .orElseThrow(() -> new MarketplaceException(
+                        HttpStatus.NOT_FOUND,
+                        "Shop not found with id: " + shopId));
+    }
+
+    @PreAuthorize("hasRole('SELLER') and principal.id == #sellerId")
+    public Shop createShop(Long sellerId, String shopName) {
+        Profile seller = validateSeller(sellerId);
+        if (shopRepository.findByName(shopName).isPresent()) {
+            throw new MarketplaceException(HttpStatus.CONFLICT, "Shop with name " + shopName + " already exists");
+        }
+        Shop shop = new Shop();
+        shop.setName(shopName);
+        shop.setSeller(seller);
+        seller.setShop(shop);
+        return shopRepository.save(shop);
+    }
+
+    @PreAuthorize("hasRole('SELLER')")
+    public Shop assignShop(Long profileId, Shop shop) {
+        Profile profile = validateSeller(profileId);
+        shop.setSeller(profile);
+        return shopRepository.save(shop);
+    }
+
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Shop updateShop(Long shopId, Shop updatedShop) {
+        Shop existingShop = getShopById(shopId);
+        existingShop.setName(updatedShop.getName());
+        return shopRepository.save(existingShop);
+    }
+
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public void deleteShop(Long shopId) {
+        Shop shop = getShopById(shopId);
+        shopRepository.delete(shop);
+    }
+
+    private Profile validateSeller(Long sellerId) {
+        Profile seller = profileRepository.findById(sellerId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Seller not found with id " + sellerId));
+        if (shopRepository.existsBySeller_Id(sellerId)) {
+            throw new MarketplaceException(
+                    HttpStatus.BAD_REQUEST,
+                    "Seller already owns a shop");
+        }
+        return seller;
+    }
+}
