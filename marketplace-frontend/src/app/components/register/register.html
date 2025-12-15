@@ -1,0 +1,22 @@
+<div class="card register-card">
+  <h2>Register</h2>
+
+  <input [(ngModel)]="username" placeholder="Username" type="text">
+  <input [(ngModel)]="password" placeholder="Password" type="password">
+  <input [(ngModel)]="email" placeholder="Email" type="email">
+  <input [(ngModel)]="address" placeholder="Address" type="text">
+
+  <select [(ngModel)]="role">
+    <option value="" disabled selected>Seleziona ruolo</option>
+    <option *ngFor="let r of roleOptions" [value]="r">{{ r }}</option>
+  </select>
+
+  <button (click)="onRegister()">Register</button>
+
+  <p class="message" *ngIf="registrationMessage">{{ registrationMessage }}</p>
+
+    <p class="switch-page">
+    Hai già un account? 
+    <a routerLink="/login">Login qui</a>
+  </p>
+</div>
