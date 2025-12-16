@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileRole;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import jakarta.persistence.*;
@@ -33,5 +34,6 @@ public class Profile {
     private ProfileRole role;
 
     @OneToOne(mappedBy = "seller")
+    @JsonIgnore
     private Shop shop; // solo se il profilo è SELLER
 }

@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.shop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class Shop {
 
     @OneToOne
     @JoinColumn(name = "profile_id") //fk verso profile_id
+    @JsonIgnore
     private Profile seller;
 }
