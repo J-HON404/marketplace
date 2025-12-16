@@ -21,6 +21,11 @@ public class SellerShopService {
         this.profileRepository = profileRepository;
     }
 
+    public Shop findShopById(Long shopId) {
+        return shopRepository.findById(shopId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "shop not found with id: " + shopId));
+    }
+
     @PreAuthorize("hasRole('SELLER')")
     public Shop getShopOfProfile(Long profileId) {
         return shopRepository.findBySeller_Id(profileId)

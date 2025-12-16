@@ -12,10 +12,7 @@ public class ShopSecurity {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
-    public ShopSecurity(
-            ShopRepository shopRepository,
-            OrderRepository orderRepository,
-            ProductRepository productRepository) {
+    public ShopSecurity(ShopRepository shopRepository, OrderRepository orderRepository, ProductRepository productRepository) {
         this.shopRepository = shopRepository;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;

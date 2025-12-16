@@ -9,11 +9,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/profiles/{profileId}/orders")
-public class ProfileOrderController {
+public class ProfileOrderHistoryController {
 
     private final ProfileOrderService customerOrderService;
 
-    public ProfileOrderController(ProfileOrderService customerOrderService) {
+    public ProfileOrderHistoryController(ProfileOrderService customerOrderService) {
         this.customerOrderService = customerOrderService;
     }
 
@@ -23,17 +23,6 @@ public class ProfileOrderController {
         return ResponseEntity.ok(ApiResponse.success(orders));
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<Order>> createOrder(@PathVariable Long profileId, @RequestBody Order orderDetails) {
-        Order order = customerOrderService.createOrder(profileId, orderDetails);
-        return ResponseEntity.ok(ApiResponse.success(order));
-    }
-
-    @PostMapping("/from-cart")
-    public ResponseEntity<ApiResponse<Order>> createOrderFromCart(@PathVariable Long profileId) {
-        Order order = customerOrderService.createOrderFromCart(profileId);
-        return ResponseEntity.ok(ApiResponse.success(order));
-    }
 
     @PutMapping("/{orderId}/confirm-delivered")
     public ResponseEntity<ApiResponse<Void>> confirmDelivered(@PathVariable Long profileId, @PathVariable Long orderId) {

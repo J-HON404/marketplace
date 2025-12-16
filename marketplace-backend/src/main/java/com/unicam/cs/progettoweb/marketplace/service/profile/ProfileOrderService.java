@@ -11,9 +11,7 @@ import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,20 +38,14 @@ public class ProfileOrderService {
         return orderService.getOrdersByProfileId(profileId);
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
-    public Order createOrder(Long profileId, Order orderDetails) {
-        Profile profile = profileService.findProfileById(profileId);
-        orderDetails.setCustomer(profile);
-        return orderService.createOrder(orderDetails);
-    }
 
     @Transactional
     @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
-    public Order createOrderFromCart(Long profileId){
+    public Order createOrderFromCart(Long profileId, Long shopId) {
         ensureProfileExists(profileId);
-        Cart customerCart = cartService.getUserCart(profileId);
-        if(customerCart.getItems().isEmpty()){
+        Cart customerCart = cartService.getCart(profileId, shopId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty"));
+        if (customerCart.isEmpty()) {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty");
         }
         List<OrderItem> orderItems = getOrderItemsFromCart(customerCart);
@@ -66,7 +58,7 @@ public class ProfileOrderService {
         order.setTotal(getTotalPriceFromOrderItems(orderItems));
         orderItems.forEach(item -> item.setOrder(order));
         Order createdOrder = orderService.createOrder(order);
-        cartService.clearCart(profileId);
+        cartService.clearCart(profileId, shopId);
         return createdOrder;
     }
 

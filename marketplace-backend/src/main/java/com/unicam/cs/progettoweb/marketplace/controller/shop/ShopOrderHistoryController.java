@@ -12,39 +12,38 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shops")
-public class ShopOrderController {
+@RequestMapping("/api/shops/{shopId}/orders")
+public class ShopOrderHistoryController {
 
     private final ShopOrderService shopOrderService;
 
-    public ShopOrderController(ShopOrderService shopOrderService) {
+    public ShopOrderHistoryController(ShopOrderService shopOrderService) {
         this.shopOrderService = shopOrderService;
     }
 
-    @GetMapping("/{shopId}/orders")
+    @GetMapping
     public ResponseEntity<ApiResponse<List<Order>>> getOrders(@PathVariable Long shopId) {
         return ResponseEntity.ok(ApiResponse.success(shopOrderService.getOrdersOfShop(shopId)));
     }
 
-    @GetMapping("/{shopId}/orders/by-status")
-    public ResponseEntity<ApiResponse<List<Order>>> getOrdersByShopIdAndStatus(@PathVariable Long shopId, @RequestParam OrderStatus orderStatus) {
+    @GetMapping("/by-status")
+    public ResponseEntity<ApiResponse<List<Order>>> getOrdersByStatus(@PathVariable Long shopId, @RequestParam OrderStatus orderStatus) {
         return ResponseEntity.ok(ApiResponse.success(shopOrderService.getOrdersByShopIdAndStatus(shopId, orderStatus)));
     }
 
-
-    @PutMapping("/orders/{orderId}/shipping")
-    public ResponseEntity<ApiResponse<Order>> elaborateToShipping(@PathVariable Long orderId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
-        return ResponseEntity.ok(ApiResponse.success(shopOrderService.elaborateOrder(orderId, trackingId, estimatedDeliveryDate)));
+    @PutMapping("/{orderId}/shipping")
+    public ResponseEntity<ApiResponse<Order>> elaborateToShipping(@PathVariable Long shopId, @PathVariable Long orderId, @RequestParam String trackingId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate estimatedDeliveryDate) {
+        return ResponseEntity.ok(ApiResponse.success(shopOrderService.elaborateOrder(shopId,orderId, trackingId, estimatedDeliveryDate)));
     }
 
-    @GetMapping("/{shopId}/orders/expired-deliveries")
+    @GetMapping("/expired-deliveries")
     public ResponseEntity<ApiResponse<List<Order>>> getExpiredDeliveries(@PathVariable Long shopId) {
         return ResponseEntity.ok(ApiResponse.success(shopOrderService.getExpiredOrdersToConfirmDelivery(shopId)));
     }
 
-    @DeleteMapping("/orders/{orderId}")
-    public ResponseEntity<ApiResponse<Void>> deleteOrder(@PathVariable Long orderId) {
-        shopOrderService.deleteOrder(orderId);
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<ApiResponse<Void>> deleteOrder(@PathVariable Long shopId, @PathVariable Long orderId) {
+        shopOrderService.deleteOrder(shopId,orderId);
         return ResponseEntity.noContent().build();
     }
 }

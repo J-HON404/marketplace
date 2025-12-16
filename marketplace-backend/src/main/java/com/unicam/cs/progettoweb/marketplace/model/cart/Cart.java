@@ -27,4 +27,9 @@ public class Cart {
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop; //fk verso shop_id
 
+    public boolean isEmpty() {
+        return items == null || items.isEmpty();
+    }
+
+
 }

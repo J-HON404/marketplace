@@ -35,6 +35,12 @@ public class ProfileService  {
     }
 
     public Profile createProfile(Profile profile) {
+        if(accountRepository.existsByUsername(profile.getUsername())){
+            throw new MarketplaceException(HttpStatus.CONFLICT,"profile with username "+ profile.getUsername() +" already exists");
+        }
+        if(accountRepository.existsByEmail(profile.getEmail())){
+            throw new MarketplaceException(HttpStatus.CONFLICT,"profile with email "+ profile.getEmail() +" already exists");
+        }
         return accountRepository.save(profile);
     }
 

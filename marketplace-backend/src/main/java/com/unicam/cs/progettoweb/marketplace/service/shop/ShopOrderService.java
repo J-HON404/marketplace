@@ -30,12 +30,15 @@ public class ShopOrderService {
     }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfOrder(principal.id, #orderId)")
-    public Order elaborateOrder(Long orderId, String tracking, LocalDate estimatedDeliveryDate) {
+    public Order elaborateOrder(Long shopId, Long orderId, String tracking, LocalDate estimatedDeliveryDate) {
         Order order = orderService.getOrderById(orderId);
-        if (order.getStatus() != OrderStatus.READY_TO_ELABORATING) {
-            throw new MarketplaceException(HttpStatus.NOT_FOUND,"order is not ready for elaboration.");
+        if (!order.getShop().getId().equals(shopId)) {
+            throw new MarketplaceException(HttpStatus.FORBIDDEN, "Order does not belong to this shop.");
         }
-      return orderService.setShippingDetails(orderId,tracking,estimatedDeliveryDate);
+        if (order.getStatus() != OrderStatus.READY_TO_ELABORATING) {
+            throw new MarketplaceException(HttpStatus.NOT_FOUND,"Order is not ready for elaboration.");
+        }
+        return orderService.setShippingDetails(orderId, tracking, estimatedDeliveryDate);
     }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
@@ -44,7 +47,11 @@ public class ShopOrderService {
     }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfOrder(principal.id, #orderId)")
-    public void deleteOrder(Long orderId) {
+    public void deleteOrder(Long shopId, Long orderId) {
+        Order order = orderService.getOrderById(orderId);
+        if (!order.getShop().getId().equals(shopId)) {
+            throw new MarketplaceException(HttpStatus.FORBIDDEN, "Order does not belong to this shop.");
+        }
         orderService.deleteOrder(orderId);
     }
 }
