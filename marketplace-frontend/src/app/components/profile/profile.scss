@@ -1,0 +1,20 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.profile-container {
+  padding: 2rem;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.error {
+  color: red;
+  margin-bottom: 1rem;
+}

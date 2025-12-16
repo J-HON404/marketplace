@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  padding: 0.8rem 1.6rem;
+  background: #4a90e2;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+a:hover {
+  background: #357ab8;
+}

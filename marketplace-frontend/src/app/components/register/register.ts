@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-import { AuthService, RegisterPayload } from '../../services/auth.service';
-import { UserRole } from '../../services/user-role.enum';
+import { AuthService, RegisterPayload } from '../../services/auth';
+import { UserRole } from '../../interfaces/profile'; // ✅ FIX QUI
 import { RouterModule } from '@angular/router';
 
 @Component({

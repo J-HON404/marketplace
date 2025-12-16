@@ -1,13 +1,15 @@
+
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth';
+import { TokenService } from '../../services/token';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterModule], 
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
@@ -16,7 +18,11 @@ export class LoginComponent {
   password = '';
   loginMessage = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private tokenService: TokenService,
+    private router: Router
+  ) {}
 
   onLogin() {
     if (!this.username || !this.password) {
@@ -25,8 +31,18 @@ export class LoginComponent {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: res => this.loginMessage = 'Login OK',
-      error: err => this.loginMessage = err.error?.message || 'Errore'
+      next: res => {
+        const token = res.data; // Il token dal backend
+        if (token) {
+          this.tokenService.setToken(token);
+          this.loginMessage = 'Login OK';
+          this.router.navigate(['/home']);
+        } else {
+          this.loginMessage = 'Token mancante dal server';
+        }
+      },
+      error: err => this.loginMessage = err.error?.message || 'Errore durante il login'
     });
   }
 }
+

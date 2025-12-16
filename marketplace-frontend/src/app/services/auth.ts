@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserRole } from './user-role.enum';
+import { UserRole } from '../interfaces/profile'; // ✅ FIX QUI
 
 export interface RegisterPayload {
   username: string;
@@ -15,16 +15,15 @@ export interface RegisterPayload {
   providedIn: 'root'
 })
 export class AuthService {
-
   private baseUrl = '/api/auth';
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { username, password });
-  }
-
   register(payload: RegisterPayload): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, payload);
+  }
+
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, { username, password });
   }
 }
