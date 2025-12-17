@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserRole } from '../interfaces/profile'; // ✅ FIX QUI
+import { UserRole } from '../interfaces/profile'; 
 
 export interface RegisterPayload {
   username: string;

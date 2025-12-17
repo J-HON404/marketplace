@@ -1,0 +1,30 @@
+<div class="profile-container" *ngIf="!loading && profileData">
+  <!-- Card profilo -->
+  <h2>Profilo Utente</h2>
+  <p>Username: {{ profileData.username }}</p>
+  <p>Email: {{ profileData.email }}</p>
+  <p>Address: {{ profileData.address }}</p>
+  <p>Ruolo: {{ profileData.role }}</p>
+
+
+  <div class="profile-buttons">
+    <a class="btn" [routerLink]="['/home']">Vai alla Home</a>
+  </div>
+</div>
+
+<!-- Caricamento -->
+<div *ngIf="loading">Caricamento...</div>
+
+<!-- Messaggio di errore -->
+<div *ngIf="!loading && errorMessage" class="error">{{ errorMessage }}</div>
+
+<!-- Tabella ordini (mostrata sempre sotto la card) -->
+<div *ngIf="orders.length > 0" class="orders-container">
+  <h3 class="table-title">{{ ordersTitle }}</h3>
+  <app-orders-table [orders]="orders"></app-orders-table>
+</div>
+
+<!-- Messaggio se non ci sono ordini -->
+<div *ngIf="orders.length === 0 && !loading && !errorMessage">
+  Nessun ordine trovato
+</div>

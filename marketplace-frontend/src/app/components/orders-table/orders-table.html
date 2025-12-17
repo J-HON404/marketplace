@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Profilo ID</th>
+      <th>Shop ID</th>
+      <th>Data Ordine</th>
+      <th>Totale</th>
+      <th>Stato</th>
+      <th>Tracking ID</th>
+      <th>Data Consegna Stimata</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.id }}</td>
+      <td>{{ order.customer?.id }}</td> <!-- profileId -->
+      <td>{{ order.shop?.id }}</td> <!-- shopId -->
+      <td>{{ order.orderDate | date:'short' }}</td>
+      <td>{{ order.total | currency:'EUR' }}</td>
+      <td>{{ order.status }}</td>
+      <td>{{ order.trackingId || 'N/A' }}</td>
+      <td>{{ order.estimatedDeliveryDate ? (order.estimatedDeliveryDate | date:'shortDate') : 'N/A' }}</td>
+    </tr>
+  </tbody>
+</table>
