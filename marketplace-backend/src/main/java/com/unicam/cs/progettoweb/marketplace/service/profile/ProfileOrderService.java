@@ -83,6 +83,8 @@ public class ProfileOrderService {
     @PreAuthorize("hasRole('CUSTOMER') and @customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
     public void confirmDelivered(Long profileId, Long orderId) {
         ensureProfileExists(profileId);
-        orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);
+        if(!(orderService.getOrderStatus(orderId).equals(OrderStatus.READY_TO_ELABORATING))){
+            orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);
+        }
     }
 }

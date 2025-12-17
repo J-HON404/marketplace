@@ -18,7 +18,7 @@ public class ProfileOrderHistoryController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Order>>> getOrdersOfProfile(@PathVariable Long profileId) {
+    public ResponseEntity<ApiResponse<List<Order>>> getOrders(@PathVariable Long profileId) {
         List<Order> orders = customerOrderService.getOrdersOfProfile(profileId);
         return ResponseEntity.ok(ApiResponse.success(orders));
     }

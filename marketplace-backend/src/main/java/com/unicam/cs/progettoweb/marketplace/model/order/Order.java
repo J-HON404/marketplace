@@ -26,7 +26,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false) // fk verso profile_id
-    private Profile customer; // prima era Customer, ora Profile
+    private Profile customer; 
 
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)

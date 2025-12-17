@@ -40,16 +40,25 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success(created));
     }
 
-
-
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginRequest request) {
         Profile profile = profileService.findProfileByUsername(request.getUsername());
-        if (!passwordEncoder.matches(request.getPassword(), profile.getPassword())) {
+
+        if (profile == null || !passwordEncoder.matches(request.getPassword(), profile.getPassword())) {
             return ResponseEntity.status(401).body(ApiResponse.error("Invalid credentials"));
         }
-        String token = jwtUtil.generateToken(profile.getId(), profile.getUsername(), profile.getRole().name());
+        Long shopId = null;
+        if (profile.getRole() == ProfileRole.SELLER && profile.getShop() != null) {
+            shopId = profile.getShop().getId();
+        }
+        String token = jwtUtil.generateToken(
+                profile.getId(),
+                profile.getUsername(),
+                profile.getRole().name(),
+                shopId
+        );
         return ResponseEntity.ok(ApiResponse.success(token));
     }
+
 
 }

@@ -56,6 +56,11 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public OrderStatus getOrderStatus(Long orderId){
+       Order order = getOrderById(orderId);
+       return order.getStatus();
+    }
+
     public List<Order> getOrdersByShopIdAndStatus(Long shopId, OrderStatus status) {
         return orderRepository.findByShop_IdAndStatus(shopId, status);
     }
