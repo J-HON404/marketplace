@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class SellerShopService {
@@ -84,5 +86,11 @@ public class SellerShopService {
                     "Seller already owns a shop");
         }
         return seller;
+    }
+
+    public List<Shop> getAllShops(Long sellerId) {
+         profileRepository.findById(sellerId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Seller not found with id " + sellerId));
+        return shopRepository.findAll();
     }
 }

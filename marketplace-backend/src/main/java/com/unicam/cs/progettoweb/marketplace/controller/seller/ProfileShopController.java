@@ -6,8 +6,10 @@ import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/profiles/{profileId}/shop")
+@RequestMapping("/api/profiles/{profileId}")
 public class ProfileShopController {
 
     private final SellerShopService sellerShopService;
@@ -16,35 +18,45 @@ public class ProfileShopController {
         this.sellerShopService = sellerShopService;
     }
 
-    @GetMapping
+
+    @GetMapping("/shop")
     public ResponseEntity<ApiResponse<Shop>> getShop(@PathVariable Long profileId) {
         Shop shop = sellerShopService.getShopOfProfile(profileId);
         return ResponseEntity.ok(ApiResponse.success(shop));
     }
 
-    @PostMapping
+
+    @GetMapping("/shops")
+    public ResponseEntity<ApiResponse<List<Shop>>> getAllShops(@PathVariable Long profileId){
+        List<Shop> shops = sellerShopService.getAllShops(profileId);
+        return ResponseEntity.ok(ApiResponse.success(shops));
+    }
+
+
+    @PostMapping("/shop")
     public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestParam String name) {
         Shop shop = sellerShopService.createShop(profileId, name);
         return ResponseEntity.ok(ApiResponse.success(shop));
     }
 
-    @PostMapping("profile/assign")
+
+    @PostMapping("/shop/assign")
     public ResponseEntity<ApiResponse<Shop>> assignShop(@PathVariable Long profileId, @RequestBody Shop shop) {
         Shop created = sellerShopService.assignShop(profileId, shop);
         return ResponseEntity.ok(ApiResponse.success(created));
     }
 
-    @PutMapping
+
+    @PutMapping("/shop")
     public ResponseEntity<ApiResponse<Shop>> updateShop(@PathVariable Long profileId, @RequestBody Shop shop) {
         Shop updated = sellerShopService.updateShop(profileId, shop);
         return ResponseEntity.ok(ApiResponse.success(updated));
     }
 
-    @DeleteMapping
+
+    @DeleteMapping("/shop")
     public ResponseEntity<ApiResponse<Void>> deleteShop(@PathVariable Long profileId) {
         sellerShopService.deleteShop(profileId);
         return ResponseEntity.noContent().build();
     }
 }
-
-
