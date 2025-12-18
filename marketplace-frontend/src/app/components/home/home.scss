@@ -6,7 +6,13 @@
   font-family: Arial, sans-serif;
 }
 
-a {
+.card {
+  display: flex;
+  justify-content: center; /* centra i link */
+  gap: 1rem;               /* distanza tra i link */
+}
+
+a.btn {
   padding: 0.8rem 1.6rem;
   background: #4a90e2;
   color: white;
@@ -14,8 +20,9 @@ a {
   border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
+  text-align: center;
 }
 
-a:hover {
+a.btn:hover {
   background: #357ab8;
 }

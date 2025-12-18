@@ -1,30 +1,41 @@
-<div class="profile-container" *ngIf="!loading && profileData">
-  <!-- Card profilo -->
-  <h2>Profilo Utente</h2>
-  <p>Username: {{ profileData.username }}</p>
-  <p>Email: {{ profileData.email }}</p>
-  <p>Address: {{ profileData.address }}</p>
-  <p>Ruolo: {{ profileData.role }}</p>
+<div class="page-container">
 
+  <!-- Profilo utente -->
+  <div class="profile-container" *ngIf="!loading && profileData">
+    <h2>Profilo Utente</h2>
+    <p>Username: {{ profileData.username }}</p>
+    <p>Email: {{ profileData.email }}</p>
+    <p>Address: {{ profileData.address }}</p>
+    <p>Ruolo: {{ profileData.role }}</p>
 
-  <div class="profile-buttons">
-    <a class="btn" [routerLink]="['/home']">Vai alla Home</a>
+    <div class="profile-buttons">
+      <a class="btn" [routerLink]="['/home']">Vai alla Home</a>
+    </div>
   </div>
-</div>
 
-<!-- Caricamento -->
-<div *ngIf="loading">Caricamento...</div>
+  <!-- Loading -->
+  <div *ngIf="loading">Caricamento...</div>
 
-<!-- Messaggio di errore -->
-<div *ngIf="!loading && errorMessage" class="error">{{ errorMessage }}</div>
+  <!-- Errore -->
+  <div *ngIf="!loading && errorMessage" class="error">{{ errorMessage }}</div>
 
-<!-- Tabella ordini (mostrata sempre sotto la card) -->
-<div *ngIf="orders.length > 0" class="orders-container">
-  <h3 class="table-title">{{ ordersTitle }}</h3>
-  <app-orders-table [orders]="orders"></app-orders-table>
-</div>
+  <!-- Titolo tabella -->
+  <div class="orders-container">
+    <h3 class="table-title" *ngIf="roleUpper === 'SELLER'">Ordini ricevuti</h3>
+    <h3 class="table-title" *ngIf="roleUpper === 'CUSTOMER'">Ordini fatti</h3>
 
-<!-- Messaggio se non ci sono ordini -->
-<div *ngIf="orders.length === 0 && !loading && !errorMessage">
-  Nessun ordine trovato
+    <!-- Tabella ordini -->
+    <app-orders-table
+      [orders]="orders"
+      [role]="roleUpper"
+      [profileId]="profileId!"
+      [shopId]="shopId">
+    </app-orders-table>
+  </div>
+
+  <!-- Nessun ordine -->
+  <div *ngIf="orders.length === 0 && !loading && !errorMessage">
+    Nessun ordine trovato
+  </div>
+
 </div>

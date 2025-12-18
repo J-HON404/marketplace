@@ -1,12 +1,14 @@
 <div class="page-container">
-  <h2 class="table-title">{{ ordersTitle }}</h2>
+  <div class="orders-container">
+    <h2 class="table-title">{{ ordersTitle }}</h2>
 
-  <!-- Loading -->
-  <div *ngIf="loading">Caricamento ordini...</div>
+    <!-- Loading -->
+    <div *ngIf="loading">Caricamento ordini...</div>
 
-  <!-- Errore -->
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <!-- Errore -->
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-  <!-- Tabella ordini -->
-  <app-orders-table *ngIf="!loading && !errorMessage" [orders]="orders"></app-orders-table>
+    <!-- Tabella ordini -->
+    <app-orders-table *ngIf="!loading && !errorMessage" [orders]="orders"></app-orders-table>
+  </div>
 </div>

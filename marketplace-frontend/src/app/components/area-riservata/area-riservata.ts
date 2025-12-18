@@ -18,9 +18,10 @@ export class AreaRiservataComponent implements OnInit {
   profileId: number | null = null;
   profileData: any = null;
   orders: any[] = [];
-  ordersTitle = '';
   loading = false;
   errorMessage = '';
+  roleUpper!: 'SELLER' | 'CUSTOMER';
+  shopId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,17 +46,15 @@ export class AreaRiservataComponent implements OnInit {
         this.profileData = res.data || res;
         this.loading = false;
 
-        const role = this.tokenService.getUserRole();
-        if (!role) {
+        if (!this.profileData.role) {
           this.errorMessage = 'Ruolo non disponibile';
           return;
         }
 
-        const roleUpper = role.toUpperCase();
-        const shopId = this.tokenService.getShopId();
+        this.roleUpper = this.profileData.role.toUpperCase() as 'SELLER' | 'CUSTOMER';
+        this.shopId = this.tokenService.getShopId();
 
-        this.ordersTitle = roleUpper === 'SELLER' ? 'Ordini ricevuti' : 'Ordini fatti';
-        this.loadOrders(roleUpper, id, shopId);
+        this.loadOrders();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Errore caricamento profilo', err);
@@ -65,38 +64,30 @@ export class AreaRiservataComponent implements OnInit {
     });
   }
 
-  loadOrders(role: string, profileId: number, shopId: number | null) {
-    this.loading = true;
-
-    if (role === 'SELLER') {
-      if (!shopId) {
+  loadOrders() {
+    if (this.roleUpper === 'SELLER') {
+      if (!this.shopId) {
         this.errorMessage = 'Shop ID non disponibile per il seller';
-        this.loading = false;
         return;
       }
 
-      this.ordersService.getShopOrders(shopId).subscribe({
-        next: data => {
-          this.orders = data;
-          this.loading = false;
+      this.ordersService.getShopOrders(this.shopId).subscribe({
+        next: orders => {
+          this.orders = orders; // unica lista per la tabella
         },
-        error: (err: HttpErrorResponse) => {
-          console.error('Errore caricamento ordini shop', err);
-          this.errorMessage = 'Errore nel caricamento degli ordini';
-          this.loading = false;
+        error: err => {
+          console.error(err);
+          this.errorMessage = 'Errore nel caricamento ordini';
         }
       });
-
     } else {
-      this.ordersService.getProfileOrders(profileId).subscribe({
-        next: data => {
-          this.orders = data;
-          this.loading = false;
+      this.ordersService.getProfileOrders(this.profileId!).subscribe({
+        next: orders => {
+          this.orders = orders; // unica lista per la tabella
         },
-        error: (err: HttpErrorResponse) => {
-          console.error('Errore caricamento ordini profilo', err);
-          this.errorMessage = 'Errore nel caricamento degli ordini';
-          this.loading = false;
+        error: err => {
+          console.error(err);
+          this.errorMessage = 'Errore nel caricamento ordini';
         }
       });
     }

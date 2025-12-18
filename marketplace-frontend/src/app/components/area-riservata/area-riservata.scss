@@ -1,21 +1,24 @@
 :host {
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* parte dall'alto invece di centro verticale */
+  flex-direction: column;     /* disposizione verticale */
+  justify-content: flex-start;/* contenuto dall’alto */
+  align-items: center;        /* CENTRA ORIZZONTALMENTE tutti i figli */
   min-height: 100vh;
   font-family: Arial, sans-serif;
-  padding-top: 2rem; /* margine superiore */
-  background-color: #f9f9f9; /* leggero sfondo per staccare la card */
+  padding-top: 2rem;
+  background-color: #f9f9f9;
 }
+
 
 .profile-container {
   padding: 2rem;
-  width: 350px;
+  width: 90%;             /* adesso stesso della tabella */
+  max-width: 900px;       /* mantiene dimensione massima */
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
   background-color: #fff;
-  margin-bottom: 2rem; /* spazio tra la card e la tabella */
+  margin-bottom: 2rem;
 }
 
 .profile-container h2 {
@@ -33,14 +36,18 @@
   gap: 1rem;
 }
 
+/* ORDINI */
 .orders-container {
   width: 90%;
   max-width: 900px;
-  margin: 0 auto; /* centrata orizzontalmente */
+  margin: 0 auto 2rem auto; /* centra il container e spazio sotto */
+  display: flex;
+  flex-direction: column;    /* disposizione verticale */
+  align-items: center;       /* centra titolo e tabella */
 }
 
 .table-title {
-  text-align: center;
+  text-align: center;        /* titolo sopra la tabella */
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: bold;

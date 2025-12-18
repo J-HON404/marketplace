@@ -9,18 +9,51 @@
       <th>Stato</th>
       <th>Tracking ID</th>
       <th>Data Consegna Stimata</th>
+      <th>Azioni</th>
     </tr>
   </thead>
+
   <tbody>
     <tr *ngFor="let order of orders">
       <td>{{ order.id }}</td>
-      <td>{{ order.customer?.id }}</td> <!-- profileId -->
-      <td>{{ order.shop?.id }}</td> <!-- shopId -->
-      <td>{{ order.orderDate | date:'short' }}</td>
+      <td>{{ order.customer?.id }}</td>
+      <td>{{ order.shop?.id }}</td>
+      <td>{{ order.orderDate | date:'dd/MM/yyyy' }}</td>
       <td>{{ order.total | currency:'EUR' }}</td>
       <td>{{ order.status }}</td>
       <td>{{ order.trackingId || 'N/A' }}</td>
-      <td>{{ order.estimatedDeliveryDate ? (order.estimatedDeliveryDate | date:'shortDate') : 'N/A' }}</td>
+      <td>{{ order.estimatedDeliveryDate || 'N/A' }}</td>
+      <td>
+
+        <!-- SELLER -->
+        <ng-container *ngIf="role === 'SELLER'">
+          <div *ngIf="canSellerShip(order)">
+            <input type="text" placeholder="Tracking ID"
+                   [value]="order._trackingTemp || ''"
+                   (input)="order._trackingTemp = $any($event.target).value" />
+            <input type="date"
+                   [value]="order._estimatedTemp || ''"
+                   (input)="order._estimatedTemp = $any($event.target).value"
+                   [min]="todayString" />
+            <button (click)="shipOrder(order)"
+                    [disabled]="!order._trackingTemp || !order._estimatedTemp">
+              Conferma spedizione
+            </button>
+          </div>
+
+          <div *ngIf="isExpired(order)">
+            Inviato sollecito
+          </div>
+        </ng-container>
+
+        <!-- CUSTOMER -->
+        <ng-container *ngIf="role === 'CUSTOMER'">
+          <button *ngIf="canCustomerConfirm(order)" (click)="confirmDelivery(order)">
+            Conferma consegna
+          </button>
+        </ng-container>
+
+      </td>
     </tr>
   </tbody>
 </table>

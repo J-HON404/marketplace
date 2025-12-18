@@ -6,7 +6,6 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root'
 })
 export class OrdersService {
-
   constructor(private http: HttpClient) {}
 
   getShopOrders(shopId: number): Observable<any[]> {
@@ -23,5 +22,15 @@ export class OrdersService {
 
   confirmDelivered(profileId: number, orderId: number): Observable<void> {
     return this.http.put<void>(`/api/profiles/${profileId}/orders/${orderId}/confirm-delivered`, null);
+  }
+
+  confirmShipping(shopId: number, orderId: number, trackingId: string, estimatedDeliveryDate: string): Observable<void> {
+    return this.http.put<void>(`/api/shops/${shopId}/orders/${orderId}/shipping`, null, {
+      params: { trackingId, estimatedDeliveryDate }
+    });
+  }
+
+  expiredDeliveries(shopId: number): Observable<number[]> {
+    return this.http.get<number[]>(`/api/shops/${shopId}/orders/expired-deliveries`);
   }
 }
