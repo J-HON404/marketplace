@@ -1,9 +1,11 @@
-
-  `<h2>Benvenuto!</h2>
+<h2>Benvenuto!</h2>
 
 <div class="card">
   <a *ngIf="profileId" [routerLink]="['/profile', profileId]" class="btn">
     Area riservata
+  </a>
+  <a *ngIf="profileId" [routerLink]="['/profiles', profileId, 'shops']" class="btn">
+    Vai ai negozi
   </a>
   <a *ngIf="profileId" [routerLink]="['/logout']" class="btn">
     Logout

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ProfileService } from '../../services/profile';
 import { OrdersService } from '../../services/orders';
+import { ShopService } from '../../services/shop.service';
 import { TokenService } from '../../services/token';
 import { OrdersTableComponent } from '../orders-table/orders-table';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,12 +23,14 @@ export class AreaRiservataComponent implements OnInit {
   errorMessage = '';
   roleUpper!: 'SELLER' | 'CUSTOMER';
   shopId: number | null = null;
+  shopData: any = null; // nuova proprietà per memorizzare i dati dello shop
 
   constructor(
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private ordersService: OrdersService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private shopService: ShopService
   ) {}
 
   ngOnInit() {
@@ -53,6 +56,11 @@ export class AreaRiservataComponent implements OnInit {
 
         this.roleUpper = this.profileData.role.toUpperCase() as 'SELLER' | 'CUSTOMER';
         this.shopId = this.tokenService.getShopId();
+
+        // Carica i dati dello shop se il profilo è un seller
+        if (this.roleUpper === 'SELLER' && this.shopId) {
+          this.loadShopInfo();
+        }
 
         this.loadOrders();
       },
@@ -92,4 +100,20 @@ export class AreaRiservataComponent implements OnInit {
       });
     }
   }
+
+loadShopInfo() {
+  if (!this.profileId) return;
+
+  this.shopService.getShopInfo(this.profileId).subscribe({
+    next: res => {
+      // assegna solo la proprietà "data" alla variabile
+      this.shopData = res.data;
+    },
+    error: err => {
+      console.error('Errore caricamento shop', err);
+      this.errorMessage = 'Errore nel caricamento dello shop';
+    }
+  });
+}
+
 }

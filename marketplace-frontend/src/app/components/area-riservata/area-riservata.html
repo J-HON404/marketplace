@@ -19,6 +19,12 @@
   <!-- Errore -->
   <div *ngIf="!loading && errorMessage" class="error">{{ errorMessage }}</div>
 
+<div class="profile-container" *ngIf="roleUpper === 'SELLER' && shopData">
+  <h3>Informazioni Shop</h3>
+  <p>ID: {{ shopData.id }}</p>
+  <p>Nome: {{ shopData.name }}</p>
+</div>
+
   <!-- Titolo tabella -->
   <div class="orders-container">
     <h3 class="table-title" *ngIf="roleUpper === 'SELLER'">Ordini ricevuti</h3>
