@@ -6,6 +6,7 @@ import { AreaRiservataComponent } from './components/area-riservata/area-riserva
 import { OrdersPageComponent } from './components/orders-page/orders-page'; 
 import { ShopListComponent } from './components/shop-list/shop-list';
 import { ProductListComponent } from './components/product-list/product-list';
+import { ProductFormComponent } from './components/product-form/product-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,5 +17,7 @@ export const routes: Routes = [
   { path: 'profiles/:profileId/orders', component: OrdersPageComponent },
   { path: 'profiles/:profileId/shops', component: ShopListComponent },
   { path: 'profiles/:profileId/shops/:shopId/products', component: ProductListComponent },
+  { path: 'profiles/:profileId/shops/:shopId/products/editor', component: ProductFormComponent },
+  { path: 'profiles/:profileId/shops/:shopId/products/editor/:productId', component: ProductFormComponent },
   { path: '**', redirectTo: 'login' }
 ];

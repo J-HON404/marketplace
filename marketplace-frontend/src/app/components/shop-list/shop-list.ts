@@ -27,7 +27,6 @@ export class ShopListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Ottieni profileId dalla route o dal token
     this.profileId = Number(this.route.snapshot.paramMap.get('profileId')) || this.tokenService.getProfileId();
     
     if (!this.profileId) {
@@ -42,11 +41,7 @@ export class ShopListComponent implements OnInit {
     this.loading = true;
     this.shopService.getAllShops(profileId).subscribe({
       next: (res: any) => {
-        // Estraiamo i dati dalla risposta (gestendo il wrapper 'data')
         const rawData = res.data || res;
-        
-        // Mappiamo i dati per assicurarci che rispettino l'interfaccia Shop
-        // Se il backend non invia il profileId, usiamo quello corrente
         this.shops = rawData.map((s: any) => ({
           id: s.id,
           name: s.name,

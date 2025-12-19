@@ -1,31 +1,52 @@
-<div class="page-container">
-  <h2 class="page-title">Catalogo Prodotti</h2>
+<h2 class="page-title">Lista Prodotti</h2>
 
-  <div class="shop-grid" *ngIf="!loading && products.length > 0">
-    <div class="shop-card" 
-         *ngFor="let product of products"
-         [ngClass]="{'disabled-card': product.quantity === 0 || isFutureDate(product.availabilityDate)}">
+<div class="header-actions" *ngIf="userRole === 'SELLER' && profileId === tokenService.getProfileId()">
+  <button class="btn btn-primary" (click)="onAddProduct()">
+    + Nuovo Prodotto
+  </button>
+</div>
+
+<div class="shop-grid" *ngIf="!loading && products.length > 0">
+  <div class="shop-card" 
+       *ngFor="let product of products"
+       [ngClass]="{'disabled-card': product.quantity === 0 || isFutureDate(product.availabilityDate)}">
+    
+    <div class="shop-image-container">
+      <img src="assets/product-placeholder.png" class="shop-image" alt="prodotto">
+    </div>
+
+    <div class="product-info">
+      <div class="product-title">{{ product.name }}</div>
+      <p>{{ product.description }}</p>
+      <p>prezzo: {{ product.price }}€</p>
+      <p>quantità: {{ product.quantity }}</p>
+      <p class="shop-category-text" *ngIf="isFutureDate(product.availabilityDate)">
+        disponibile dal: {{ product.availabilityDate | date:'dd/MM/yyyy' }}
+      </p>
+    </div>
+
+    <div class="profile-buttons">
       
-      <div class="shop-image-container">
-        <img src="assets/product-placeholder.png" class="shop-image" alt="prodotto">
-      </div>
+      <button *ngIf="userRole === 'CUSTOMER'" 
+              class="btn btn-add" 
+              [disabled]="product.quantity === 0 || isFutureDate(product.availabilityDate)">
+        Aggiungi al carrello
+      </button>
 
-      <div class="product-info">
-        <div class="product-title">{{ product.name }}</div>
-        <p>{{ product.description }}</p>
-        <p>prezzo: {{ product.price }}€</p>
-        <p>quantità: {{ product.quantity }}</p>
-        
-        <p class="shop-category-text" *ngIf="isFutureDate(product.availabilityDate)">
-          disponibile dal: {{ product.availabilityDate | date:'dd/MM/yyyy' }}
-        </p>
-      </div>
-
-      <div class="profile-buttons">
-        <button class="btn" [disabled]="product.quantity === 0 || isFutureDate(product.availabilityDate)">
-          Aggiungi
+      <ng-container *ngIf="userRole === 'SELLER' && profileId === tokenService.getProfileId()">
+        <button class="btn btn-edit" (click)="onEditProduct(product)">
+          Modifica Prodotto
         </button>
-      </div>
+        
+        <button class="btn btn-danger" (click)="onDeleteProduct(product.id)">
+          Elimina Prodotto
+        </button>
+      </ng-container>
+
     </div>
   </div>
+</div>
+
+<div class="no-products" *ngIf="!loading && products.length === 0">
+  <p>Nessun prodotto disponibile in questo negozio.</p>
 </div>

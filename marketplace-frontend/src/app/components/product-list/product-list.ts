@@ -5,6 +5,7 @@ import { TokenService } from '../../services/token';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Products } from '../../interfaces/products';
 import { ProductService } from '../../services/product';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -16,20 +17,23 @@ import { ProductService } from '../../services/product';
 export class ProductListComponent implements OnInit {
   profileId: number | null = null;
   shopId: number | null = null;
+  userRole: string | null = null;
   products: Products[] = []; 
   loading = false;
   errorMessage = '';
 
   constructor(
+    private router:Router,
     private route: ActivatedRoute,
     private productService: ProductService,
-    private tokenService: TokenService
+    public tokenService: TokenService
   ) {}
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
     this.profileId = Number(params.get('profileId')) || this.tokenService.getProfileId();
     this.shopId = Number(params.get('shopId'));
+    this.userRole = this.tokenService.getUserRole();
     
     if (!this.profileId || !this.shopId) {
       this.errorMessage = 'Parametri mancanti: ID profilo o ID negozio non validi';
@@ -65,6 +69,19 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+onDeleteProduct(productId: number) {
+  if (!window.confirm('Eliminare definitivamente questo prodotto?')) return;
+  this.productService.deleteProduct(this.shopId!, productId).subscribe({
+    next: () => {
+      this.products = this.products.filter(p => p.id !== productId);
+    },
+    error: (err) => {
+      console.error('Errore:', err);
+      alert('Errore durante l\'eliminazione.');
+    }
+  });
+}
+
 isFutureDate(dateString: string): boolean {
   if (!dateString) return false;
   const date = new Date(dateString);
@@ -73,4 +90,17 @@ isFutureDate(dateString: string): boolean {
   today.setHours(0, 0, 0, 0);
   return date > today;
 }
+
+// Metodo per andare al form in modalità MODIFICA (passando i dati)
+onEditProduct(product: any) {
+  this.router.navigate(['/profiles', this.profileId, 'shops', this.shopId, 'products', 'editor', product.id],
+    { state: { productData: product } }
+  );
+}
+
+// Metodo per andare al form in modalità CREAZIONE (vuoto)
+onAddProduct() {
+  this.router.navigate(['/profiles', this.profileId, 'shops', this.shopId, 'products', 'editor']);
+}
+
 }

@@ -14,9 +14,9 @@
       </div>
        <br>
       <div class="profile-buttons">
-        <a class="btn" [routerLink]="['/products']" [queryParams]="{ shopId: shop.id }">
-          Catalogo prodotti
-        </a>
+      <a class="btn" [routerLink]="['/profiles', profileId, 'shops', shop.id, 'products']">
+  Catalogo prodotti
+</a>
       </div>
     </div>
   </div>
