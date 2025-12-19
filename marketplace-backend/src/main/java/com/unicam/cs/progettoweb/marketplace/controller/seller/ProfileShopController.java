@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.controller.seller;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
+import com.unicam.cs.progettoweb.marketplace.model.enums.ShopCategory;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class ProfileShopController {
 
 
     @PostMapping("/shop")
-    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestParam String name) {
-        Shop shop = sellerShopService.createShop(profileId, name);
+    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestParam String name, @RequestParam ShopCategory category) {
+        Shop shop = sellerShopService.createShop(profileId, name,category);
         return ResponseEntity.ok(ApiResponse.success(shop));
     }
 

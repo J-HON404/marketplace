@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.profile;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
+import com.unicam.cs.progettoweb.marketplace.model.enums.ShopCategory;
 import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
@@ -45,15 +46,19 @@ public class SellerShopService {
     }
 
     @PreAuthorize("hasRole('SELLER') and principal.id == #sellerId")
-    public Shop createShop(Long sellerId, String shopName) {
+    public Shop createShop(Long sellerId, String shopName, ShopCategory shopCategory) {
         Profile seller = validateSeller(sellerId);
         if (shopRepository.findByName(shopName).isPresent()) {
             throw new MarketplaceException(HttpStatus.CONFLICT, "Shop with name " + shopName + " already exists");
+        }
+        if (shopCategory == null) {
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "La categoria è obbligatoria");
         }
         Shop shop = new Shop();
         shop.setName(shopName);
         shop.setSeller(seller);
         seller.setShop(shop);
+        shop.setShopCategory(shopCategory);
         return shopRepository.save(shop);
     }
 

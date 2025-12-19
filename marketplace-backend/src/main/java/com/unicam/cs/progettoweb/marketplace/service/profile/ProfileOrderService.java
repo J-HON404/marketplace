@@ -83,8 +83,12 @@ public class ProfileOrderService {
     @PreAuthorize("hasRole('CUSTOMER') and @customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
     public void confirmDelivered(Long profileId, Long orderId) {
         ensureProfileExists(profileId);
-        if(!(orderService.getOrderStatus(orderId).equals(OrderStatus.READY_TO_ELABORATING))){
+        OrderStatus currentStatus = orderService.getOrderStatus(orderId);
+        if (currentStatus == OrderStatus.SHIPPING_DETAILS_SET || currentStatus == OrderStatus.REMIND_DELIVERY) {
             orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);
+        } else {
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST,
+                    "Impossibile confermare la consegna: ordine in stato " + currentStatus + ")");
         }
     }
 }
