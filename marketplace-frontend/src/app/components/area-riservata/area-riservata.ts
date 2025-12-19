@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { ProfileService } from '../../services/profile';
 import { OrdersService } from '../../services/orders';
-import { ShopService } from '../../services/shop.service';
+import { ShopService } from '../../services/shop';
 import { TokenService } from '../../services/token';
 import { OrdersTableComponent } from '../orders-table/orders-table';
 import { HttpErrorResponse } from '@angular/common/http';

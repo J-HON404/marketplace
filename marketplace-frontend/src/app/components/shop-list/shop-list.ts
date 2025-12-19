@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { ShopService } from '../../services/shop.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ShopService } from '../../services/shop';
 import { TokenService } from '../../services/token';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { Shop } from '../../interfaces/shops';
 
 @Component({
   selector: 'app-shop-list',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './shop-list.html',
   styleUrls: ['./shop-list.scss']
 })
 export class ShopListComponent implements OnInit {
   profileId: number | null = null;
-  shops: any[] = [];
+  // Ora shops è un array di tipo Shop (con profileId obbligatorio)
+  shops: Shop[] = []; 
   loading = false;
   errorMessage = '';
 
@@ -26,26 +27,38 @@ export class ShopListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // ottieni profileId dalla route o dal token
+    // Ottieni profileId dalla route o dal token
     this.profileId = Number(this.route.snapshot.paramMap.get('profileId')) || this.tokenService.getProfileId();
+    
     if (!this.profileId) {
-      this.errorMessage = 'ID profilo non valido';
+      this.errorMessage = 'Accesso non autorizzato: ID profilo non trovato';
       return;
     }
+    
     this.loadShops(this.profileId);
   }
 
   loadShops(profileId: number) {
     this.loading = true;
     this.shopService.getAllShops(profileId).subscribe({
-      next: res => {
-        // la risposta potrebbe avere un wrapper "data"
-        this.shops = res.data || res;
+      next: (res: any) => {
+        // Estraiamo i dati dalla risposta (gestendo il wrapper 'data')
+        const rawData = res.data || res;
+        
+        // Mappiamo i dati per assicurarci che rispettino l'interfaccia Shop
+        // Se il backend non invia il profileId, usiamo quello corrente
+        this.shops = rawData.map((s: any) => ({
+          id: s.id,
+          name: s.name,
+          shopCategory: s.shopCategory,
+          profileId: s.profileId || profileId // Garantiamo che non sia null
+        }));
+
         this.loading = false;
       },
       error: (err: HttpErrorResponse) => {
         console.error('Errore caricamento shop', err);
-        this.errorMessage = 'Errore nel caricamento degli shop';
+        this.errorMessage = 'Si è verificato un errore nel caricamento dei negozi.';
         this.loading = false;
       }
     });

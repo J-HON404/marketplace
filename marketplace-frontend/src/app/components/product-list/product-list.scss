@@ -1,0 +1,97 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  padding-top: 2rem;
+  background-color: #f9f9f9;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 90%;
+  max-width: 900px;
+  margin-bottom: 2rem;
+}
+
+.shop-card {
+  padding: 1.5rem; // Ridotto leggermente per bilanciare la cornice interna
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+/* LA CORNICE INTERNA */
+.shop-image-container {
+  width: 100%;
+  height: 160px;
+  background-color: #fff; // Sfondo bianco per creare lo stacco
+  border: 1px solid #ddd; // La cornice effettiva
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 8px; // Spazio vuoto tra cornice e immagine
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.shop-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px; // Arrotonda leggermente anche l'immagine dentro
+  background-color: #f0f0f0; // Grigio se l'immagine manca
+}
+
+/* TESTI */
+.product-title {
+  font-weight: bold; // Solo il titolo in grassetto
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-info p {
+  font-weight: normal; // Tutto il resto normale
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.shop-category-text {
+  text-transform: lowercase;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.disabled-card {
+  background-color: #e0e0e0 !important;
+  color: #777;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: grayscale(1);
+}
+
+.shop-card:hover:not(.disabled-card) {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  cursor: pointer;
+}

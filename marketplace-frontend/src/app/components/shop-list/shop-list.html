@@ -1,16 +1,27 @@
 <div class="page-container">
-  <h2 align="center">Lista Negozi</h2>
+  <h2 class="page-title">Lista Negozi</h2>
 
-  <div *ngIf="loading">Caricamento...</div>
-  <div *ngIf="!loading && errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="loading" class="loading-message">Caricamento...</div>
+  <div *ngIf="!loading && errorMessage" class="error-message">{{ errorMessage }}</div>
 
-  <div class="shop-grid" *ngIf="!loading && shops.length">
-<div class="shop-card" *ngFor="let shop of shops">
-  <h3>{{ shop.name }}</h3>
-
-  <div class="profile-buttons">
-    <a class="btn" [routerLink]="['/home']">Catalogo prodotti </a>
+  <div class="shop-grid" *ngIf="!loading && shops.length > 0">
+    <div class="shop-card" *ngFor="let shop of shops">
+      <div class="card-header">
+        <h3>{{ shop.name }}</h3>
+        <p class="shop-category-text">
+          Categoria: {{ shop.shopCategory }}
+        </p>
+      </div>
+       <br>
+      <div class="profile-buttons">
+        <a class="btn" [routerLink]="['/products']" [queryParams]="{ shopId: shop.id }">
+          Catalogo prodotti
+        </a>
+      </div>
+    </div>
   </div>
-</div>
-  <div *ngIf="!loading && shops.length === 0">Nessuno shop trovato</div>
+
+  <div class="no-shops" *ngIf="!loading && shops.length === 0 && !errorMessage">
+    Nessuno shop trovato per questo profilo.
+  </div>
 </div>
