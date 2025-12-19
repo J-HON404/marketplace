@@ -23,12 +23,11 @@ public class ShopProductService {
         this.shopService = shopService;
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public List<Product> getProductsOfShop(Long shopId) {
         return productService.getProductsByShopId(shopId);
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+
     public Product getProductOfShop(Long shopId, Long productId) {
         Product product = productService.getProductById(productId);
         ensureProductBelongsToShop(product, shopId);
