@@ -5,10 +5,8 @@
     <!-- Loading -->
     <div *ngIf="loading">Caricamento ordini...</div>
 
-    <!-- Errore -->
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-    <!-- Tabella ordini -->
     <app-orders-table *ngIf="!loading && !errorMessage" [orders]="orders"></app-orders-table>
   </div>
 </div>

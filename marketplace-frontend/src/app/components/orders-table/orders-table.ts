@@ -37,7 +37,7 @@ export class OrdersTableComponent implements OnInit {
     }
   }
 
-  /* ================= SELLER ================= */
+
   canSellerShip(order: any): boolean {
     return this.helper.canSellerShip(order);
   }

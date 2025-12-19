@@ -46,7 +46,6 @@
           </div>
         </ng-container>
 
-        <!-- CUSTOMER -->
         <ng-container *ngIf="role === 'CUSTOMER'">
           <button *ngIf="canCustomerConfirm(order)" (click)="confirmDelivery(order)">
             Conferma consegna

@@ -16,6 +16,7 @@ export class ProductFormComponent implements OnInit {
   isEditMode = false;
   productId: number | null = null;
   shopId: number | null = null;
+  todayString: string = ''; 
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +24,6 @@ export class ProductFormComponent implements OnInit {
     private router: Router,
     private productService: ProductService
   ) {
-    
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
@@ -34,9 +34,14 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.shopId = Number(this.route.snapshot.paramMap.get('shopId'));
-    const stateData = history.state.productData;
+  
+    const today = new Date();
+    this.todayString = today.toISOString().split('T')[0];
 
+
+    this.shopId = Number(this.route.snapshot.paramMap.get('shopId'));
+    
+    const stateData = history.state.productData;
     if (stateData) {
       this.isEditMode = true;
       this.productId = stateData.id;
@@ -46,7 +51,9 @@ export class ProductFormComponent implements OnInit {
 
   onSubmit() {
     if (this.productForm.invalid) return;
+
     const productPayload = this.productForm.value;
+
     if (this.isEditMode && this.productId) {
       this.productService.updateProduct(this.shopId!, this.productId, productPayload).subscribe({
         next: () => this.goBack(),
