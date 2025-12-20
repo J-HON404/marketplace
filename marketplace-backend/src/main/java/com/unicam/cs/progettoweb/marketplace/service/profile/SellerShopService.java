@@ -6,6 +6,7 @@ import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
+import com.unicam.cs.progettoweb.marketplace.security.ShopSecurity;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ public class SellerShopService {
 
     private final ShopRepository shopRepository;
     private final ProfileRepository profileRepository;
+    private final ShopSecurity shopSecurity;
 
-    public SellerShopService(ShopRepository shopRepository, ProfileRepository profileRepository) {
+    public SellerShopService(ShopRepository shopRepository, ProfileRepository profileRepository, ShopSecurity shopSecurity) {
         this.shopRepository = shopRepository;
         this.profileRepository = profileRepository;
+        this.shopSecurity = shopSecurity;
     }
 
     public Shop findShopById(Long shopId) {
@@ -91,6 +94,10 @@ public class SellerShopService {
                     "Seller already owns a shop");
         }
         return seller;
+    }
+
+    public boolean isOwnerOfShop(Long profileId, Long shopId) {
+        return shopSecurity.isSellerOfShop(profileId, shopId);
     }
 
     public List<Shop> getAllShops(Long sellerId) {

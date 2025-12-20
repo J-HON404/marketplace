@@ -26,11 +26,15 @@ public class ProfileShopController {
         return ResponseEntity.ok(ApiResponse.success(shop));
     }
 
-
     @GetMapping("/shops")
     public ResponseEntity<ApiResponse<List<Shop>>> getAllShops(@PathVariable Long profileId){
         List<Shop> shops = sellerShopService.getAllShops(profileId);
         return ResponseEntity.ok(ApiResponse.success(shops));
+    }
+
+    @GetMapping("shops/{shopId}/verify-owner")
+    public ResponseEntity<ApiResponse<Boolean>> checkSellerOwnership(@PathVariable Long profileId, @PathVariable Long shopId) {
+        return ResponseEntity.ok(ApiResponse.success(sellerShopService.isOwnerOfShop(profileId, shopId)));
     }
 
 
@@ -60,4 +64,6 @@ public class ProfileShopController {
         sellerShopService.deleteShop(profileId);
         return ResponseEntity.noContent().build();
     }
+
+
 }
