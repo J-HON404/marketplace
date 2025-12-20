@@ -7,7 +7,6 @@ export class OrdersHelperService {
 
   constructor() {}
 
-  /* ================= SELLER ================= */
   canSellerShip(order: any): boolean {
     return order.status === 'READY_TO_ELABORATING';
   }
@@ -26,14 +25,14 @@ export class OrdersHelperService {
     return estimated >= today;
   }
 
-  /* ================= CUSTOMER ================= */
   canCustomerConfirm(order: any): boolean {
     if (order.status !== 'SHIPPING_DETAILS_SET') return false;
     if (!order.estimatedDeliveryDate) return false;
+
     const today = new Date();
     const estimated = new Date(order.estimatedDeliveryDate);
     today.setHours(0, 0, 0, 0);
     estimated.setHours(0, 0, 0, 0);
-    return estimated >= today && order.status !== 'CONFIRMED_DELIVERED';
+    return today >= estimated && order.status !== 'CONFIRMED_DELIVERED';
   }
 }

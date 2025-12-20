@@ -1,12 +1,13 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { OrdersService } from '../../services/orders';
-import { OrdersHelperService } from '../../services/orders-helper';
+import { OrdersHelperService } from '../../services/order-helper';
 
 @Component({
   selector: 'app-orders-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './orders-table.html',
   styleUrls: ['./orders-table.scss']
 })
@@ -20,7 +21,7 @@ export class OrdersTableComponent implements OnInit {
 
   constructor(
     private ordersService: OrdersService,
-    private helper: OrdersHelperService,
+    public helper: OrdersHelperService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -32,32 +33,16 @@ export class OrdersTableComponent implements OnInit {
       order._estimatedTemp = null;
     });
 
-    if (this.role === 'SELLER') {
+    if (this.role === 'SELLER' && this.shopId) {
       this.checkExpiredDeliveries();
     }
   }
 
-  canSellerShip(order: any): boolean {
-    return this.helper.canSellerShip(order);
-  }
-
-  isExpired(order: any): boolean {
-    return this.helper.isExpired(order);
-  }
-
-  validateEstimatedDate(dateStr: string): boolean {
-    return this.helper.validateEstimatedDate(dateStr);
-  }
-
   shipOrder(order: any) {
-    if (!order._trackingTemp || !order._estimatedTemp || !this.shopId) {
-      alert('Inserisci Tracking ID e Data Consegna.');
-      return;
-    }
+    if (!this.shopId) return;
 
-    if (!this.validateEstimatedDate(order._estimatedTemp)) {
-      alert('Non puoi inserire una data di consegna passata.');
-      order._estimatedTemp = null;
+    if (!order._trackingTemp || !order._estimatedTemp) {
+      alert('Dati di spedizione incompleti.');
       return;
     }
 
@@ -66,16 +51,37 @@ export class OrdersTableComponent implements OnInit {
       order.id,
       order._trackingTemp,
       order._estimatedTemp
-    ).subscribe(() => {
-      order.trackingId = order._trackingTemp;
-      order.estimatedDeliveryDate = order._estimatedTemp;
-      delete order._trackingTemp;
-      delete order._estimatedTemp;
-      this.cdr.detectChanges();
+    ).subscribe({
+      next: () => {
+        order.trackingId = order._trackingTemp;
+        order.estimatedDeliveryDate = order._estimatedTemp;
+        order.status = 'SHIPPED';
+        delete order._trackingTemp;
+        delete order._estimatedTemp;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
     });
   }
 
-  checkExpiredDeliveries() {
+  confirmDelivery(order: any): void {
+    if (!this.profileId) return;
+
+    if (!this.helper.canCustomerConfirm(order)) {
+      alert('Azione non consentita: la data di consegna stimata non è ancora passata.');
+      return;
+    }
+
+    this.ordersService.confirmDelivered(this.profileId, order.id).subscribe({
+      next: () => {
+        order.status = 'CONFIRMED_DELIVERED';
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  private checkExpiredDeliveries() {
     if (!this.shopId) return;
     this.ordersService.expiredDeliveries(this.shopId).subscribe((expiredOrderIds: number[]) => {
       this.orders.forEach(order => {
@@ -83,21 +89,6 @@ export class OrdersTableComponent implements OnInit {
           order.expired = true;
         }
       });
-      this.cdr.detectChanges();
-    });
-  }
-
-  /* ================= CUSTOMER ================= */
-  canCustomerConfirm(order: any): boolean {
-    return this.helper.canCustomerConfirm(order);
-  }
-
-  confirmDelivery(order: any) {
-    if (!this.profileId) return;
-    if (order.status === 'CONFIRMED_DELIVERED') return;
-
-    this.ordersService.confirmDelivered(this.profileId, order.id).subscribe(() => {
-      order.status = 'CONFIRMED_DELIVERED';
       this.cdr.detectChanges();
     });
   }

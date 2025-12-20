@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
 import { NoticeService } from '../../services/product-notices'; 
 import { TokenService } from '../../services/token';
+import { NoticeHelperService } from '../../services/notice-helper';
 import { ProductNotices, TypeNotice } from '../../interfaces/product-notices';
 import { Products } from '../../interfaces/products';
 
@@ -18,7 +19,11 @@ import { Products } from '../../interfaces/products';
 export class ProductDetailsComponent implements OnInit {
   product: Products | null = null;
   notices: ProductNotices[] = [];
+  
   newNoticeContent: string = '';
+  newNoticeExpireDate: string = '';
+  minDate: string = new Date().toISOString().split('T')[0]; // Inizializzazione immediata sicura
+  
   selectedType: TypeNotice = TypeNotice.INFO;
   typeOptions = Object.values(TypeNotice);
   
@@ -32,7 +37,8 @@ export class ProductDetailsComponent implements OnInit {
     private router: Router,
     private productService: ProductService,
     private noticeService: NoticeService,
-    public tokenService: TokenService 
+    public tokenService: TokenService,
+    public noticeHelper: NoticeHelperService 
   ) {}
 
   ngOnInit() {
@@ -49,10 +55,7 @@ export class ProductDetailsComponent implements OnInit {
   checkPermissions() {
     if (this.tokenService.getUserRole() === 'SELLER') {
       this.productService.checkOwnership(this.profileId, this.shopId).subscribe({
-        next: (res) => {
-          // res.data contiene il boolean restituito dalla tua ApiResponse
-          this.isOwner = res.data === true;
-        },
+        next: (res) => this.isOwner = res.data === true,
         error: () => this.isOwner = false
       });
     }
@@ -60,9 +63,7 @@ export class ProductDetailsComponent implements OnInit {
 
   loadProductData() {
     this.productService.getProductById(this.shopId, this.productId).subscribe({
-      next: (res: any) => {
-        this.product = res.data || res;
-      },
+      next: (res: any) => this.product = res.data || res,
       error: () => this.goBack()
     });
   }
@@ -75,15 +76,18 @@ export class ProductDetailsComponent implements OnInit {
 
   onAddNotice() {
     if (!this.newNoticeContent.trim()) return;
+
     const noticeToSave = {
       text: this.newNoticeContent,
       type: this.selectedType,
-      productId: this.productId
+      productId: this.productId,
+      expireDate: this.newNoticeExpireDate || undefined
     } as ProductNotices;
 
     this.noticeService.createProductNotice(this.productId, noticeToSave).subscribe({
       next: () => {
         this.newNoticeContent = '';
+        this.newNoticeExpireDate = '';
         this.loadNotices();
       }
     });

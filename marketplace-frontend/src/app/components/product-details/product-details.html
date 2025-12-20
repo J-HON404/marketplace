@@ -23,9 +23,17 @@
     </div>
 
     <div class="notice-list" *ngIf="notices.length > 0">
-      <div *ngFor="let notice of notices" class="notice-item" [ngClass]="notice.type">
+      <div *ngFor="let notice of notices" 
+           class="notice-item" 
+           [ngClass]="notice.type"
+           [class.expired]="noticeHelper.isExpired(notice)">
+        
         <div class="notice-text">
           <p>{{ notice.text }}</p>
+          <small class="expire-info" *ngIf="notice.expireDate">
+            Scadenza: {{ notice.expireDate | date:'dd/MM/yyyy' }}
+            <strong *ngIf="noticeHelper.isExpired(notice)"> (SCADUTO)</strong>
+          </small>
         </div>
         
         <button *ngIf="isOwner" 
@@ -46,11 +54,21 @@
         <h4>Pubblica un nuovo avviso</h4>
       </div>
       
-      <div class="form-group">
-        <label>Tipo di comunicazione</label>
-        <select [(ngModel)]="selectedType" class="type-select">
-          <option *ngFor="let type of typeOptions" [value]="type">{{ type }}</option>
-        </select>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipo di comunicazione</label>
+          <select [(ngModel)]="selectedType" class="type-select">
+            <option *ngFor="let type of typeOptions" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Data di validità (Opzionale)</label>
+          <input type="date" 
+                 [(ngModel)]="newNoticeExpireDate" 
+                 [min]="minDate" 
+                 class="type-select">
+        </div>
       </div>
 
       <div class="form-group">
