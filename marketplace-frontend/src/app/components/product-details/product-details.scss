@@ -1,0 +1,200 @@
+:host {
+  display: block;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #2d3748;
+  min-height: 85vh;
+}
+
+.product-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  width: 100%;
+}
+
+/* --- HEADER E INFO PRODOTTO --- */
+.product-card-main {
+  header {
+    display: flex;
+    justify-content: space-between; // Forza la distanza massima tra i due blocchi
+    align-items: center;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex: 1; // Permette al titolo di occupare lo spazio necessario
+    }
+
+    .header-right {
+      margin-left: 2rem; // Distacco minimo garantito
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin: 0;
+      font-weight: 700;
+      color: #1a202c;
+    }
+
+    .price {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #2b6cb0;
+      background: #ebf8ff;
+      padding: 0.5rem 1.25rem;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+  }
+
+  .description-box {
+    h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #718096;
+      margin-bottom: 0.75rem;
+    }
+    p {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: #4a5568;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+/* --- SEZIONE AVVISI --- */
+.notices-section {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    font-size: 1.4rem;
+    border-left: 4px solid #2b6cb0;
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+}
+
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.notice-item {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  border-left-width: 6px;
+  transition: transform 0.1s ease;
+
+  &:hover { transform: scale(1.005); }
+
+  &.INFO { border-left-color: #4299e1; }
+  &.WARNING { border-left-color: #f6ad55; }
+  &.STOCK { border-left-color: #ed64a6; }
+  &.PROMOTION { border-left-color: #48bb78; }
+  &.AVAILABILITY { border-left-color: #9f7aea; }
+
+  .notice-text p { margin: 0; font-weight: 600; color: #2d3748; }
+}
+
+.empty-notices {
+  color: #718096;
+  font-style: italic;
+  padding: 2rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* --- CONTROLLI ADMIN (OWNER) --- */
+.admin-notice-control {
+  margin-top: auto; // Spinge il form in fondo se la pagina è vuota
+  padding-top: 3rem;
+
+  .admin-header {
+    margin-bottom: 2rem;
+    hr { border: 0; border-top: 2px solid #f7fafc; margin-bottom: 2rem; }
+    h4 { color: #2d3748; font-size: 1.1rem; font-weight: 700; }
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: #718096; margin-bottom: 0.5rem; }
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+    &:focus { outline: none; border-color: #3182ce; box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1); }
+  }
+}
+
+/* --- BOTTONI E INPUT --- */
+.btn-back {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #4a5568;
+  transition: all 0.2s;
+  &:hover { background: #f7fafc; border-color: #cbd5e0; }
+}
+
+.btn-delete {
+  background: white;
+  color: #e53e3e;
+  border: 1px solid #feb2b2;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover { background: #fff5f5; }
+}
+
+.btn-primary {
+  background: #2b6cb0;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+  &:hover:not(:disabled) { background: #2c5282; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.type-select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  background: white;
+}

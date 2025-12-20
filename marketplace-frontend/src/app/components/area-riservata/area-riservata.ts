@@ -104,7 +104,7 @@ export class AreaRiservataComponent implements OnInit {
 loadShopInfo() {
   if (!this.profileId) return;
 
-  this.shopService.getShopInfo(this.profileId).subscribe({
+  this.shopService.getShop(this.profileId).subscribe({
     next: res => {
       // assegna solo la proprietà "data" alla variabile
       this.shopData = res.data;

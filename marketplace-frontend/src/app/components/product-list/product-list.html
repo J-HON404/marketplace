@@ -1,6 +1,6 @@
 <h2 class="page-title">Lista Prodotti</h2>
 
-<div class="header-actions" *ngIf="userRole === 'SELLER' && profileId === tokenService.getProfileId()">
+<div class="header-actions" *ngIf="isOwner">
   <button class="btn btn-primary" (click)="onAddProduct()">
     + Nuovo Prodotto
   </button>
@@ -27,13 +27,17 @@
 
     <div class="profile-buttons">
       
+      <button class="btn btn-info" (click)="onViewDetails(product.id)">
+        Maggiori Informazioni
+      </button>
+
       <button *ngIf="userRole === 'CUSTOMER'" 
               class="btn btn-add" 
               [disabled]="product.quantity === 0 || isFutureDate(product.availabilityDate)">
         Aggiungi al carrello
       </button>
 
-      <ng-container *ngIf="userRole === 'SELLER' && profileId === tokenService.getProfileId()">
+      <ng-container *ngIf="isOwner">
         <button class="btn btn-edit" (click)="onEditProduct(product)">
           Modifica Prodotto
         </button>

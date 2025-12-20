@@ -11,9 +11,13 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
 
-  getProductInfo(shopId: number): Observable<any> {
+  getProducts(shopId: number): Observable<any> {
     return this.http.get(`/api/shops/${shopId}/products`);
   }
+
+  getProductById(shopId:number,productId: number): Observable<any> {
+   return this.http.get(`/api/shops/${shopId}/products/${productId}`);
+}
 
   createProduct(shopId: number, product: Products): Observable<Products> {
   return this.http.post<Products>(`/api/shops/${shopId}/products`, product);
@@ -26,5 +30,9 @@ export class ProductService {
   deleteProduct(shopId: number, productId: number): Observable<any> {
   return this.http.delete(`/api/shops/${shopId}/products/${productId}`);
 }
+
+checkOwnership(profileId: number, shopId: number): Observable<any> {
+    return this.http.get<any>(`/api/profiles/${profileId}/shops/${shopId}/verify-owner`);
+  }
 
 }

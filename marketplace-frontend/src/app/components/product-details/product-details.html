@@ -1,0 +1,66 @@
+<div class="product-view-container" *ngIf="product">
+  
+  <div class="product-card-main">
+    <header>
+      <div class="header-left">
+        <button class="btn-back" (click)="goBack()">Torna al catalogo</button>
+        <h2>{{ product.name }}</h2>
+      </div>
+      <div class="header-right">
+        <span class="price">{{ product.price }}€</span>
+      </div>
+    </header>
+    
+    <div class="description-box">
+      <h3>Descrizione Prodotto</h3>
+      <p>{{ product.description }}</p>
+    </div>
+  </div>
+
+  <div class="notices-section">
+    <div class="section-title-group">
+      <h3>Avvisi e Comunicazioni</h3>
+    </div>
+
+    <div class="notice-list" *ngIf="notices.length > 0">
+      <div *ngFor="let notice of notices" class="notice-item" [ngClass]="notice.type">
+        <div class="notice-text">
+          <p>{{ notice.text }}</p>
+        </div>
+        
+        <button *ngIf="isOwner" 
+                (click)="onDeleteNotice(notice.id)" 
+                class="btn-delete">
+          Elimina
+        </button>
+      </div>
+    </div>
+
+    <p class="empty-notices" *ngIf="notices.length === 0">
+      Nessun avviso presente per questo prodotto.
+    </p>
+
+    <div *ngIf="isOwner" class="admin-notice-control">
+      <div class="admin-header">
+        <hr>
+        <h4>Pubblica un nuovo avviso</h4>
+      </div>
+      
+      <div class="form-group">
+        <label>Tipo di comunicazione</label>
+        <select [(ngModel)]="selectedType" class="type-select">
+          <option *ngFor="let type of typeOptions" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Messaggio</label>
+        <textarea [(ngModel)]="newNoticeContent" placeholder="Scrivi una comunicazione per i tuoi clienti..."></textarea>
+      </div>
+      
+      <button class="btn-primary" (click)="onAddNotice()" [disabled]="!newNoticeContent.trim()">
+        Pubblica Avviso
+      </button>
+    </div>
+  </div>
+</div>
