@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login';
-import { RegisterComponent } from './components/register/register';
-import { HomeComponent } from './components/home/home'; 
-import { AreaRiservataComponent } from './components/area-riservata/area-riservata';
-import { OrdersPageComponent } from './components/orders-page/orders-page'; 
-import { ShopListComponent } from './components/shop-list/shop-list';
-import { ProductListComponent } from './components/product-list/product-list';
-import { ProductFormComponent } from './components/product-form/product-form';
-import { ProductDetailsComponent } from './components/product-details/product-details';
-import { CartComponent } from './components/cart/cart';
+import { LoginComponent } from './views/login/login';
+import { RegisterComponent } from './views/register/register';
+import { HomeComponent } from './views/home/home'; 
+import { AreaRiservataComponent } from './views/area-riservata/area-riservata';
+import { OrdersPageComponent } from './views/orders-page/orders-page'; 
+import { ShopListComponent } from './views/shop-list/shop-list';
+import { ProductListComponent } from './views/product-list/product-list';
+import { ProductFormComponent } from './views/product-form/product-form';
+import { ProductDetailsComponent } from './views/product-details/product-details';
+import { CartComponent } from './views/cart/cart';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
