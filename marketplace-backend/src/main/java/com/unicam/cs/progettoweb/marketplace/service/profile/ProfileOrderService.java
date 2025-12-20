@@ -1,13 +1,13 @@
 package com.unicam.cs.progettoweb.marketplace.service.profile;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.model.order.OrderItem;
-import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
-import com.unicam.cs.progettoweb.marketplace.service.order.OrderService;
+import com.unicam.cs.progettoweb.marketplace.service.CartService;
+import com.unicam.cs.progettoweb.marketplace.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;

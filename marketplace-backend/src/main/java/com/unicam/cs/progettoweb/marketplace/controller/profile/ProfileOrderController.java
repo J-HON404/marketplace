@@ -4,19 +4,19 @@ import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.dto.CartItemRequest;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
-import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
+import com.unicam.cs.progettoweb.marketplace.service.CartService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileOrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/profiles/{profileId}/shops/{shopId}/cart")
-public class ProfileCartController {
+public class ProfileOrderController {
 
     private final CartService cartService;
     private final ProfileOrderService profileOrderService;
 
-    public ProfileCartController(CartService cartService, ProfileOrderService profileOrderService) {
+    public ProfileOrderController(CartService cartService, ProfileOrderService profileOrderService) {
         this.cartService = cartService;
         this.profileOrderService = profileOrderService;
     }

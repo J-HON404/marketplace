@@ -1,8 +1,8 @@
 package com.unicam.cs.progettoweb.marketplace.security;
 
-import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.OrderRepository;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepository;
-import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.ShopRepository;
 import org.springframework.stereotype.Component;
 
 @Component("shopSecurity")

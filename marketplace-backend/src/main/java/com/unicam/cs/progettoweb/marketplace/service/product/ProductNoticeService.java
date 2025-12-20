@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.product;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductNoticeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.repository.order;
+package com.unicam.cs.progettoweb.marketplace.repository;
 
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;

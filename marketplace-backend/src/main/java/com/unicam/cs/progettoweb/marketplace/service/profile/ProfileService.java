@@ -1,8 +1,8 @@
 package com.unicam.cs.progettoweb.marketplace.service.profile;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
-import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
+import com.unicam.cs.progettoweb.marketplace.model.Profile;
+import com.unicam.cs.progettoweb.marketplace.repository.ProfileRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

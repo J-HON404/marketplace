@@ -1,9 +1,9 @@
-package com.unicam.cs.progettoweb.marketplace.service.order;
+package com.unicam.cs.progettoweb.marketplace.service;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.enums.OrderStatus;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
-import com.unicam.cs.progettoweb.marketplace.repository.order.OrderRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

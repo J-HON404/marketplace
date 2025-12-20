@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.model.cart;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.unicam.cs.progettoweb.marketplace.model.product.Product;
+import com.unicam.cs.progettoweb.marketplace.model.Product;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

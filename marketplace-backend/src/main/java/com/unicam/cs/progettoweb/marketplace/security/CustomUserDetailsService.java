@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.security;
 
-import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
-import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
+import com.unicam.cs.progettoweb.marketplace.model.Profile;
+import com.unicam.cs.progettoweb.marketplace.repository.ProfileRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -2,10 +2,10 @@ package com.unicam.cs.progettoweb.marketplace.service.profile;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.enums.ShopCategory;
-import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
-import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
-import com.unicam.cs.progettoweb.marketplace.repository.profile.ProfileRepository;
-import com.unicam.cs.progettoweb.marketplace.repository.shop.ShopRepository;
+import com.unicam.cs.progettoweb.marketplace.model.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.Shop;
+import com.unicam.cs.progettoweb.marketplace.repository.ProfileRepository;
+import com.unicam.cs.progettoweb.marketplace.repository.ShopRepository;
 import com.unicam.cs.progettoweb.marketplace.security.ShopSecurity;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ProductNoticeRequest;
-import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductNoticeService;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import org.springframework.security.access.prepost.PreAuthorize;

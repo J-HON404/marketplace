@@ -1,6 +1,6 @@
-package com.unicam.cs.progettoweb.marketplace.repository.profile;
+package com.unicam.cs.progettoweb.marketplace.repository;
 
-import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
+import com.unicam.cs.progettoweb.marketplace.model.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

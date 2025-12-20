@@ -2,7 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.controller.shop;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.dto.ProductNoticeRequest;
-import com.unicam.cs.progettoweb.marketplace.model.notice.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.service.shop.ShopProductNoticeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

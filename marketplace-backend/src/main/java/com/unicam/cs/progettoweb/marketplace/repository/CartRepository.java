@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.repository.cart;
+package com.unicam.cs.progettoweb.marketplace.repository;
 
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;

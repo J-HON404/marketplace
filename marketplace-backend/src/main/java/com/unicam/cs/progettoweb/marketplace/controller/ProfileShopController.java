@@ -1,8 +1,8 @@
-package com.unicam.cs.progettoweb.marketplace.controller.seller;
+package com.unicam.cs.progettoweb.marketplace.controller;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
 import com.unicam.cs.progettoweb.marketplace.model.enums.ShopCategory;
-import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
+import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

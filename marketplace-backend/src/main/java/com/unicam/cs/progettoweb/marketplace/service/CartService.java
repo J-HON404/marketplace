@@ -1,9 +1,9 @@
-package com.unicam.cs.progettoweb.marketplace.service.cart;
+package com.unicam.cs.progettoweb.marketplace.service;
 
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
-import com.unicam.cs.progettoweb.marketplace.model.product.Product;
-import com.unicam.cs.progettoweb.marketplace.repository.cart.CartRepository;
+import com.unicam.cs.progettoweb.marketplace.model.Product;
+import com.unicam.cs.progettoweb.marketplace.repository.CartRepository;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;

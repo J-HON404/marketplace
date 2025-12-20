@@ -1,6 +1,6 @@
-package com.unicam.cs.progettoweb.marketplace.repository.shop;
+package com.unicam.cs.progettoweb.marketplace.repository;
 
-import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
+import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
