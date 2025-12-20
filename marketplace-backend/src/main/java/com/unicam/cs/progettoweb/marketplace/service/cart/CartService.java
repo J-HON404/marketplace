@@ -28,6 +28,10 @@ public class CartService {
         return cartRepository.findByUser_IdAndShop_Id(profileId, shopId);
     }
 
+    private Optional<Cart> getCartByProfile(Long profileId) {
+        return cartRepository.findByUser_Id(profileId);
+    }
+
     public Cart createCart(Long profileId, Long shopId) {
         Cart cart = new Cart();
         cart.setUser(userService.findProfileById(profileId));
@@ -36,23 +40,29 @@ public class CartService {
     }
 
     public Cart addProduct(Long profileId, Long shopId, Long productId, int quantity) {
-        Cart cart = getCart(profileId, shopId).orElseGet(() -> createCart(profileId, shopId));
+        Cart cart = getCartByProfile(profileId).orElse(null);
+        if (cart == null) {
+            cart = createCart(profileId, shopId);
+        } else if (!cart.getShop().getId().equals(shopId)) {
+            throw new IllegalStateException("Hai già prodotti di un altro negozio!");
+        }
         Product product = productService.getProductById(productId);
         productService.checkProductDateAvailability(product);
-        cart.getItems().stream()
+        Cart currentCart = cart;
+        currentCart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
                 .findFirst()
                 .ifPresentOrElse(
                         item -> item.setQuantity(item.getQuantity() + quantity),
                         () -> {
                             CartItem item = new CartItem();
-                            item.setCart(cart);
+                            item.setCart(currentCart);
                             item.setProduct(product);
                             item.setQuantity(quantity);
-                            cart.getItems().add(item);
+                            currentCart.getItems().add(item);
                         }
                 );
-        return cartRepository.save(cart);
+        return cartRepository.save(currentCart);
     }
 
     public void removeProduct(Long profileId, Long shopId, Long productId) {

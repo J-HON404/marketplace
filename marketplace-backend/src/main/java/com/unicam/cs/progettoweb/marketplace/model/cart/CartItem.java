@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.cart;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false) //fk verso cart_id
+    @JsonBackReference
     private Cart cart;
 
     @ManyToOne

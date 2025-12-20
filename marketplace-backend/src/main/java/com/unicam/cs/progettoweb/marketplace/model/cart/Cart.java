@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.model.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.unicam.cs.progettoweb.marketplace.model.profile.Profile;
 import com.unicam.cs.progettoweb.marketplace.model.shop.Shop;
 import jakarta.persistence.*;
@@ -24,6 +25,7 @@ public class Cart {
     private Profile user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) //cartItem ha riferimento con FK su Cart
+    @JsonManagedReference
     private List<CartItem> items = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)

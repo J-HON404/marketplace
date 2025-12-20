@@ -1,6 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
+import com.unicam.cs.progettoweb.marketplace.dto.CartItemRequest;
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.service.cart.CartService;
@@ -33,10 +34,9 @@ public class ProfileCartController {
         return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
-
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<Cart>> addProductToCart(@PathVariable Long profileId, @PathVariable Long shopId, @RequestParam Long productId, @RequestParam int quantity) {
-        Cart cart = cartService.addProduct(profileId, shopId, productId, quantity);
+    public ResponseEntity<ApiResponse<Cart>> addProductToCart(@PathVariable Long profileId, @PathVariable Long shopId, @RequestBody CartItemRequest request) {
+        Cart cart = cartService.addProduct(profileId, shopId, request.getProductId(), request.getQuantity());
         return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
@@ -47,13 +47,13 @@ public class ProfileCartController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<Cart>> updateProductQuantity(@PathVariable Long profileId, @PathVariable Long shopId, @RequestParam Long productId, @RequestParam int quantity) {
-        Cart cart = cartService.updateQuantity(profileId, shopId, productId, quantity);
+    public ResponseEntity<ApiResponse<Cart>> updateProductQuantity(@PathVariable Long profileId, @PathVariable Long shopId, @RequestBody CartItemRequest request) {
+        Cart cart = cartService.updateQuantity(profileId, shopId, request.getProductId(), request.getQuantity());
         return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
-    @DeleteMapping("/remove")
-    public ResponseEntity<Void> removeProductFromCart(@PathVariable Long profileId, @PathVariable Long shopId, @RequestParam Long productId) {
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<Void> removeProductFromCart(@PathVariable Long profileId, @PathVariable Long shopId, @PathVariable Long productId) {
         cartService.removeProduct(profileId, shopId, productId);
         return ResponseEntity.noContent().build();
     }

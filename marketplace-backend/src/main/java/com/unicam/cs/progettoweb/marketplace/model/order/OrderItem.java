@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicam.cs.progettoweb.marketplace.model.order.Order;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false) //fk verso order_id
+    @JsonIgnore
     private Order order;
 
     @ManyToOne
