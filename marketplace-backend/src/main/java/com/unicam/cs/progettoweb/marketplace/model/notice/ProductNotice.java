@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.model.notice;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeProductNotice;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class ProductNotice {
 
     @ManyToOne
     @JoinColumn(name = "product_id") //fk verso product_id
+    @JsonIgnore
     private Product product;
 
 

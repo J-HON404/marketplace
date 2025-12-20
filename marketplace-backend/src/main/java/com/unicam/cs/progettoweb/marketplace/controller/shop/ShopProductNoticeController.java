@@ -20,7 +20,7 @@ public class ShopProductNoticeController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductNotice>>> getProductNotices(@PathVariable Long productId) {
-        return ResponseEntity.ok(ApiResponse.success(shopProductNoticeService.getProductNoticesOfProductId(productId)));
+        return ResponseEntity.ok(ApiResponse.success(shopProductNoticeService.getProductNoticesOfProduct(productId)));
     }
 
     @GetMapping("/{noticeId}")

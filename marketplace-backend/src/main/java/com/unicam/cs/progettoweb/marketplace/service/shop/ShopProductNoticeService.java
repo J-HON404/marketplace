@@ -19,12 +19,10 @@ public class ShopProductNoticeService {
         this.productService = productService;
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfProduct(principal.id, #productId)")
-    public List<ProductNotice> getProductNoticesOfProductId(Long productId) {
+    public List<ProductNotice> getProductNoticesOfProduct(Long productId) {
         return productNoticeService.getProductNoticesByProductId(productId);
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfProduct(principal.id, #productId)")
     public ProductNotice getProductNoticeByIdAndProductId(Long noticeId, Long productId) {
         return productNoticeService.getProductNoticeByIdAndProductId(noticeId, productId);
     }
