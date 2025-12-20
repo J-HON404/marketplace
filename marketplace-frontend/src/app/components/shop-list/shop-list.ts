@@ -15,7 +15,6 @@ import { Shop } from '../../interfaces/shops';
 })
 export class ShopListComponent implements OnInit {
   profileId: number | null = null;
-  // Ora shops è un array di tipo Shop (con profileId obbligatorio)
   shops: Shop[] = []; 
   loading = false;
   errorMessage = '';
@@ -27,14 +26,14 @@ export class ShopListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.profileId = Number(this.route.snapshot.paramMap.get('profileId')) || this.tokenService.getProfileId();
-    
-    if (!this.profileId) {
-      this.errorMessage = 'Accesso non autorizzato: ID profilo non trovato';
-      return;
-    }
-    
-    this.loadShops(this.profileId);
+    this.route.paramMap.subscribe(params => {
+      this.profileId = Number(params.get('profileId')) || this.tokenService.getProfileId();
+      if (!this.profileId) {
+        this.errorMessage = 'Accesso non autorizzato: ID profilo non trovato';
+        return;
+      }
+      this.loadShops(this.profileId);
+    });
   }
 
   loadShops(profileId: number) {
@@ -46,13 +45,11 @@ export class ShopListComponent implements OnInit {
           id: s.id,
           name: s.name,
           shopCategory: s.shopCategory,
-          profileId: s.profileId || profileId // Garantiamo che non sia null
+          profileId: s.profileId || profileId
         }));
-
         this.loading = false;
       },
-      error: (err: HttpErrorResponse) => {
-        console.error('Errore caricamento shop', err);
+      error: () => {
         this.errorMessage = 'Si è verificato un errore nel caricamento dei negozi.';
         this.loading = false;
       }

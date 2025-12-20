@@ -16,6 +16,48 @@
   text-align: center;
 }
 
+.header-actions {
+  width: 90%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.actions-right {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  font-family: inherit;
+}
+
+.btn-secondary {
+  background-color: white;
+  border: 1px solid #ddd !important;
+  color: #555;
+  &:hover { background-color: #f0f0f0; }
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  &:hover { background-color: #2980b9; }
+}
+
+.btn-cart-nav {
+  background-color: #2b6cb0;
+  color: white;
+  &:hover { background-color: #1e4a7a; }
+}
+
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -26,7 +68,7 @@
 }
 
 .shop-card {
-  padding: 1.5rem; // Ridotto leggermente per bilanciare la cornice interna
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   background-color: #fff;
@@ -36,15 +78,14 @@
   flex-direction: column;
 }
 
-/* LA CORNICE INTERNA */
 .shop-image-container {
   width: 100%;
   height: 160px;
-  background-color: #fff; // Sfondo bianco per creare lo stacco
-  border: 1px solid #ddd; // La cornice effettiva
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 1.5rem;
-  padding: 8px; // Spazio vuoto tra cornice e immagine
+  padding: 8px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -53,19 +94,18 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 4px; // Arrotonda leggermente anche l'immagine dentro
-  background-color: #f0f0f0; // Grigio se l'immagine manca
+  border-radius: 4px;
+  background-color: #f0f0f0;
 }
 
-/* TESTI */
 .product-title {
-  font-weight: bold; // Solo il titolo in grassetto
+  font-weight: bold;
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
 .product-info p {
-  font-weight: normal; // Tutto il resto normale
+  font-weight: normal;
   margin: 0.3rem 0;
   font-size: 0.95rem;
 }
@@ -90,17 +130,18 @@
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
-.btn {
-  margin-top: 1rem;
-  padding: 0.6rem;
-  cursor: pointer;
-}
-
 .profile-buttons {
-  margin-top: 1rem;
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding-top: 1rem;
+}
+
+.btn-info {
+  background-color: #eee;
+  color: #333;
+  &:hover { background-color: #ddd; }
 }
 
 .btn-add {
@@ -117,33 +158,13 @@
 }
 
 .btn-edit {
-  background-color: #f39c12; // Arancione
+  background-color: #f39c12;
   color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: background-color 0.2s;
-  
-  &:hover { 
-    background-color: #e67e22; 
-  }
+  &:hover { background-color: #e67e22; }
 }
 
-/* AGGIUNGI QUESTO PER IL TASTO IN ALTO */
-.header-actions {
-  width: 90%;
-  max-width: 900px;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-.btn-primary {
-  background-color: #3498db; // Blu
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.8rem 1.5rem;
-  font-weight: bold;
-  &:hover { background-color: #2980b9; }
+.no-products {
+  text-align: center;
+  color: #666;
+  margin-top: 2rem;
 }

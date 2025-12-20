@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
-import { NoticeService } from '../../services/productNotice'; 
+import { NoticeService } from '../../services/product-notices'; 
 import { TokenService } from '../../services/token';
-import { ProductNotices, TypeNotice } from '../../interfaces/productNotices';
+import { ProductNotices, TypeNotice } from '../../interfaces/product-notices';
 import { Products } from '../../interfaces/products';
 
 @Component({

@@ -1,6 +1,12 @@
 <div class="page-container">
   <h2 class="page-title">Lista Negozi</h2>
 
+  <div class="header-actions">
+    <button class="btn btn-secondary" [routerLink]="['/home']">
+      Torna alla Home
+    </button>
+  </div>
+
   <div *ngIf="loading" class="loading-message">Caricamento...</div>
   <div *ngIf="!loading && errorMessage" class="error-message">{{ errorMessage }}</div>
 
@@ -12,11 +18,11 @@
           Categoria: {{ shop.shopCategory }}
         </p>
       </div>
-       <br>
+      <br>
       <div class="profile-buttons">
-      <a class="btn" [routerLink]="['/profiles', profileId, 'shops', shop.id, 'products']">
-  Catalogo prodotti
-</a>
+        <a class="btn btn-info" [routerLink]="['/profiles', profileId, 'shops', shop.id, 'products']">
+          Catalogo prodotti
+        </a>
       </div>
     </div>
   </div>

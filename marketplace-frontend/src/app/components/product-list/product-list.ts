@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { TokenService } from '../../services/token';
+import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+
+import { TokenService } from '../../services/token';
 import { Products } from '../../interfaces/products';
 import { ProductService } from '../../services/product';
+import { CartService } from '../../services/cart';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './product-list.html',
   styleUrls: ['./product-list.scss']
 })
@@ -20,13 +23,14 @@ export class ProductListComponent implements OnInit {
   products: Products[] = []; 
   loading = false;
   errorMessage = '';
-  isOwner: boolean = false; // Sarà impostata dal backend
+  isOwner: boolean = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private productService: ProductService,
-    public tokenService: TokenService
+    public tokenService: TokenService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -40,18 +44,39 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    // 1. Verifichiamo i permessi dal Backend
     this.checkPermissions();
-    
-    // 2. Carichiamo i prodotti
     this.loadProducts(this.shopId);
+  }
+
+  onAddToCart(product: Products) {
+    if (!this.profileId || !this.shopId) {
+      alert("Errore: Informazioni profilo o negozio mancanti.");
+      return;
+    }
+
+    this.cartService.addProductToCart(
+      this.profileId, 
+      this.shopId, 
+      product.id, 
+      1 
+    ).subscribe({
+      next: (cart) => {
+        alert(`${product.name} aggiunto al carrello!`);
+        console.log('Stato carrello attuale:', cart);
+      },
+      error: (err) => {
+        console.error('Errore aggiunta carrello:', err);
+        // Se il backend lancia l'eccezione del negozio differente, la mostriamo qui
+        const backendMessage = err.error?.message || 'Errore durante l\'aggiunta. Puoi acquistare da un solo negozio alla volta.';
+        alert(backendMessage);
+      }
+    });
   }
 
   checkPermissions() {
     if (this.userRole === 'SELLER' && this.profileId && this.shopId) {
       this.productService.checkOwnership(this.profileId, this.shopId).subscribe({
         next: (res) => {
-          // Usiamo la risposta del server (ApiResponse.data)
           this.isOwner = res.data === true;
         },
         error: () => {

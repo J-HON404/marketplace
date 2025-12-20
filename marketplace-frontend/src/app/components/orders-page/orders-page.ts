@@ -5,7 +5,6 @@ import { OrdersService } from '../../services/orders';
 import { TokenService } from '../../services/token';
 import { OrdersTableComponent } from '../orders-table/orders-table';
 
-// Interfaccia base per un ordine
 interface Order {
   id: number;
   date: string;

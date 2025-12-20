@@ -8,6 +8,7 @@ import { ShopListComponent } from './components/shop-list/shop-list';
 import { ProductListComponent } from './components/product-list/product-list';
 import { ProductFormComponent } from './components/product-form/product-form';
 import { ProductDetailsComponent } from './components/product-details/product-details';
+import { CartComponent } from './components/cart/cart';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'profiles/:profileId/shops/:shopId/products/editor', component: ProductFormComponent },
   { path: 'profiles/:profileId/shops/:shopId/products/editor/:productId', component: ProductFormComponent },
   { path: 'profiles/:profileId/shops/:shopId/products/:productId/details', component: ProductDetailsComponent },
+  { path: 'profiles/:profileId/shops/:shopId/cart', component: CartComponent },
   { path: '**', redirectTo: 'login' }
 ];

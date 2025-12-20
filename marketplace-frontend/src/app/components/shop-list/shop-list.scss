@@ -9,11 +9,26 @@
   background-color: #f9f9f9;
 }
 
+.page-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .page-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 2rem;
   text-align: center;
+}
+
+.header-actions {
+  width: 90%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
 }
 
 .shop-grid {
@@ -36,33 +51,9 @@
   flex-direction: column;
 }
 
-/* Stato Grigio: se quantità 0 o data futura */
-.disabled-card {
-  background-color: #e0e0e0 !important;
-  color: #777;
-  box-shadow: none !important;
-  transform: none !important;
-  filter: grayscale(1);
-}
-
-.shop-card:hover:not(.disabled-card) {
+.shop-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-}
-
-.shop-image-container {
-  width: 100%;
-  height: 150px;
-  background-color: #eee;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-
-.shop-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .shop-category-text {
@@ -72,9 +63,37 @@
   color: #666;
 }
 
-.loading, .error, .no-shops {
+.btn {
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+}
+
+.btn-secondary {
+  background-color: white;
+  border: 1px solid #ddd !important;
+  color: #555;
+  &:hover { background-color: #f0f0f0; }
+}
+
+.btn-info {
+  background-color: #3498db;
+  color: white;
+  &:hover { background-color: #2980b9; }
+}
+
+.profile-buttons {
+  margin-top: auto;
+}
+
+.loading-message, .error-message, .no-shops {
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.error { color: red; }
+.error-message { color: red; }

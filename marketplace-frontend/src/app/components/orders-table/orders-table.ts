@@ -37,7 +37,6 @@ export class OrdersTableComponent implements OnInit {
     }
   }
 
-
   canSellerShip(order: any): boolean {
     return this.helper.canSellerShip(order);
   }

@@ -1,8 +1,18 @@
 <h2 class="page-title">Lista Prodotti</h2>
 
-<div class="header-actions" *ngIf="isOwner">
-  <button class="btn btn-primary" (click)="onAddProduct()">
+<div class="header-actions">
+  <button class="btn btn-secondary" [routerLink]="['/profiles', profileId, 'shops']">
+    Torna ai Negozi
+  </button>
+
+  <button *ngIf="isOwner" class="btn btn-primary" (click)="onAddProduct()">
     + Nuovo Prodotto
+  </button>
+
+  <button *ngIf="userRole === 'CUSTOMER'" 
+          class="btn btn-cart-nav" 
+          [routerLink]="['/profiles', profileId, 'shops', shopId, 'cart']">
+    🛒 Vai al Carrello
   </button>
 </div>
 
@@ -18,35 +28,33 @@
     <div class="product-info">
       <div class="product-title">{{ product.name }}</div>
       <p>{{ product.description }}</p>
-      <p>prezzo: {{ product.price }}€</p>
-      <p>quantità: {{ product.quantity }}</p>
+      <p><strong>Prezzo:</strong> {{ product.price }}€</p>
+      <p><strong>Disponibilità:</strong> {{ product.quantity }}</p>
       <p class="shop-category-text" *ngIf="isFutureDate(product.availabilityDate)">
-        disponibile dal: {{ product.availabilityDate | date:'dd/MM/yyyy' }}
+        Disponibile dal: {{ product.availabilityDate | date:'dd/MM/yyyy' }}
       </p>
     </div>
 
     <div class="profile-buttons">
-      
       <button class="btn btn-info" (click)="onViewDetails(product.id)">
         Maggiori Informazioni
       </button>
 
       <button *ngIf="userRole === 'CUSTOMER'" 
               class="btn btn-add" 
-              [disabled]="product.quantity === 0 || isFutureDate(product.availabilityDate)">
+              [disabled]="product.quantity === 0 || isFutureDate(product.availabilityDate)"
+              (click)="onAddToCart(product)">
         Aggiungi al carrello
       </button>
 
       <ng-container *ngIf="isOwner">
         <button class="btn btn-edit" (click)="onEditProduct(product)">
-          Modifica Prodotto
+          Modifica
         </button>
-        
         <button class="btn btn-danger" (click)="onDeleteProduct(product.id)">
-          Elimina Prodotto
+          Elimina
         </button>
       </ng-container>
-
     </div>
   </div>
 </div>

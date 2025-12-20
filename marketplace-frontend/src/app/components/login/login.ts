@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -32,11 +31,12 @@ export class LoginComponent {
 
     this.authService.login(this.username, this.password).subscribe({
       next: res => {
-        const token = res.data; // Il token dal backend
+        const token = res.data;
         if (token) {
           this.tokenService.setToken(token);
+          const profileId = this.tokenService.getProfileId();
           this.loginMessage = 'Login OK';
-          this.router.navigate(['/home']);
+          this.router.navigate(['/profile', profileId]);
         } else {
           this.loginMessage = 'Token mancante dal server';
         }
@@ -45,4 +45,3 @@ export class LoginComponent {
     });
   }
 }
-
