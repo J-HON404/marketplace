@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,21 +34,22 @@ public class ProfileOrderService {
         profileService.findProfileById(profileId);
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public List<Order> getOrdersOfProfile(Long profileId) {
         ensureProfileExists(profileId);
         return orderService.getOrdersByProfileId(profileId);
     }
 
-
-    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Order createOrderFromCart(Long profileId, Long shopId) {
         ensureProfileExists(profileId);
         Cart customerCart = cartService.getCart(profileId, shopId)
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty"));
+
         if (customerCart.isEmpty()) {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty");
         }
+
+        validateStockAvailability(customerCart);
+
         List<OrderItem> orderItems = getOrderItemsFromCart(customerCart);
         Order order = new Order();
         Profile profile = profileService.findProfileById(profileId);
@@ -58,8 +60,25 @@ public class ProfileOrderService {
         order.setTotal(getTotalPriceFromOrderItems(orderItems));
         orderItems.forEach(item -> item.setOrder(order));
         Order createdOrder = orderService.createOrder(order);
+        updateProductInventory(customerCart);
         cartService.clearCart(profileId, shopId);
         return createdOrder;
+    }
+
+    private void validateStockAvailability(Cart cart) {
+        cart.getItems().forEach(item -> {
+            if (item.getQuantity() > item.getProduct().getQuantity()) {
+                throw new MarketplaceException(HttpStatus.BAD_REQUEST,
+                        "Quantità non disponibile per: " + item.getProduct().getName());
+            }
+        });
+    }
+
+    private void updateProductInventory(Cart cart) {
+        cart.getItems().forEach(item -> {
+            int newQuantity = item.getProduct().getQuantity() - item.getQuantity();
+            item.getProduct().setQuantity(newQuantity);
+        });
     }
 
     private List<OrderItem> getOrderItemsFromCart(Cart customerCart) {
@@ -80,7 +99,7 @@ public class ProfileOrderService {
                 .sum();
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') and @customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
+    @PreAuthorize("hasAuthority('CUSTOMER') and @customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
     public void confirmDelivered(Long profileId, Long orderId) {
         ensureProfileExists(profileId);
         OrderStatus currentStatus = orderService.getOrderStatus(orderId);

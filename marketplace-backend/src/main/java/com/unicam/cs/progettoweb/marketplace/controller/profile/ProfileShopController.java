@@ -52,11 +52,4 @@ public class ProfileShopController {
     }
 
 
-    @DeleteMapping("/shop/{shopId}")
-    public ResponseEntity<ApiResponse<Void>> deleteShop(@PathVariable Long profileId, @PathVariable Long shopId) {
-        sellerShopService.deleteShop(profileId,shopId);
-        return ResponseEntity.noContent().build();
-    }
-
-
 }

@@ -32,7 +32,7 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private ProfileRole role;
 
-    @OneToOne(mappedBy = "seller")
+    @OneToOne(mappedBy = "seller",cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JsonIgnore
     private Shop shop; // solo se il profilo è SELLER
 }

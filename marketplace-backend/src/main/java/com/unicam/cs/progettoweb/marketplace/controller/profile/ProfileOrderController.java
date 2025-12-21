@@ -23,8 +23,7 @@ public class ProfileOrderController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Cart>> getCart(@PathVariable Long profileId, @PathVariable Long shopId) {
-        Cart cart = cartService.getCart(profileId, shopId)
-                .orElseThrow(() -> new IllegalArgumentException("Cart not found"));
+        Cart cart = cartService.getCart(profileId, shopId).orElse(new Cart());
         return ResponseEntity.ok(ApiResponse.success(cart));
     }
 
