@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.dto;
+package com.unicam.cs.progettoweb.marketplace.dto.auth;
 
 import lombok.Data;
 

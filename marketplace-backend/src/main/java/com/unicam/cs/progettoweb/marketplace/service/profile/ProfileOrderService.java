@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Transactional
 @Service
 public class ProfileOrderService {
 
@@ -39,7 +40,6 @@ public class ProfileOrderService {
     }
 
 
-    @Transactional
     @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Order createOrderFromCart(Long profileId, Long shopId) {
         ensureProfileExists(profileId);

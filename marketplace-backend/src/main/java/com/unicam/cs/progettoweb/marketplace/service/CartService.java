@@ -2,7 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.service;
 
 import com.unicam.cs.progettoweb.marketplace.model.cart.Cart;
 import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
-import com.unicam.cs.progettoweb.marketplace.model.Product;
+import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.repository.CartRepository;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
@@ -35,7 +35,7 @@ public class CartService {
     public Cart createCart(Long profileId, Long shopId) {
         Cart cart = new Cart();
         cart.setUser(userService.findProfileById(profileId));
-        cart.setShop(sellerShopService.findShopById(shopId));
+        cart.setShop(sellerShopService.getShopById(shopId));
         return cartRepository.save(cart);
     }
 

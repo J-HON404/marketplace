@@ -1,8 +1,8 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
-import com.unicam.cs.progettoweb.marketplace.dto.ProductRequest;
+import com.unicam.cs.progettoweb.marketplace.dto.product.ProductRequest;
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.Product;
+import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;

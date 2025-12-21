@@ -1,5 +1,6 @@
 package com.unicam.cs.progettoweb.marketplace.service.profile;
 
+import com.unicam.cs.progettoweb.marketplace.dto.ShopRequest;
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.enums.ShopCategory;
 import com.unicam.cs.progettoweb.marketplace.model.Profile;
@@ -10,10 +11,11 @@ import com.unicam.cs.progettoweb.marketplace.security.ShopSecurity;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+@Transactional
 @Service
 public class SellerShopService {
 
@@ -25,11 +27,6 @@ public class SellerShopService {
         this.shopRepository = shopRepository;
         this.profileRepository = profileRepository;
         this.shopSecurity = shopSecurity;
-    }
-
-    public Shop findShopById(Long shopId) {
-        return shopRepository.findById(shopId)
-                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "shop not found with id: " + shopId));
     }
 
     @PreAuthorize("hasRole('SELLER')")
@@ -48,10 +45,17 @@ public class SellerShopService {
                         "Shop not found with id: " + shopId));
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public List<Shop> getAllShops() {
+        return shopRepository.findAll();
+    }
+
     @PreAuthorize("hasRole('SELLER') and principal.id == #sellerId")
-    public Shop createShop(Long sellerId, String shopName, ShopCategory shopCategory) {
+    public Shop createShop(Long sellerId, ShopRequest shopRequest) {
         Profile seller = validateSeller(sellerId);
-        if (shopRepository.findByName(shopName).isPresent()) {
+        String shopName = shopRequest.getName();
+        ShopCategory shopCategory = shopRequest.getCategory();
+        if (shopRepository.findByName(shopRequest.getName()).isPresent()) {
             throw new MarketplaceException(HttpStatus.CONFLICT, "Shop with name " + shopName + " already exists");
         }
         if (shopCategory == null) {
@@ -65,22 +69,23 @@ public class SellerShopService {
         return shopRepository.save(shop);
     }
 
-    @PreAuthorize("hasRole('SELLER')")
-    public Shop assignShop(Long profileId, Shop shop) {
-        Profile profile = validateSeller(profileId);
-        shop.setSeller(profile);
-        return shopRepository.save(shop);
-    }
-
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
-    public Shop updateShop(Long shopId, Shop updatedShop) {
+    @PreAuthorize("hasRole('SELLER') and principal.id == #profileId and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public Shop updateShop(Long profileId, Long shopId, ShopRequest updatedShop) {
         Shop existingShop = getShopById(shopId);
-        existingShop.setName(updatedShop.getName());
+        if (!existingShop.getName().equals(updatedShop.getName())) {
+            if (shopRepository.findByName(updatedShop.getName()).isPresent()) {
+                throw new MarketplaceException(HttpStatus.CONFLICT, "Shop name already exists");
+            }
+            existingShop.setName(updatedShop.getName());
+        }
+        if (updatedShop.getCategory() != null) {
+            existingShop.setShopCategory(updatedShop.getCategory());
+        }
         return shopRepository.save(existingShop);
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
-    public void deleteShop(Long shopId) {
+    @PreAuthorize("hasRole('SELLER') and principal.id == #profileId and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    public void deleteShop(Long profileId,Long shopId) {
         Shop shop = getShopById(shopId);
         shopRepository.delete(shop);
     }
@@ -100,9 +105,4 @@ public class SellerShopService {
         return shopSecurity.isSellerOfShop(profileId, shopId);
     }
 
-    public List<Shop> getAllShops(Long sellerId) {
-         profileRepository.findById(sellerId)
-                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Seller not found with id " + sellerId));
-        return shopRepository.findAll();
-    }
 }

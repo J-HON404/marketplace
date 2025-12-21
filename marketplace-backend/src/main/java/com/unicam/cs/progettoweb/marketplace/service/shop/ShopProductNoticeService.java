@@ -1,13 +1,16 @@
 package com.unicam.cs.progettoweb.marketplace.service.shop;
 
-import com.unicam.cs.progettoweb.marketplace.dto.ProductNoticeRequest;
-import com.unicam.cs.progettoweb.marketplace.model.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.dto.product.ProductNoticeRequest;
+import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductNoticeService;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
+@Transactional
 @Service
 public class ShopProductNoticeService {
 

@@ -1,7 +1,7 @@
 package com.unicam.cs.progettoweb.marketplace.controller;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
-import com.unicam.cs.progettoweb.marketplace.dto.LoginRequest;
+import com.unicam.cs.progettoweb.marketplace.dto.auth.LoginRequest;
 import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileRole;
 import com.unicam.cs.progettoweb.marketplace.model.Profile;
 import com.unicam.cs.progettoweb.marketplace.security.JwtUtil;

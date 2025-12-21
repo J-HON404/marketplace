@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.dto;
+package com.unicam.cs.progettoweb.marketplace.dto.auth;
 
 import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileRole;
 import lombok.Data;

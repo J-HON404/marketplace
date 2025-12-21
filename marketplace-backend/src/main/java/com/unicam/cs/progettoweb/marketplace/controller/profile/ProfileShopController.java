@@ -1,7 +1,7 @@
-package com.unicam.cs.progettoweb.marketplace.controller;
+package com.unicam.cs.progettoweb.marketplace.controller.profile;
 
 import com.unicam.cs.progettoweb.marketplace.dto.ApiResponse;
-import com.unicam.cs.progettoweb.marketplace.model.enums.ShopCategory;
+import com.unicam.cs.progettoweb.marketplace.dto.ShopRequest;
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class ProfileShopController {
     }
 
     @GetMapping("/shops")
-    public ResponseEntity<ApiResponse<List<Shop>>> getAllShops(@PathVariable Long profileId){
-        List<Shop> shops = sellerShopService.getAllShops(profileId);
+    public ResponseEntity<ApiResponse<List<Shop>>> getAllShops(){
+        List<Shop> shops = sellerShopService.getAllShops();
         return ResponseEntity.ok(ApiResponse.success(shops));
     }
 
@@ -39,29 +39,22 @@ public class ProfileShopController {
 
 
     @PostMapping("/shop")
-    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestParam String name, @RequestParam ShopCategory category) {
-        Shop shop = sellerShopService.createShop(profileId, name,category);
+    public ResponseEntity<ApiResponse<Shop>> createShop(@PathVariable Long profileId, @RequestBody ShopRequest shopRequest) {
+        Shop shop = sellerShopService.createShop(profileId, shopRequest);
         return ResponseEntity.ok(ApiResponse.success(shop));
     }
 
 
-    @PostMapping("/shop/assign")
-    public ResponseEntity<ApiResponse<Shop>> assignShop(@PathVariable Long profileId, @RequestBody Shop shop) {
-        Shop created = sellerShopService.assignShop(profileId, shop);
-        return ResponseEntity.ok(ApiResponse.success(created));
-    }
-
-
-    @PutMapping("/shop")
-    public ResponseEntity<ApiResponse<Shop>> updateShop(@PathVariable Long profileId, @RequestBody Shop shop) {
-        Shop updated = sellerShopService.updateShop(profileId, shop);
+    @PutMapping("/shop/{shopId}")
+    public ResponseEntity<ApiResponse<Shop>> updateShop(@PathVariable Long profileId, @PathVariable Long shopId, @RequestBody ShopRequest shopRequest) {
+        Shop updated = sellerShopService.updateShop(profileId,shopId,shopRequest);
         return ResponseEntity.ok(ApiResponse.success(updated));
     }
 
 
-    @DeleteMapping("/shop")
-    public ResponseEntity<ApiResponse<Void>> deleteShop(@PathVariable Long profileId) {
-        sellerShopService.deleteShop(profileId);
+    @DeleteMapping("/shop/{shopId}")
+    public ResponseEntity<ApiResponse<Void>> deleteShop(@PathVariable Long profileId, @PathVariable Long shopId) {
+        sellerShopService.deleteShop(profileId,shopId);
         return ResponseEntity.noContent().build();
     }
 

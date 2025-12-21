@@ -1,12 +1,15 @@
 package com.unicam.cs.progettoweb.marketplace.service.product;
 
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
-import com.unicam.cs.progettoweb.marketplace.model.ProductNotice;
+import com.unicam.cs.progettoweb.marketplace.model.product.ProductNotice;
 import com.unicam.cs.progettoweb.marketplace.repository.product.ProductNoticeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
+@Transactional
 @Service
 public class ProductNoticeService {
 

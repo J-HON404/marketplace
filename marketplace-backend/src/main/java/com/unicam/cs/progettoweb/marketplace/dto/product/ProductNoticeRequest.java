@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.dto;
+package com.unicam.cs.progettoweb.marketplace.dto.product;
 
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeProductNotice;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.unicam.cs.progettoweb.marketplace.model;
+package com.unicam.cs.progettoweb.marketplace.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicam.cs.progettoweb.marketplace.model.enums.TypeProductNotice;

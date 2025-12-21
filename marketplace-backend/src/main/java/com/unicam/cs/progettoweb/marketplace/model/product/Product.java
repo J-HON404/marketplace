@@ -1,6 +1,7 @@
-package com.unicam.cs.progettoweb.marketplace.model;
+package com.unicam.cs.progettoweb.marketplace.model.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
