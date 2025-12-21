@@ -39,18 +39,21 @@ export class ShopListComponent implements OnInit {
   loadShops(profileId: number) {
     this.loading = true;
     this.shopService.getAllShops(profileId).subscribe({
-      next: (res: any) => {
-        const rawData = res.data || res;
-        this.shops = rawData.map((s: any) => ({
-          id: s.id,
-          name: s.name,
-          shopCategory: s.shopCategory,
+      next: (res) => {
+        // Estraiamo l'array di shop da res.data
+        const rawData = res.data || [];
+        
+        // Mappiamo i dati assicurandoci che il profileId sia presente per i link routerLink nel template
+        this.shops = rawData.map((s: Shop) => ({
+          ...s,
           profileId: s.profileId || profileId
         }));
+        
         this.loading = false;
       },
-      error: () => {
-        this.errorMessage = 'Si è verificato un errore nel caricamento dei negozi.';
+      error: (err: HttpErrorResponse) => {
+        // Mostriamo il messaggio d'errore del backend se presente
+        this.errorMessage = err.error?.message || 'Si è verificato un errore nel caricamento dei negozi.';
         this.loading = false;
       }
     });

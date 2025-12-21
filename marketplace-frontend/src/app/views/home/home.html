@@ -4,10 +4,19 @@
   <a *ngIf="profileId" [routerLink]="['/profile', profileId]" class="btn">
     Area riservata
   </a>
+
+  <ng-container *ngIf="role === 'ROLE_SELLER'">
+    <a [routerLink]="shopId ? ['/profiles', profileId, 'shop', 'editor', shopId] : ['/profiles', profileId, 'shop', 'editor']" 
+       class="btn btn-manage">
+      {{ shopId ? 'Gestisci il tuo Shop' : 'Apri uno Shop' }}
+    </a>
+  </ng-container>
+
   <a *ngIf="profileId" [routerLink]="['/profiles', profileId, 'shops']" class="btn">
     Vai ai negozi
   </a>
-  <a *ngIf="profileId" [routerLink]="['/logout']" class="btn">
+
+  <button (click)="logout()" class="btn btn-logout">
     Logout
-  </a>
+  </button>
 </div>

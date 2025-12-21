@@ -34,17 +34,17 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
-  
     const today = new Date();
     this.todayString = today.toISOString().split('T')[0];
 
-
     this.shopId = Number(this.route.snapshot.paramMap.get('shopId'));
     
+    // Recupero dati dallo stato della navigazione
     const stateData = history.state.productData;
     if (stateData) {
       this.isEditMode = true;
       this.productId = stateData.id;
+      // Il patchValue funziona se i nomi dei campi nel form coincidono con quelli dell'oggetto stateData
       this.productForm.patchValue(stateData);
     }
   }
@@ -56,18 +56,30 @@ export class ProductFormComponent implements OnInit {
 
     if (this.isEditMode && this.productId) {
       this.productService.updateProduct(this.shopId!, this.productId, productPayload).subscribe({
-        next: () => this.goBack(),
-        error: (err) => alert('Errore durante l\'aggiornamento')
+        next: (res) => {
+          console.log(res.message); // Logga il messaggio di successo del backend
+          this.goBack();
+        },
+        error: (err) => {
+          // Estrae il messaggio d'errore dal wrapper ApiResponse del backend
+          alert(err.error?.message || 'Errore durante l\'aggiornamento');
+        }
       });
     } else {
       this.productService.createProduct(this.shopId!, productPayload).subscribe({
-        next: () => this.goBack(),
-        error: (err) => alert('Errore durante la creazione')
+        next: (res) => {
+          console.log(res.message);
+          this.goBack();
+        },
+        error: (err) => {
+          alert(err.error?.message || 'Errore durante la creazione');
+        }
       });
     }
   }
 
   goBack() {
+    // Torna alla lista prodotti del negozio
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

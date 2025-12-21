@@ -1,28 +1,67 @@
 :host {
   display: flex;
+  flex-direction: column; // Per mettere l'h2 sopra la card
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+  background-color: #f4f7f6; // Un leggero sfondo per far risaltare la card
+}
+
+h2 {
+  margin-bottom: 2rem;
+  color: #333;
 }
 
 .card {
   display: flex;
-  justify-content: center; /* centra i link */
-  gap: 1rem;               /* distanza tra i link */
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-a.btn {
+/* Stile base per tutti i pulsanti (sia <a> che <button>) */
+.btn {
   padding: 0.8rem 1.6rem;
-  background: #4a90e2;
+  background: #4a90e2; // Colore blu di default
   color: white;
   text-decoration: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+
+  &:hover {
+    background: #357ab8;
+    transform: translateY(-2px); // Effetto sollevamento
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-a.btn:hover {
-  background: #357ab8;
+/* Variante Verde per Gestione/Apertura Shop */
+.btn-manage {
+  background: #28a745;
+
+  &:hover {
+    background: #218838;
+  }
+}
+
+/* Variante Rossa per Logout */
+.btn-logout {
+  background: #dc3545;
+
+  &:hover {
+    background: #c82333;
+  }
 }

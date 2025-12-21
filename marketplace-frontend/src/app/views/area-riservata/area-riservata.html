@@ -1,6 +1,5 @@
 <div class="page-container">
 
-  <!-- Profilo utente -->
   <div class="profile-container" *ngIf="!loading && profileData">
     <h2>Profilo Utente</h2>
     <p>Username: {{ profileData.username }}</p>
@@ -13,25 +12,38 @@
     </div>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="loading">Caricamento...</div>
-
-  <!-- Errore -->
   <div *ngIf="!loading && errorMessage" class="error">{{ errorMessage }}</div>
 
-<div class="profile-container" *ngIf="roleUpper === 'SELLER' && shopData">
-  <h3>Informazioni Shop</h3>
-  <p>ID: {{ shopData.id }}</p>
-  <p>Nome: {{ shopData.name }}</p>
-  <p>Categoria: {{ shopData.shopCategory }}</p>
-</div>
+  <div *ngIf="roleUpper === 'SELLER' && !loading && !errorMessage">
+    <div class="profile-container" *ngIf="shopData">
+      <h3>Informazioni Shop</h3>
+      <p>ID: {{ shopData.id }}</p>
+      <p>Nome: {{ shopData.name }}</p>
+      <p>Categoria: {{ shopData.shopCategory }}</p>
 
-  <!-- Titolo tabella -->
-  <div class="orders-container">
+      <div class="profile-buttons">
+        <a class="btn btn-manage" [routerLink]="['/profiles', profileId, 'shop', 'editor', shopData.id]">
+          Gestione Shop
+        </a>
+      </div>
+    </div>
+
+    <div class="profile-container" *ngIf="!shopData">
+      <h3>Il tuo Negozio</h3>
+      <p>Non hai ancora creato uno shop per vendere i tuoi prodotti.</p>
+      <div class="profile-buttons">
+        <a class="btn btn-primary" [routerLink]="['/profiles', profileId, 'shop', 'editor']">
+          Crea Shop
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="orders-container" *ngIf="!loading && (shopId || roleUpper === 'CUSTOMER')">
     <h3 class="table-title" *ngIf="roleUpper === 'SELLER'">Ordini ricevuti</h3>
     <h3 class="table-title" *ngIf="roleUpper === 'CUSTOMER'">Ordini fatti</h3>
 
-    <!-- Tabella ordini -->
     <app-orders-table
       [orders]="orders"
       [role]="roleUpper"
@@ -40,8 +52,7 @@
     </app-orders-table>
   </div>
 
-  <!-- Nessun ordine -->
-  <div *ngIf="orders.length === 0 && !loading && !errorMessage">
+  <div *ngIf="orders.length === 0 && !loading && !errorMessage && (shopId || roleUpper === 'CUSTOMER')">
     Nessun ordine trovato
   </div>
 

@@ -30,18 +30,32 @@ export class LoginComponent {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: res => {
-        const token = res.data;
+      next: (res) => {
+        // Supponendo che il backend risponda con ApiResponse<string> dove string è il JWT
+        const token = res.data; 
+        
         if (token) {
           this.tokenService.setToken(token);
+          
+          // Recuperiamo il profileId dal token appena salvato
           const profileId = this.tokenService.getProfileId();
-          this.loginMessage = 'Login OK';
-          this.router.navigate(['/profile', profileId]);
+          this.loginMessage = 'Login effettuato con successo!';
+
+          // Navighiamo al profilo
+          if (profileId) {
+            this.router.navigate(['/profile', profileId]);
+          } else {
+            // Fallback se il token non contiene il profileId correttamente
+            this.router.navigate(['/home']);
+          }
         } else {
-          this.loginMessage = 'Token mancante dal server';
+          this.loginMessage = 'Risposta del server non valida.';
         }
       },
-      error: err => this.loginMessage = err.error?.message || 'Errore durante il login'
+      error: (err) => {
+        // Usiamo il messaggio che arriva dal tuo DTO Java ApiResponse
+        this.loginMessage = err.error?.message || 'Credenziali non valide o errore server.';
+      }
     });
   }
 }

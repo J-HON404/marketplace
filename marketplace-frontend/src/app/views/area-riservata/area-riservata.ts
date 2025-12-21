@@ -48,18 +48,22 @@ export class AreaRiservataComponent implements OnInit {
     this.loading = true;
     this.profileService.getProfile(id).subscribe({
       next: res => {
-        this.profileData = res.data || res;
+        this.profileData = res.data;
         this.loading = false;
-        if (!this.profileData.role) {
-          this.errorMessage = 'Ruolo non disponibile';
+        
+        if (!this.profileData || !this.profileData.role) {
+          this.errorMessage = 'Profilo o ruolo non disponibile';
           return;
         }
+
         this.roleUpper = this.profileData.role.toUpperCase() as 'SELLER' | 'CUSTOMER';
         this.shopId = this.tokenService.getShopId();
-        if (this.roleUpper === 'SELLER' && this.shopId) {
+        
+        if (this.roleUpper === 'SELLER') {
           this.loadShopInfo();
+        } else {
+          this.loadOrders();
         }
-        this.loadOrders();
       },
       error: (err: HttpErrorResponse) => {
         this.errorMessage = 'Errore nel caricamento del profilo';
@@ -72,12 +76,12 @@ export class AreaRiservataComponent implements OnInit {
     if (this.roleUpper === 'SELLER') {
       if (!this.shopId) return;
       this.ordersService.getShopOrders(this.shopId).subscribe({
-        next: orders => this.orders = orders,
+        next: res => this.orders = res.data,
         error: () => this.errorMessage = 'Errore nel caricamento ordini'
       });
     } else {
       this.ordersService.getProfileOrders(this.profileId!).subscribe({
-        next: orders => this.orders = orders,
+        next: res => this.orders = res.data,
         error: () => this.errorMessage = 'Errore nel caricamento ordini'
       });
     }
@@ -86,8 +90,21 @@ export class AreaRiservataComponent implements OnInit {
   loadShopInfo() {
     if (!this.profileId) return;
     this.shopService.getShop(this.profileId).subscribe({
-      next: res => this.shopData = res.data,
-      error: () => this.errorMessage = 'Errore nel caricamento dello shop'
+      next: res => {
+        this.shopData = res.data; 
+        if (this.shopData) {
+          this.shopId = this.shopData.id;
+          this.loadOrders();
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          this.shopData = null;
+          this.shopId = null;
+        } else {
+          this.errorMessage = 'Errore nel caricamento dello shop';
+        }
+      }
     });
   }
 }

@@ -9,6 +9,7 @@ import { ProductListComponent } from './views/product-list/product-list';
 import { ProductFormComponent } from './views/product-form/product-form';
 import { ProductDetailsComponent } from './views/product-details/product-details';
 import { CartComponent } from './views/cart/cart';
+import { ShopFormComponent } from './views/shop-form/shop-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,6 +19,8 @@ export const routes: Routes = [
   { path: 'profile/:id', component: AreaRiservataComponent },
   { path: 'profiles/:profileId/orders', component: OrdersPageComponent },
   { path: 'profiles/:profileId/shops', component: ShopListComponent },
+  { path: 'profiles/:profileId/shop/editor', component: ShopFormComponent },
+  { path: 'profiles/:profileId/shop/editor/:shopId', component: ShopFormComponent },
   { path: 'profiles/:profileId/shops/:shopId/products', component: ProductListComponent },
   { path: 'profiles/:profileId/shops/:shopId/products/editor', component: ProductFormComponent },
   { path: 'profiles/:profileId/shops/:shopId/products/editor/:productId', component: ProductFormComponent },

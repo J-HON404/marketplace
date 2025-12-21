@@ -29,15 +29,18 @@ export class CartComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.profileId = Number(params.get('profileId'));
       this.shopId = Number(params.get('shopId'));
-      this.loadCart();
+      if (this.profileId && this.shopId) {
+        this.loadCart();
+      }
     });
   }
 
   loadCart() {
     this.loading = true;
     this.cartService.getCart(this.profileId, this.shopId).subscribe({
-      next: (res: any) => {
-        this.cart = res.data || res;
+      next: (res) => {
+        // Accediamo a .data del wrapper ApiResponse
+        this.cart = res.data;
         this.loading = false;
       },
       error: () => {
@@ -48,12 +51,12 @@ export class CartComponent implements OnInit {
   }
 
   onUpdateQuantity(productId: number, newQuantity: number) {
-    if (!newQuantity || newQuantity < 1) {
-      this.loadCart();
+    if (newQuantity < 1) {
+      this.onRemoveProduct(productId);
       return;
     }
     this.cartService.updateProductQuantity(this.profileId, this.shopId, productId, newQuantity).subscribe({
-      next: (updatedCart: any) => this.cart = updatedCart.data || updatedCart
+      next: (res) => this.cart = res.data
     });
   }
 
@@ -74,11 +77,16 @@ export class CartComponent implements OnInit {
   onCheckout() {
     if (!confirm('Confermi l\'ordine?')) return;
     this.cartService.checkout(this.profileId, this.shopId).subscribe({
-      next: () => {
-        alert('Ordine effettuato con successo!');
+      next: (res) => {
+        // Il backend potrebbe inviare un messaggio di successo nel wrapper
+        alert(res.message || 'Ordine effettuato con successo!');
         this.router.navigate(['/profile', this.profileId]); 
       },
-      error: (err) => alert('Errore: ' + (err.error?.message || 'Impossibile completare l\'ordine.'))
+      error: (err) => {
+        // Gestione errore basata sulla struttura ApiResponse del backend
+        const msg = err.error?.message || 'Impossibile completare l\'ordine.';
+        alert('Errore: ' + msg);
+      }
     });
   }
 

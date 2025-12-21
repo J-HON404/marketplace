@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserRole } from '../../interfaces/profile'; 
+import { ApiResponse } from '../../interfaces/api-response'; // Importa l'interfaccia
 
 export interface RegisterPayload {
   username: string;
@@ -19,11 +20,13 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(payload: RegisterPayload): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, payload);
+  // Tipizziamo come ApiResponse<any> o <void> per la registrazione
+  register(payload: RegisterPayload): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.baseUrl}/register`, payload);
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { username, password });
+  // Tipizziamo come ApiResponse<string> perché il data conterrà il token (stringa)
+  login(username: string, password: string): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(`${this.baseUrl}/login`, { username, password });
   }
 }

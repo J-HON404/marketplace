@@ -2,18 +2,17 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService, RegisterPayload } from '../../core/services/auth.service';
-import { UserRole } from '../../interfaces/profile'; // ✅ FIX QUI
-import { RouterModule } from '@angular/router';
+import { UserRole } from '../../interfaces/profile'; 
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterModule], 
+  imports: [FormsModule, CommonModule, RouterModule], 
   templateUrl: './register.html',
-    styleUrls: ['./register.scss'] 
+  styleUrls: ['./register.scss'] 
 })
 export class RegisterComponent {
-
   username = '';
   password = '';
   email = '';
@@ -23,12 +22,14 @@ export class RegisterComponent {
   roleOptions = [UserRole.CUSTOMER, UserRole.SELLER];
   registrationMessage = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onRegister() {
-
     if (!this.username || !this.password || !this.role) {
-      this.registrationMessage = 'Compila tutti i campi';
+      this.registrationMessage = 'Compila tutti i campi obbligatori';
       return;
     }
 
@@ -41,8 +42,19 @@ export class RegisterComponent {
     };
 
     this.authService.register(payload).subscribe({
-      next: () => this.registrationMessage = 'Registrazione OK',
-      error: err  => this.registrationMessage = err.error?.message || 'Errore'
+      next: (res) => {
+        // Usiamo il messaggio di successo inviato dal backend Java
+        this.registrationMessage = res.message || 'Registrazione completata con successo!';
+        
+        // Opzionale: reindirizza al login dopo 2 secondi
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
+      },
+      error: (err) => {
+        // Estrae l'errore specifico (es. "Username già esistente") dal wrapper ApiResponse
+        this.registrationMessage = err.error?.message || 'Errore durante la registrazione';
+      }
     });
-}
+  }
 }

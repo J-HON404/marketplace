@@ -8,6 +8,7 @@ import { TokenService } from '../../core/services/token.service';
 import { NoticeHelperService } from '../../helpers/notice-helper.service';
 import { ProductNotices, TypeNotice } from '../../interfaces/product-notice';
 import { Products } from '../../interfaces/product';
+import { ApiResponse } from '../../interfaces/api-response';
 
 @Component({
   selector: 'app-product-details',
@@ -22,7 +23,7 @@ export class ProductDetailsComponent implements OnInit {
   
   newNoticeContent: string = '';
   newNoticeExpireDate: string = '';
-  minDate: string = new Date().toISOString().split('T')[0]; // Inizializzazione immediata sicura
+  minDate: string = new Date().toISOString().split('T')[0];
   
   selectedType: TypeNotice = TypeNotice.INFO;
   typeOptions = Object.values(TypeNotice);
@@ -55,7 +56,7 @@ export class ProductDetailsComponent implements OnInit {
   checkPermissions() {
     if (this.tokenService.getUserRole() === 'SELLER') {
       this.productService.checkOwnership(this.profileId, this.shopId).subscribe({
-        next: (res) => this.isOwner = res.data === true,
+        next: (res: ApiResponse<boolean>) => this.isOwner = res.data === true,
         error: () => this.isOwner = false
       });
     }
@@ -63,14 +64,15 @@ export class ProductDetailsComponent implements OnInit {
 
   loadProductData() {
     this.productService.getProductById(this.shopId, this.productId).subscribe({
-      next: (res: any) => this.product = res.data || res,
+      next: (res: ApiResponse<Products>) => this.product = res.data,
       error: () => this.goBack()
     });
   }
 
   loadNotices() {
     this.noticeService.getProductNoticeOfProduct(this.productId).subscribe({
-      next: (n) => this.notices = n || []
+      next: (res: ApiResponse<ProductNotices[]>) => this.notices = res.data || [],
+      error: () => this.notices = []
     });
   }
 
@@ -96,7 +98,9 @@ export class ProductDetailsComponent implements OnInit {
   onDeleteNotice(noticeId: number) {
     if (!window.confirm('Eliminare definitivamente questo avviso?')) return;
     this.noticeService.deleteProductNotice(this.productId, noticeId).subscribe({
-      next: () => this.notices = this.notices.filter(n => n.id !== noticeId)
+      next: () => {
+        this.notices = this.notices.filter(n => n.id !== noticeId);
+      }
     });
   }
 

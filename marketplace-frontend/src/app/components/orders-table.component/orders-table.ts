@@ -28,6 +28,7 @@ export class OrdersTableComponent implements OnInit {
   ngOnInit() {
     this.todayString = new Date().toISOString().split('T')[0];
 
+    // Inizializziamo i campi temporanei per la UI
     this.orders.forEach(order => {
       order._trackingTemp = '';
       order._estimatedTemp = null;
@@ -52,15 +53,17 @@ export class OrdersTableComponent implements OnInit {
       order._trackingTemp,
       order._estimatedTemp
     ).subscribe({
-      next: () => {
+      next: (res) => {
+        // res.data conterrebbe l'ordine aggiornato, ma possiamo aggiornare localmente
         order.trackingId = order._trackingTemp;
         order.estimatedDeliveryDate = order._estimatedTemp;
         order.status = 'SHIPPED';
         delete order._trackingTemp;
         delete order._estimatedTemp;
         this.cdr.detectChanges();
+        alert(res.message || 'Ordine spedito con successo!');
       },
-      error: (err) => console.error(err)
+      error: (err) => alert(err.error?.message || 'Errore durante la spedizione')
     });
   }
 
@@ -73,23 +76,30 @@ export class OrdersTableComponent implements OnInit {
     }
 
     this.ordersService.confirmDelivered(this.profileId, order.id).subscribe({
-      next: () => {
+      next: (res) => {
         order.status = 'CONFIRMED_DELIVERED';
         this.cdr.detectChanges();
+        alert(res.message || 'Consegna confermata!');
       },
-      error: (err) => console.error(err)
+      error: (err) => alert(err.error?.message || 'Errore nella conferma consegna')
     });
   }
 
   private checkExpiredDeliveries() {
     if (!this.shopId) return;
-    this.ordersService.expiredDeliveries(this.shopId).subscribe((expiredOrderIds: number[]) => {
-      this.orders.forEach(order => {
-        if (expiredOrderIds.includes(order.id)) {
-          order.expired = true;
-        }
-      });
-      this.cdr.detectChanges();
+    
+    // Anche qui, il backend restituisce ApiResponse<number[]>
+    this.ordersService.expiredDeliveries(this.shopId).subscribe({
+      next: (res) => {
+        const expiredOrderIds = res.data || [];
+        this.orders.forEach(order => {
+          if (expiredOrderIds.includes(order.id)) {
+            order.expired = true;
+          }
+        });
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Errore controllo scadenze:', err)
     });
   }
 }

@@ -1,18 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http'; // Import fondamentale
-import { AuthService } from './auth.service';
+import { TokenService } from './token.service'; // Nome corretto
 
-describe('AuthService', () => { 
-  let service: AuthService;
+describe('TokenService', () => { // Nome descrittivo corretto
+  let service: TokenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        AuthService,
-        provideHttpClient() 
-      ]
+      providers: [TokenService]
     });
-    service = TestBed.inject(AuthService);
+    service = TestBed.inject(TokenService);
   });
 
   it('should be created', () => {

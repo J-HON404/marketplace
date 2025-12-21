@@ -1,25 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Shop } from '../interfaces/shops';
+import { ApiResponse } from '../interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopService {
 
+  private readonly baseUrl = '/api/profiles';
+
   constructor(private http: HttpClient) { }
 
-  /** Restituisce lo shop associato a un profilo */
-  getShop(profileId: number): Observable<any> {
-    return this.http.get(`/api/profiles/${profileId}/shop`);
+  createShop(profileId: number, shop: Partial<Shop>): Observable<ApiResponse<Shop>> {
+    return this.http.post<ApiResponse<Shop>>(`${this.baseUrl}/${profileId}/shop`, shop);
   }
 
-  /** Restituisce tutti gli shop visibili per un profilo (authorization) */
-  getAllShops(profileId: number): Observable<any> {
-    return this.http.get(`/api/profiles/${profileId}/shops`);
+  updateShop(profileId: number, shopId: number, shop: Partial<Shop>): Observable<ApiResponse<Shop>> {
+    return this.http.put<ApiResponse<Shop>>(`${this.baseUrl}/${profileId}/shop/${shopId}`, shop);
   }
 
-  checkOwnership(profileId: number, shopId: number): Observable<any> {
-    return this.http.get<any>(`/api/profiles/${profileId}/shops/${shopId}/verify-owner`);
+  deleteShop(profileId: number, shopId: number): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${profileId}/shop/${shopId}`);
+  }
+
+  getShop(profileId: number): Observable<ApiResponse<Shop>> {
+    return this.http.get<ApiResponse<Shop>>(`${this.baseUrl}/${profileId}/shop`);
+  }
+
+  getAllShops(profileId: number): Observable<ApiResponse<Shop[]>> {
+    return this.http.get<ApiResponse<Shop[]>>(`${this.baseUrl}/${profileId}/shops`);
+  }
+
+  checkOwnership(profileId: number, shopId: number): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.baseUrl}/${profileId}/shops/${shopId}/verify-owner`);
   }
 }

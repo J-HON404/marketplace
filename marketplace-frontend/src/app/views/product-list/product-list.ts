@@ -54,6 +54,12 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
+    // VERIFICA DISPONIBILITÀ LATO CLIENT
+    if (product.quantity <= 0) {
+      alert("Prodotto esaurito!");
+      return;
+    }
+
     this.cartService.addProductToCart(
       this.profileId, 
       this.shopId, 
@@ -66,8 +72,7 @@ export class ProductListComponent implements OnInit {
       },
       error: (err) => {
         console.error('Errore aggiunta carrello:', err);
-        // Se il backend lancia l'eccezione del negozio differente, la mostriamo qui
-        const backendMessage = err.error?.message || 'Errore durante l\'aggiunta. Puoi acquistare da un solo negozio alla volta.';
+        const backendMessage = err.error?.message || 'Errore durante l\'aggiunta.';
         alert(backendMessage);
       }
     });

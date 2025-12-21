@@ -5,6 +5,7 @@ import { OrdersService } from '../../services/order.service';
 import { TokenService } from '../../core/services/token.service';
 import { OrdersTableComponent } from '../../components/orders-table.component/orders-table';
 
+// Verifica che questi campi siano coerenti con il DTO Java
 interface Order {
   id: number;
   date: string;
@@ -31,39 +32,59 @@ export class OrdersPageComponent implements OnInit {
     private tokenService: TokenService
   ) {}
 
-ngOnInit(): void {
-  const role = this.tokenService.getUserRole();
-  const profileId = this.tokenService.getProfileId();
-  const shopId = this.tokenService.getShopId();
+  ngOnInit(): void {
+    const role = this.tokenService.getUserRole();
+    const profileId = this.tokenService.getProfileId();
+    const shopId = this.tokenService.getShopId();
 
-  if (!role) return;
+    if (!role) {
+      this.errorMessage = 'Ruolo non trovato';
+      return;
+    }
 
-  this.loading = true;
+    this.loading = true;
 
-  if (role === 'SELLER') {
-    if (!shopId) return;
-
-    this.ordersTitle = 'Ordini ricevuti';
-
-    this.ordersService.getShopOrders(shopId).subscribe({
-      next: data => {
-        this.orders = data;
+    if (role === 'SELLER') {
+      if (!shopId) {
         this.loading = false;
+        this.errorMessage = 'ID Negozio non trovato';
+        return;
       }
-    });
 
-  } else {
-    if (!profileId) return;
+      this.ordersTitle = 'Ordini ricevuti';
 
-    this.ordersTitle = 'Ordini fatti';
+      this.ordersService.getShopOrders(shopId).subscribe({
+        next: res => {
+          // Accediamo a .data
+          this.orders = res.data;
+          this.loading = false;
+        },
+        error: () => {
+          this.errorMessage = 'Errore nel caricamento degli ordini ricevuti';
+          this.loading = false;
+        }
+      });
 
-    this.ordersService.getProfileOrders(profileId).subscribe({
-      next: data => {
-        this.orders = data;
+    } else {
+      if (!profileId) {
         this.loading = false;
+        this.errorMessage = 'ID Profilo non trovato';
+        return;
       }
-    });
+
+      this.ordersTitle = 'Ordini effettuati';
+
+      this.ordersService.getProfileOrders(profileId).subscribe({
+        next: res => {
+          // Accediamo a .data
+          this.orders = res.data;
+          this.loading = false;
+        },
+        error: () => {
+          this.errorMessage = 'Errore nel caricamento dei tuoi ordini';
+          this.loading = false;
+        }
+      });
+    }
   }
 }
-}
-
