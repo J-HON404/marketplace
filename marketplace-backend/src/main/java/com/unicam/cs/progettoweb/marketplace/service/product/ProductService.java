@@ -31,6 +31,9 @@ public class ProductService {
     }
 
     public Product addProduct(Product product) {
+        if(productRepository.existsByNameAndShop(product.getName(),product.getShop())){
+            throw new MarketplaceException(HttpStatus.CONFLICT, "product's name already exists for this shop");
+        }
         return productRepository.save(product);
     }
 
