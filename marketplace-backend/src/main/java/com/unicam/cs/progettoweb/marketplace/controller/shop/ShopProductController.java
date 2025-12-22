@@ -40,15 +40,12 @@ public class ShopProductController {
         return ResponseEntity.ok(ApiResponse.success(shopProductService.getFutureAvailableProducts(shopId)));
     }
 
+
     @PostMapping
-    public ResponseEntity<ApiResponse<Product>> createProduct(@PathVariable Long shopId, @RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ApiResponse<Product>> addProduct(@PathVariable Long shopId, @RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(ApiResponse.success(shopProductService.createProduct(shopId, productRequest)));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ApiResponse<Product>> addProduct(@PathVariable Long shopId, @RequestBody Product product) {
-        return ResponseEntity.ok(ApiResponse.success(shopProductService.addProduct(shopId, product)));
-    }
 
     @PutMapping("/{productId}")
     public ResponseEntity<ApiResponse<Product>> updateProduct(@PathVariable Long shopId, @PathVariable Long productId, @RequestBody Product product) {

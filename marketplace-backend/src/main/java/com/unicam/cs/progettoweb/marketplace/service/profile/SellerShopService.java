@@ -28,7 +28,7 @@ public class SellerShopService {
         this.profileService = profileService;
     }
 
-    @PreAuthorize("hasRole('SELLER')")
+    @PreAuthorize("hasRole('SELLER') and principal.id == #profileId")
     public Shop getShopOfProfile(Long profileId) {
         return shopRepository.findBySeller_Id(profileId)
                 .orElseThrow(() -> new MarketplaceException(
@@ -68,7 +68,7 @@ public class SellerShopService {
         return shopRepository.save(shop);
     }
 
-    @PreAuthorize("hasRole('SELLER') and principal.id == #profileId and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Shop updateShop(Long profileId, Long shopId, ShopRequest updatedShop) {
         Shop existingShop = getShopById(shopId);
         if (!existingShop.getName().equals(updatedShop.getName())) {
@@ -93,6 +93,7 @@ public class SellerShopService {
         return seller;
     }
 
+    @PreAuthorize("isAuthenticated()")
     public boolean isOwnerOfShop(Long profileId, Long shopId) {
         return shopSecurity.isSellerOfShop(profileId, shopId);
     }

@@ -59,6 +59,15 @@ public class ProductService {
         }
     }
 
+    public void updateProductQuantity(Long productId, int newQuantity) {
+        Product product = getProductById(productId);
+        if (newQuantity < 0) {
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Stock insufficiente");
+        }
+        product.setQuantity(newQuantity);
+        productRepository.save(product);
+    }
+
     public boolean checkIfProductAlreadyExists(String productName){
         return productRepository.existsByName(productName);
     }

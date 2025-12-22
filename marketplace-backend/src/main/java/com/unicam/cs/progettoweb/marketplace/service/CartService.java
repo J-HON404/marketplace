@@ -9,6 +9,7 @@ import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
 import com.unicam.cs.progettoweb.marketplace.service.profile.SellerShopService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,24 +25,23 @@ public class CartService {
     private final ProfileService userService;
     private final SellerShopService sellerShopService;
 
-    public CartService(CartRepository cartRepository, ProductService productService,
-                       ProfileService userService, SellerShopService sellerShopService) {
+    public CartService(CartRepository cartRepository, ProductService productService, ProfileService userService, SellerShopService sellerShopService) {
         this.cartRepository = cartRepository;
         this.productService = productService;
         this.userService = userService;
         this.sellerShopService = sellerShopService;
     }
 
-
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Optional<Cart> getCart(Long profileId, Long shopId) {
         return cartRepository.findByUser_IdAndShop_Id(profileId, shopId);
     }
-
 
     private Optional<Cart> getCartByProfile(Long profileId) {
         return cartRepository.findByUser_Id(profileId);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Cart createCart(Long profileId, Long shopId) {
         Cart cart = new Cart();
         cart.setUser(userService.findProfileById(profileId));
@@ -50,41 +50,33 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Cart addProduct(Long profileId, Long shopId, Long productId, int quantity) {
         Cart cart = prepareCart(profileId, shopId);
         Product product = productService.getProductById(productId);
-
-        validateAvailability(cart, product, quantity);
+        int currentInCart = cart.getItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .mapToInt(CartItem::getQuantity).sum();
+        verifyProductStock(product, currentInCart + quantity);
         updateCartItems(cart, product, quantity);
-
         return cartRepository.save(cart);
     }
 
     private Cart prepareCart(Long profileId, Long shopId) {
-        // Cerchiamo se l'utente ha UN carrello nel sistema
         Cart cart = getCartByProfile(profileId).orElseGet(() -> createCart(profileId, shopId));
-
-        // Se il carrello trovato appartiene a un altro negozio, lo svuotiamo e cambiamo negozio
         if (!cart.getShop().getId().equals(shopId)) {
             cart.getItems().clear();
             cart.setShop(sellerShopService.getShopById(shopId));
-            // Forza il salvataggio del cambio negozio prima di aggiungere nuovi oggetti
             cart = cartRepository.saveAndFlush(cart);
         }
         return cart;
     }
 
-    private void validateAvailability(Cart cart, Product product, int quantity) {
+    private void verifyProductStock(Product product, int quantity) {
         productService.checkProductDateAvailability(product);
-
-        int alreadyInCart = cart.getItems().stream()
-                .filter(item -> item.getProduct().getId().equals(product.getId()))
-                .mapToInt(CartItem::getQuantity)
-                .sum();
-
-        if (alreadyInCart + quantity > product.getQuantity()) {
+        if (quantity > product.getQuantity()) {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST,
-                    "Quantità non disponibile. In magazzino: " + product.getQuantity());
+                    "Quantità non disponibile per " + product.getName() + ". In magazzino: " + product.getQuantity());
         }
     }
 
@@ -104,6 +96,21 @@ public class CartService {
                 );
     }
 
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
+    public Cart updateProductQuantity(Long profileId, Long shopId, Long productId, int newQuantity) {
+        Cart cart = getCart(profileId, shopId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Carrello non trovato"));
+
+        CartItem item = cart.getItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Prodotto non presente nel carrello"));
+        verifyProductStock(item.getProduct(), newQuantity);
+        item.setQuantity(newQuantity);
+        return cartRepository.save(cart);
+    }
+
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public void removeProduct(Long profileId, Long shopId, Long productId) {
         getCart(profileId, shopId).ifPresent(cart -> {
             cart.getItems().removeIf(i -> i.getProduct().getId().equals(productId));
@@ -111,18 +118,15 @@ public class CartService {
         });
     }
 
-    public Cart updateQuantity(Long profileId, Long shopId, Long productId, int newQuantity) {
-        Cart cart = getCart(profileId, shopId)
-                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Carrello non trovato"));
-
-        cart.getItems().stream()
-                .filter(i -> i.getProduct().getId().equals(productId))
-                .findFirst()
-                .ifPresent(i -> i.setQuantity(newQuantity));
-
-        return cartRepository.save(cart);
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #cart.user.id")
+    public void validateCartForCheckout(Cart cart) {
+        if (cart.getItems().isEmpty()) {
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Il carrello è vuoto");
+        }
+        cart.getItems().forEach(item -> verifyProductStock(item.getProduct(), item.getQuantity()));
     }
 
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public void clearCart(Long profileId, Long shopId) {
         getCart(profileId, shopId).ifPresent(cart -> {
             cart.getItems().clear();

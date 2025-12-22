@@ -2,6 +2,7 @@ package com.unicam.cs.progettoweb.marketplace.service.shop;
 
 import com.unicam.cs.progettoweb.marketplace.dto.product.ProductRequest;
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
+import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
@@ -23,11 +24,12 @@ public class ShopProductService {
         this.shopService = shopService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<Product> getProductsOfShop(Long shopId) {
         return productService.getProductsByShopId(shopId);
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     public Product getProductOfShop(Long shopId, Long productId) {
         Product product = productService.getProductById(productId);
         ensureProductBelongsToShop(product, shopId);
@@ -72,6 +74,16 @@ public class ShopProductService {
         product.setShop(shop);
         return productService.addProduct(product);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    public void decrementQuantityFromCartItems(List<CartItem> items) {
+        for (CartItem item : items) {
+            Product product = item.getProduct();
+            int newQuantity = product.getQuantity() - item.getQuantity();
+            productService.updateProductQuantity(product.getId(), newQuantity);
+        }
+    }
+
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
     public Product updateProduct(Long shopId, Long productId, Product updatedProduct) {

@@ -22,10 +22,12 @@ public class ShopProductNoticeService {
         this.productService = productService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     public List<ProductNotice> getProductNoticesOfProduct(Long productId) {
         return productNoticeService.getProductNoticesByProductId(productId);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public ProductNotice getProductNoticeByIdAndProductId(Long noticeId, Long productId) {
         return productNoticeService.getProductNoticeByIdAndProductId(noticeId, productId);
     }
