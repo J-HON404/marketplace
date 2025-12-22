@@ -18,11 +18,19 @@ th {
   font-weight: bold;
 }
 
+/* Miglioramento input: focus e bordi */
 input[type="text"],
 input[type="date"] {
   padding: 4px 6px;
   margin: 4px 2px;
   font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+    border-color: #3498db;
+  }
 }
 
 button {
@@ -30,6 +38,7 @@ button {
   font-size: 13px;
   cursor: pointer;
   border: 1px solid #ccc;
+  border-radius: 4px; // Aggiunto per coerenza con input
   background-color: #fafafa;
   transition: background-color 0.2s ease, opacity 0.2s ease;
 }
@@ -43,6 +52,17 @@ button[disabled] {
   cursor: not-allowed;
 }
 
+/* Colore speciale per il bottone "Conferma Ricezione" quando attivo */
+.btn-confirm-active {
+  background-color: #27ae60 !important;
+  color: white !important;
+  border-color: #219150 !important;
+
+  &:hover {
+    background-color: #219150 !important;
+  }
+}
+
 td:last-child {
   min-width: 220px;
 }
@@ -53,8 +73,14 @@ td:last-child {
   margin-top: 6px;
 }
 
+/* Stile per scadenze e ritardi */
 .expired {
   color: #c0392b;
   font-size: 13px;
   font-weight: 600;
 }
+
+/* Badge per lo stato dell'ordine (Opzionale ma utile) */
+.status-shipped { color: #2980b9; font-weight: bold; }
+.status-delivered { color: #27ae60; font-weight: bold; }
+.status-pending { color: #f39c12; font-weight: bold; }

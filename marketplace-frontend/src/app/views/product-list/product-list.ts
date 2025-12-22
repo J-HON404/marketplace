@@ -54,7 +54,6 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    // VERIFICA DISPONIBILITÀ LATO CLIENT
     if (product.quantity <= 0) {
       alert("Prodotto esaurito!");
       return;
@@ -128,9 +127,18 @@ export class ProductListComponent implements OnInit {
     return date > today;
   }
 
-  onEditProduct(product: any) {
-    this.router.navigate(['/profiles', this.profileId, 'shops', this.shopId, 'products', 'editor', product.id]);
+onEditProduct(product: any) {
+  if (!product || !product.id) {
+    console.error("Dati prodotto mancanti per la modifica");
+    return;
   }
+  this.router.navigate(
+    ['/profiles', this.profileId, 'shops', this.shopId, 'products', 'editor', product.id],
+    { 
+      state: { productData: product } 
+    }
+  );
+}
 
   onAddProduct() {
     this.router.navigate(['/profiles', this.profileId, 'shops', this.shopId, 'products', 'editor']);

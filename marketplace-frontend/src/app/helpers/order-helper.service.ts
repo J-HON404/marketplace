@@ -8,31 +8,37 @@ export class OrdersHelperService {
   constructor() {}
 
   canSellerShip(order: any): boolean {
-    return order.status === 'READY_TO_ELABORATING';
+    return order.status === 'READY_TO_ELABORATING' || order.status === 'PENDING';
   }
 
   isExpired(order: any): boolean {
-    return order.status === 'REMIND_DELIVERY' || !!order.expired;
-  }
-
-  validateEstimatedDate(dateStr: string): boolean {
-    if (!dateStr) return false;
-    const parts = dateStr.split('-'); // YYYY-MM-DD
-    const estimated = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    // Un ordine è scaduto se il backend lo ha marcato REMIND_DELIVERY 
+    // o se la data stimata è nel passato e non è ancora stato consegnato
+    if (order.status === 'CONFIRMED_DELIVERED') return false;
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    estimated.setHours(0, 0, 0, 0);
-    return estimated >= today;
+    
+    const estimated = order.estimatedDeliveryDate ? new Date(order.estimatedDeliveryDate) : null;
+    if (estimated) estimated.setHours(0, 0, 0, 0);
+
+    return order.status === 'REMIND_DELIVERY' || 
+           (!!order.expired) || 
+           (estimated !== null && today > estimated && order.status === 'SHIPPED');
   }
 
   canCustomerConfirm(order: any): boolean {
-    if (order.status !== 'SHIPPING_DETAILS_SET') return false;
+    // L'utente può confermare solo se l'ordine è stato effettivamente spedito
+    if (order.status !== 'SHIPPED' && order.status !== 'REMIND_DELIVERY') return false;
     if (!order.estimatedDeliveryDate) return false;
 
     const today = new Date();
     const estimated = new Date(order.estimatedDeliveryDate);
+    
     today.setHours(0, 0, 0, 0);
     estimated.setHours(0, 0, 0, 0);
-    return today >= estimated && order.status !== 'CONFIRMED_DELIVERED';
+
+    // Può confermare se OGGI è uguale o successivo alla data stimata
+    return today >= estimated;
   }
 }

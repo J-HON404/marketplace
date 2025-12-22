@@ -1,4 +1,3 @@
-/* Centra la card nella pagina */
 .page-container {
   display: flex;
   justify-content: center;
@@ -8,14 +7,13 @@
   background-color: #f9f9f9;
 }
 
-/* Card del Form */
 .form-card {
   background: #ffffff;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px; // Larghezza contenuta per non disperdere i campi
+  max-width: 500px;
 }
 
 .page-title {
@@ -28,7 +26,6 @@
   padding-bottom: 0.8rem;
 }
 
-/* Gruppi di input */
 .form-group {
   margin-bottom: 1.2rem;
   display: flex;
@@ -42,7 +39,6 @@
   }
 }
 
-/* Input e Textarea */
 .form-control {
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -57,19 +53,23 @@
   }
 }
 
+/* Stile per il campo nome disabilitato */
+.input-disabled {
+  background-color: #f4f7f6 !important;
+  color: #95a5a6 !important;
+  cursor: not-allowed;
+  border-color: #e0e0e0;
+}
+
 textarea.form-control {
   min-height: 100px;
   resize: vertical;
 }
 
-/* Layout su due colonne per Prezzo e Quantità */
 .row {
   display: flex;
   gap: 1rem;
-  
-  .col {
-    flex: 1;
-  }
+  .col { flex: 1; }
 }
 
 .form-actions {
@@ -101,7 +101,6 @@ textarea.form-control {
 .btn-secondary {
   background-color: #ecf0f1;
   color: #7f8c8d;
-
   &:hover {
     background-color: #bdc3c7;
     color: #2c3e50;
@@ -109,22 +108,19 @@ textarea.form-control {
 }
 
 .btn-primary {
-  background-color: #3498db; // Blu per creazione/modifica
+  background-color: #3498db;
   color: white;
-
   &:hover {
     background-color: #2980b9;
   }
 }
 
-/* Responsive */
 @media (max-width: 480px) {
   .row {
     flex-direction: column;
     gap: 0;
   }
-  
   .form-actions {
-    flex-direction: column-reverse; // Mette "Annulla" sotto su mobile
+    flex-direction: column-reverse;
   }
 }

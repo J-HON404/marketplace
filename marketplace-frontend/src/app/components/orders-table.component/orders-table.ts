@@ -27,16 +27,19 @@ export class OrdersTableComponent implements OnInit {
 
   ngOnInit() {
     this.todayString = new Date().toISOString().split('T')[0];
-
-    // Inizializziamo i campi temporanei per la UI
-    this.orders.forEach(order => {
-      order._trackingTemp = '';
-      order._estimatedTemp = null;
-    });
+    this.initializeTempFields();
 
     if (this.role === 'SELLER' && this.shopId) {
       this.checkExpiredDeliveries();
     }
+  }
+
+  // Inizializza i campi solo se non esistono già (evita sovrascritture)
+  private initializeTempFields() {
+    this.orders.forEach(order => {
+      order._trackingTemp = order._trackingTemp || order.trackingId || '';
+      order._estimatedTemp = order._estimatedTemp || order.estimatedDeliveryDate || null;
+    });
   }
 
   shipOrder(order: any) {
@@ -54,12 +57,15 @@ export class OrdersTableComponent implements OnInit {
       order._estimatedTemp
     ).subscribe({
       next: (res) => {
-        // res.data conterrebbe l'ordine aggiornato, ma possiamo aggiornare localmente
+        // AGGIORNAMENTO STATO: Deve corrispondere a quello cercato dall'helper
+        order.status = 'SHIPPED'; 
         order.trackingId = order._trackingTemp;
         order.estimatedDeliveryDate = order._estimatedTemp;
-        order.status = 'SHIPPED';
+        
+        // Pulizia campi temporanei
         delete order._trackingTemp;
         delete order._estimatedTemp;
+        
         this.cdr.detectChanges();
         alert(res.message || 'Ordine spedito con successo!');
       },
@@ -71,7 +77,7 @@ export class OrdersTableComponent implements OnInit {
     if (!this.profileId) return;
 
     if (!this.helper.canCustomerConfirm(order)) {
-      alert('Azione non consentita: la data di consegna stimata non è ancora passata.');
+      alert('Non puoi ancora confermare la consegna.');
       return;
     }
 
@@ -87,8 +93,6 @@ export class OrdersTableComponent implements OnInit {
 
   private checkExpiredDeliveries() {
     if (!this.shopId) return;
-    
-    // Anche qui, il backend restituisce ApiResponse<number[]>
     this.ordersService.expiredDeliveries(this.shopId).subscribe({
       next: (res) => {
         const expiredOrderIds = res.data || [];

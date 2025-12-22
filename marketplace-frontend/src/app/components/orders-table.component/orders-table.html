@@ -23,9 +23,9 @@
       <td>{{ order.status }}</td>
       <td>{{ order.trackingId || 'N/A' }}</td>
       <td>
-        {{ order.estimatedDeliveryDate
-            ? (order.estimatedDeliveryDate | date:'dd/MM/yyyy')
-            : 'N/A' }}
+        <span [class.expired]="helper.isExpired(order) && order.status === 'SHIPPED'">
+          {{ order.estimatedDeliveryDate ? (order.estimatedDeliveryDate | date:'dd/MM/yyyy') : 'N/A' }}
+        </span>
       </td>
 
       <td>
@@ -34,18 +34,17 @@
             <input
               type="text"
               placeholder="Tracking ID"
-              [value]="order._trackingTemp || ''"
-              (input)="order._trackingTemp = $any($event.target).value"
+              [(ngModel)]="order._trackingTemp"
             />
 
             <input
               type="date"
-              [value]="order._estimatedTemp || ''"
-              (input)="order._estimatedTemp = $any($event.target).value"
+              [(ngModel)]="order._estimatedTemp"
               [min]="todayString"
             />
 
             <button
+              type="button"
               (click)="shipOrder(order)"
               [disabled]="!order._trackingTemp || !order._estimatedTemp">
               Conferma spedizione
@@ -53,23 +52,21 @@
           </div>
 
           <div *ngIf="helper.isExpired(order)" class="expired">
-            Consegna scaduta, sollecito inviato
+            ⚠️ Consegna scaduta o sollecito ricevuto
           </div>
         </ng-container>
 
         <ng-container *ngIf="role === 'CUSTOMER'">
           <button
+            type="button"
             (click)="confirmDelivery(order)"
-            [disabled]="!helper.canCustomerConfirm(order)">
+            [disabled]="!helper.canCustomerConfirm(order)"
+            [ngStyle]="helper.canCustomerConfirm(order) ? {'background-color': '#27ae60', 'color': 'white', 'border-color': '#27ae60'} : {}">
             Conferma consegna
           </button>
 
           <div
-            *ngIf="
-              order.status === 'SHIPPED' &&
-              order.estimatedDeliveryDate &&
-              !helper.canCustomerConfirm(order)
-            "
+            *ngIf="order.status === 'SHIPPED' && !helper.canCustomerConfirm(order)"
             class="info-text">
             Disponibile dal {{ order.estimatedDeliveryDate | date:'dd/MM/yyyy' }}
           </div>

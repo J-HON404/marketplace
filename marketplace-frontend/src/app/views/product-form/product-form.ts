@@ -16,7 +16,7 @@ export class ProductFormComponent implements OnInit {
   isEditMode = false;
   productId: number | null = null;
   shopId: number | null = null;
-  todayString: string = ''; 
+  todayString: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,52 +34,53 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    const today = new Date();
-    this.todayString = today.toISOString().split('T')[0];
-
-    this.shopId = Number(this.route.snapshot.paramMap.get('shopId'));
+    this.todayString = new Date().toISOString().split('T')[0];
     
-    // Recupero dati dallo stato della navigazione
-    const stateData = history.state.productData;
-    if (stateData) {
+    // Recupero i parametri dalle rotte
+    this.shopId = Number(this.route.snapshot.paramMap.get('shopId'));
+    const productIdParam = this.route.snapshot.paramMap.get('productId');
+
+    if (productIdParam) {
       this.isEditMode = true;
-      this.productId = stateData.id;
-      // Il patchValue funziona se i nomi dei campi nel form coincidono con quelli dell'oggetto stateData
-      this.productForm.patchValue(stateData);
+      this.productId = Number(productIdParam);
+      
+      const stateData = history.state.productData;
+      if (stateData) {
+        this.productForm.patchValue(stateData);
+        this.productForm.get('name')?.disable();
+      } else {
+        // Fallback: se l'utente ricarica la pagina col tasto F5
+        this.productService.getProductById(this.shopId, this.productId).subscribe({
+          next: (prod) => {
+            this.productForm.patchValue(prod);
+            this.productForm.get('name')?.disable();
+          }
+        });
+      }
     }
   }
 
   onSubmit() {
     if (this.productForm.invalid) return;
 
-    const productPayload = this.productForm.value;
+    const productPayload = this.productForm.getRawValue();
 
     if (this.isEditMode && this.productId) {
       this.productService.updateProduct(this.shopId!, this.productId, productPayload).subscribe({
-        next: (res) => {
-          console.log(res.message); // Logga il messaggio di successo del backend
-          this.goBack();
-        },
-        error: (err) => {
-          // Estrae il messaggio d'errore dal wrapper ApiResponse del backend
-          alert(err.error?.message || 'Errore durante l\'aggiornamento');
-        }
+        next: () => this.goBack(),
+        error: (err) => alert(err.error?.message || 'Errore durante l\'aggiornamento')
       });
     } else {
       this.productService.createProduct(this.shopId!, productPayload).subscribe({
-        next: (res) => {
-          console.log(res.message);
-          this.goBack();
-        },
-        error: (err) => {
-          alert(err.error?.message || 'Errore durante la creazione');
-        }
+        next: () => this.goBack(),
+        error: (err) => alert(err.error?.message || 'Errore durante la creazione')
       });
     }
   }
 
-  goBack() {
-    // Torna alla lista prodotti del negozio
-    this.router.navigate(['../'], { relativeTo: this.route });
-  }
+goBack() {
+  const profileId = this.route.snapshot.paramMap.get('profileId');
+  const shopId = this.route.snapshot.paramMap.get('shopId');
+  this.router.navigate(['/profiles', profileId, 'shops', shopId, 'products']);
+}
 }

@@ -6,12 +6,13 @@
       
       <div class="form-group">
         <label for="name">Nome Prodotto</label>
-        <input id="name" type="text" formControlName="name" class="form-control" placeholder="Inserisci il nome prodotto">
+        <input id="name" type="text" formControlName="name" 
+               class="form-control" [ngClass]="{'input-disabled': isEditMode}">
       </div>
 
       <div class="form-group">
         <label for="desc">Descrizione</label>
-        <textarea id="desc" formControlName="description" class="form-control" placeholder="Inserisci i dettagli prodotto..."></textarea>
+        <textarea id="desc" formControlName="description" class="form-control"></textarea>
       </div>
 
       <div class="row">
@@ -28,23 +29,16 @@
 
       <div class="form-group">
         <label for="date">Data Disponibilità</label>
-        <input id="date" 
-               type="date" 
-               formControlName="availabilityDate" 
-               [min]="todayString" 
-               class="form-control">
+        <input id="date" type="date" formControlName="availabilityDate" 
+               [min]="todayString" class="form-control">
       </div>
 
       <div class="form-actions">
         <button type="button" class="btn btn-secondary" (click)="goBack()">Annulla</button>
-        
-        <button type="submit" 
-                class="btn btn-primary" 
-                [disabled]="productForm.invalid">
+        <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
           {{ isEditMode ? 'Salva Modifiche' : 'Crea Prodotto' }}
         </button>
       </div>
-
     </form>
   </div>
 </div>
