@@ -108,15 +108,18 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  onDeleteProduct(productId: number) {
-    if (!window.confirm('Eliminare definitivamente questo prodotto?')) return;
-    this.productService.deleteProduct(this.shopId!, productId).subscribe({
-      next: () => {
-        this.products = this.products.filter(p => p.id !== productId);
-      },
-      error: () => alert('Errore durante l\'eliminazione.')
-    });
-  }
+onDeleteProduct(productId: number) {
+  if (!window.confirm('Eliminare definitivamente questo prodotto?')) return;
+  this.productService.deleteProduct(this.shopId!, productId).subscribe({
+    next: () => {
+      this.products = this.products.filter(p => p.id !== productId);
+    },
+    error: (err) => {
+      const errorMessage = err.error?.message || 'Errore durante l\'eliminazione.';
+      alert(errorMessage);
+    }
+  });
+}
 
   isFutureDate(dateString: string): boolean {
     if (!dateString) return false;

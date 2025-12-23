@@ -51,14 +51,23 @@ export class CartComponent implements OnInit {
   }
 
   onUpdateQuantity(productId: number, newQuantity: number) {
-    if (newQuantity < 1) {
-      this.onRemoveProduct(productId);
-      return;
-    }
-    this.cartService.updateProductQuantity(this.profileId, this.shopId, productId, newQuantity).subscribe({
-      next: (res) => this.cart = res.data
-    });
+  if (newQuantity < 1) {
+    this.onRemoveProduct(productId);
+    return;
   }
+  this.cartService.updateProductQuantity(this.profileId, this.shopId, productId, newQuantity)
+    .subscribe({
+      next: (res) => {
+        this.cart = res.data;
+      },
+      error: (err) => {
+        console.error('Errore aggiornamento quantità:', err);
+        const message = err?.error?.message || 'Si è verificato un errore durante l\'aggiornamento del carrello.';
+        alert(message);
+      }
+    });
+}
+
 
   onRemoveProduct(productId: number) {
     if (!confirm('Rimuovere questo prodotto dal carrello?')) return;
@@ -78,12 +87,10 @@ export class CartComponent implements OnInit {
     if (!confirm('Confermi l\'ordine?')) return;
     this.cartService.checkout(this.profileId, this.shopId).subscribe({
       next: (res) => {
-        // Il backend potrebbe inviare un messaggio di successo nel wrapper
         alert(res.message || 'Ordine effettuato con successo!');
         this.router.navigate(['/profile', this.profileId]); 
       },
       error: (err) => {
-        // Gestione errore basata sulla struttura ApiResponse del backend
         const msg = err.error?.message || 'Impossibile completare l\'ordine.';
         alert('Errore: ' + msg);
       }

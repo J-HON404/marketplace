@@ -26,17 +26,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Verifichiamo il ruolo e la presenza del profilo
     if (this.role === 'ROLE_SELLER' && this.profileId) {
       this.shopService.getShop(this.profileId).subscribe({
         next: (res) => {
-          // Accediamo a .data per estrarre l'oggetto Shop e prenderne l'ID
           if (res.data) {
             this.shopId = res.data.id;
           }
         },
         error: () => {
-          this.shopId = null; // Gestione errore: lo shop non esiste o errore server
+          this.shopId = null; 
         }
       });
     }

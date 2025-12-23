@@ -6,9 +6,8 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterModule, RouterOutlet],
   template: `
-    <header>Marketplace</header>
     <router-outlet></router-outlet>
-    <footer>© 2025</footer>
+  
   `,
   styleUrls: ['./app.scss']
 })
