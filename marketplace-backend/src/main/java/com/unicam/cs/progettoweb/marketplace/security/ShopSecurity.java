@@ -29,4 +29,8 @@ public class ShopSecurity {
     public boolean isSellerOfProduct(Long sellerId, Long productId) {
         return productRepository.existsByIdAndShop_Seller_Id(productId, sellerId);
     }
+
+    public boolean isProductBelongsToShop(Long shopId,Long productId){
+        return productRepository.existsByIdAndShop_Id(productId,shopId);
+    }
 }

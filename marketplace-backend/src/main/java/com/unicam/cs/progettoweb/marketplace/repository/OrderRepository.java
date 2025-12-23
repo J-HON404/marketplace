@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface  OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCustomer_Id(Long customerId);
     List<Order> findByShop_Id(Long shopId);
     List<Order> findByShop_IdOrCustomer_Id(Long shopId, Long customerId);

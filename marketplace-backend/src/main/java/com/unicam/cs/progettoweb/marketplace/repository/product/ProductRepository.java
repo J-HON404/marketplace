@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByShopAndAvailabilityDateGreaterThan(Shop shop, LocalDate date);
     boolean existsByIdAndShop_Seller_Id(Long productId, Long sellerId);
     boolean existsByName(String name);
+    // Controlla se un prodotto con productId appartiene allo shop con shopId
+    boolean existsByIdAndShop_Id(Long productId, Long shopId);
 }

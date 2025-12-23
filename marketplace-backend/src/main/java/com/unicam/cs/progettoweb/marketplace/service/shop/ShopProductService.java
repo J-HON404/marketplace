@@ -3,6 +3,7 @@ package com.unicam.cs.progettoweb.marketplace.service.shop;
 import com.unicam.cs.progettoweb.marketplace.dto.product.ProductRequest;
 import com.unicam.cs.progettoweb.marketplace.exception.MarketplaceException;
 import com.unicam.cs.progettoweb.marketplace.model.cart.CartItem;
+import com.unicam.cs.progettoweb.marketplace.model.order.OrderItem;
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
 import com.unicam.cs.progettoweb.marketplace.service.product.ProductService;
@@ -18,10 +19,12 @@ public class ShopProductService {
 
     private final ProductService productService;
     private final SellerShopService shopService;
+    private final ShopOrderService shopOrderService;
 
-    public ShopProductService(ProductService productService, SellerShopService shopService) {
+    public ShopProductService(ProductService productService, SellerShopService shopService, ShopOrderService shopOrderService) {
         this.productService = productService;
         this.shopService = shopService;
+        this.shopOrderService = shopOrderService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -29,11 +32,9 @@ public class ShopProductService {
         return productService.getProductsByShopId(shopId);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and @shopSecurity.isProductBelongsToShop(#shopId,#productId)")
     public Product getProductOfShop(Long shopId, Long productId) {
-        Product product = productService.getProductById(productId);
-        ensureProductBelongsToShop(product, shopId);
-        return product;
+        return productService.getProductById(productId);
     }
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
@@ -58,12 +59,11 @@ public class ShopProductService {
         product.setQuantity(productRequest.quantity);
         product.setAvailabilityDate(productRequest.availabilityDate);
         product.setShop(shop);
+        blockProductIfNotAddable(product,shopId);
         return productService.addProduct(product);
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
-    public Product addProduct(Long shopId, Product product) {
-        Shop shop = shopService.getShopById(shopId);
+    private void blockProductIfNotAddable(Product product, Long shopId){
         if (product.getShop() != null && product.getShop().getId() != null &&
                 !product.getShop().getId().equals(shopId)) {
             throw new MarketplaceException(HttpStatus.CONFLICT, "This product belongs to another shop");
@@ -71,8 +71,20 @@ public class ShopProductService {
         if(productService.checkIfProductAlreadyExists(product.getName())){
             throw new MarketplaceException(HttpStatus.CONFLICT, "Product's name already exists");
         }
-        product.setShop(shop);
-        return productService.addProduct(product);
+    }
+
+    private void blockProductIfNotRemovable(Long shopId, Long productId) {
+        if (shopOrderService.existsProductInCustomersCartsForShop(shopId, productId)) {
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST,
+                    "This product cannot be deleted because it's in a customer cart.");
+        }
+        List<OrderItem> orderItems = shopOrderService.getOrderItemsOfShop(shopId);
+        boolean existsInOrders = orderItems.stream()
+                .anyMatch(orderItem -> orderItem.getProduct().getId().equals(productId));
+        if(existsInOrders){
+            throw new MarketplaceException(HttpStatus.BAD_REQUEST,
+                    "This product cannot be deleted because it has been ordered.");
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -85,23 +97,19 @@ public class ShopProductService {
     }
 
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId) and @shopSecurity.isProductBelongsToShop(#shopId,#productId)")
     public Product updateProduct(Long shopId, Long productId, Product updatedProduct) {
-        Product existing = productService.getProductById(productId);
-        ensureProductBelongsToShop(existing, shopId);
-        return productService.updateProduct(existing.getId(), updatedProduct);
+        Product product = productService.getProductById(productId);
+        return productService.updateProduct(product.getId(), updatedProduct);
     }
 
-    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId)")
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isSellerOfShop(principal.id, #shopId) and @shopSecurity.isProductBelongsToShop(#shopId,#productId)")
     public void deleteProduct(Long shopId, Long productId) {
-        Product existing = productService.getProductById(productId);
-        ensureProductBelongsToShop(existing, shopId);
-        productService.deleteProduct(existing.getId());
+        blockProductIfNotRemovable(shopId,productId);
+        Product product = productService.getProductById(productId);
+        productService.deleteProduct(product.getId());
     }
 
-    private void ensureProductBelongsToShop(Product product, Long shopId) {
-        if (!product.getShop().getId().equals(shopId)) {
-            throw new MarketplaceException(HttpStatus.CONFLICT, "Product does not belong to this shop");
-        }
-    }
+
+
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,15 @@ public class CartService {
     public Optional<Cart> getCart(Long profileId, Long shopId) {
         return cartRepository.findByUser_IdAndShop_Id(profileId, shopId);
     }
+
+    @PreAuthorize("hasRole('SELLER') and @shopSecurity.isProductBelongsToShop(#shopId,#productId)")
+    public boolean existsProductInCustomersCartsForShop(Long shopId, Long productId) {
+        List<Cart> carts = cartRepository.findByShop_Id(shopId);
+        return carts.stream()
+                .flatMap(cart -> cart.getItems().stream())
+                .anyMatch(item -> item.getProduct().getId().equals(productId));
+    }
+
 
     private Optional<Cart> getCartByProfile(Long profileId) {
         return cartRepository.findByUser_Id(profileId);
