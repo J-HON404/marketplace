@@ -67,7 +67,7 @@ public class CartService {
         if (!cart.getShop().getId().equals(shopId)) {
             cart.getItems().clear();
             cart.setShop(sellerShopService.getShopById(shopId));
-            cart = cartRepository.saveAndFlush(cart);
+            cart = cartRepository.save(cart);
         }
         return cart;
     }

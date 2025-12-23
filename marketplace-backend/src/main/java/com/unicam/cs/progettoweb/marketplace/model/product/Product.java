@@ -41,6 +41,6 @@ public class Product {
     @Column(nullable = false)
     private LocalDate availabilityDate;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ProductNotice> notices = new ArrayList<>();
 }

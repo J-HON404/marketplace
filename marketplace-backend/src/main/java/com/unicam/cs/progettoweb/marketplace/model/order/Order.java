@@ -32,7 +32,7 @@ public class Order {
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<OrderItem> items;
 
     @Column(nullable = false)
