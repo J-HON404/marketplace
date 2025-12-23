@@ -22,8 +22,9 @@
       <td>{{ order.total | currency:'EUR' }}</td>
       <td>{{ order.status }}</td>
       <td>{{ order.trackingId || 'N/A' }}</td>
-      <td>
-        <span [class.expired]="helper.isExpired(order) && order.status === 'SHIPPED'">
+      
+      <td [style.background-color]="(role === 'SELLER' && helper.isExpired(order)) ? '#ffdada' : 'transparent'">
+        <span [class.expired]="helper.isExpired(order)">
           {{ order.estimatedDeliveryDate ? (order.estimatedDeliveryDate | date:'dd/MM/yyyy') : 'N/A' }}
         </span>
       </td>
@@ -36,13 +37,11 @@
               placeholder="Tracking ID"
               [(ngModel)]="order._trackingTemp"
             />
-
             <input
               type="date"
               [(ngModel)]="order._estimatedTemp"
               [min]="todayString"
             />
-
             <button
               type="button"
               (click)="shipOrder(order)"
@@ -52,7 +51,7 @@
           </div>
 
           <div *ngIf="helper.isExpired(order)" class="expired">
-            ⚠️ Consegna scaduta o sollecito ricevuto
+             Consegna non ancora confermata
           </div>
         </ng-container>
 
