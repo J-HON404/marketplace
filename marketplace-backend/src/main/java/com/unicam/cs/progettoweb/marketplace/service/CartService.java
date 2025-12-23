@@ -65,7 +65,8 @@ public class CartService {
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .mapToInt(CartItem::getQuantity)
                 .sum();
-        verifyProductStock(product, quantityInCart, quantityToAdd);
+        int newQuantity = quantityInCart + quantityToAdd;
+        verifyProductStock(product, newQuantity);
         updateCartItems(cart, product, quantityToAdd);
         return cartRepository.save(cart);
     }
@@ -80,27 +81,26 @@ public class CartService {
         return cart;
     }
 
-    private void verifyProductStock(Product product, int quantityInCart, int quantityToAdd) {
+    private void verifyProductStock(Product product, int requestedQuantity) {
         productService.checkProductDateAvailability(product);
-        int totalRequested = quantityInCart + quantityToAdd;
-        if (totalRequested > product.getQuantity()) {
+        if (requestedQuantity > product.getQuantity()) {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST,
                     "Quantità non disponibile per " + product.getName() +
-                            ". Nel carrello hai già " + quantityInCart + " unità");
+                            ". Disponibili " + product.getQuantity() + " unità");
         }
     }
 
-    private void updateCartItems(Cart cart, Product product, int quantity) {
+    private void updateCartItems(Cart cart, Product product, int quantityToAdd) {
         cart.getItems().stream()
                 .filter(item -> item.getProduct().getId().equals(product.getId()))
                 .findFirst()
                 .ifPresentOrElse(
-                        item -> item.setQuantity(item.getQuantity() + quantity),
+                        item -> item.setQuantity(item.getQuantity() + quantityToAdd),
                         () -> {
                             CartItem newItem = new CartItem();
                             newItem.setCart(cart);
                             newItem.setProduct(product);
-                            newItem.setQuantity(quantity);
+                            newItem.setQuantity(quantityToAdd);
                             cart.getItems().add(newItem);
                         }
                 );
@@ -114,7 +114,7 @@ public class CartService {
                 .filter(i -> i.getProduct().getId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Prodotto non presente nel carrello"));
-        verifyProductStock(item.getProduct(), 0, newQuantity);
+        verifyProductStock(item.getProduct(), newQuantity);
         item.setQuantity(newQuantity);
         return cartRepository.save(cart);
     }
@@ -139,7 +139,7 @@ public class CartService {
     public void lockProductsForCheckout(Cart cart) {
         cart.getItems().forEach(item -> {
             Product lockedProduct = productService.lockProductById(item.getProduct().getId());
-            verifyProductStock(lockedProduct, 0, item.getQuantity());
+            verifyProductStock(lockedProduct, item.getQuantity());
             item.setProduct(lockedProduct);
         });
     }
