@@ -68,7 +68,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public boolean checkIfProductAlreadyExists(String productName){
+    public boolean checkIfProductAlreadyExists(String productName) {
         return productRepository.existsByName(productName);
     }
 
@@ -78,5 +78,10 @@ public class ProductService {
 
     public List<Product> getFutureProductsByShop(Shop shop, LocalDate today) {
         return productRepository.findByShopAndAvailabilityDateGreaterThan(shop, today);
+    }
+
+    public Product lockProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Prodotto non trovato"));
     }
 }

@@ -2,13 +2,18 @@ package com.unicam.cs.progettoweb.marketplace.repository.product;
 
 import com.unicam.cs.progettoweb.marketplace.model.product.Product;
 import com.unicam.cs.progettoweb.marketplace.model.Shop;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE) //permette lettura atomica di un prodotto, in situazioni di acquisto concorrenti
+    Optional<Product> findById(Long id);
     // controlla se esiste un prodotto con quel nome nello stesso shop
     boolean existsByNameAndShop(String name, Shop shop);
     // tutti i prodotti di uno shop (disponibili e non disponibili)

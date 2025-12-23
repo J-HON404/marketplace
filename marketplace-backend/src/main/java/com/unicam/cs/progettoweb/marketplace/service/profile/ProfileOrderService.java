@@ -37,48 +37,57 @@ public class ProfileOrderService {
         profileService.findProfileById(profileId);
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId ")
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public List<Order> getOrdersOfProfile(Long profileId) {
         ensureProfileExists(profileId);
         return orderService.getOrdersByProfileId(profileId);
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId ")
+
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public Order createOrderFromCart(Long profileId, Long shopId) {
         ensureProfileExists(profileId);
-        Cart customerCart = cartService.getCart(profileId, shopId)
+        Cart cart = cartService.getCart(profileId, shopId)
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.BAD_REQUEST, "Cart is empty"));
-        cartService.validateCartForCheckout(customerCart);
-        List<OrderItem> orderItems = getOrderItemsFromCart(customerCart);
-        Order order = new Order();
+        cartService.lockProductsForCheckout(cart);
+        List<OrderItem> orderItems = buildOrderItemsFromCart(cart);
         Profile profile = profileService.findProfileById(profileId);
-        order.setCustomer(profile);
-        order.setShop(customerCart.getShop());
-        order.setItems(orderItems);
-        order.setOrderDate(LocalDateTime.now());
-        order.setTotal(getTotalPriceFromOrderItems(orderItems));
-        orderItems.forEach(item -> item.setOrder(order));
+        Order order = buildOrder(profile, cart, orderItems);
         Order createdOrder = orderService.createOrder(order);
-        shopProductService.decrementQuantityFromCartItems(customerCart.getItems());
-        cartService.clearCart(profileId, shopId);
+        finalizeCheckout(cart);
         return createdOrder;
     }
 
-    private List<OrderItem> getOrderItemsFromCart(Cart customerCart) {
-        return customerCart.getItems().stream()
-                .map(cartItem -> {
+    private List<OrderItem> buildOrderItemsFromCart(Cart cart) {
+        return cart.getItems().stream()
+                .map(item -> {
                     OrderItem orderItem = new OrderItem();
-                    orderItem.setProduct(cartItem.getProduct());
-                    orderItem.setQuantity(cartItem.getQuantity());
-                    orderItem.setPrice(cartItem.getProduct().getPrice());
+                    orderItem.setProduct(item.getProduct());
+                    orderItem.setQuantity(item.getQuantity());
+                    orderItem.setPrice(item.getProduct().getPrice());
                     return orderItem;
                 })
                 .toList();
     }
 
+    private Order buildOrder(Profile profile, Cart cart, List<OrderItem> items) {
+        Order order = new Order();
+        order.setCustomer(profile);
+        order.setShop(cart.getShop());
+        order.setItems(items);
+        order.setOrderDate(LocalDateTime.now());
+        order.setTotal(calculateTotalPrice(items));
+        items.forEach(item -> item.setOrder(order));
+        return order;
+    }
 
-    private double getTotalPriceFromOrderItems(List<OrderItem> orderItems) {
-        return orderItems.stream()
+    private void finalizeCheckout(Cart cart) {
+        shopProductService.decrementQuantityFromCartItems(cart.getItems());
+        cartService.clearCart(cart.getUser().getId(), cart.getShop().getId());
+    }
+
+    private double calculateTotalPrice(List<OrderItem> items) {
+        return items.stream()
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum();
     }
@@ -86,12 +95,12 @@ public class ProfileOrderService {
     @PreAuthorize("hasRole('CUSTOMER') and @customerSecurity.isOwnerOfOrder(principal.id, #orderId)")
     public void confirmDelivered(Long profileId, Long orderId) {
         ensureProfileExists(profileId);
-        OrderStatus currentStatus = orderService.getOrderStatus(orderId);
-        if (currentStatus == OrderStatus.SHIPPING_DETAILS_SET || currentStatus == OrderStatus.REMIND_DELIVERY) {
+        OrderStatus status = orderService.getOrderStatus(orderId);
+        if (status == OrderStatus.SHIPPING_DETAILS_SET || status == OrderStatus.REMIND_DELIVERY) {
             orderService.updateOrderStatus(orderId, OrderStatus.CONFIRMED_DELIVERED);
         } else {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST,
-                    "Impossibile confermare la consegna: ordine in stato " + currentStatus + ")");
+                    "Impossibile confermare la consegna: ordine in stato " + status);
         }
     }
 }

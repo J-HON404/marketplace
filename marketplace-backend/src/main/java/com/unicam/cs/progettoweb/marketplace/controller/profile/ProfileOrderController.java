@@ -47,7 +47,7 @@ public class ProfileOrderController {
 
     @PutMapping("/update")
     public ResponseEntity<ApiResponse<Cart>> updateProductQuantity(@PathVariable Long profileId, @PathVariable Long shopId, @RequestBody CartItemRequest cartItemRequest) {
-        Cart cart = cartService.updateProductQuantity(profileId, shopId, cartItemRequest.getProductId(), cartItemRequest.getQuantity());
+        Cart cart = cartService.updateCartProductQuantity(profileId, shopId, cartItemRequest.getProductId(), cartItemRequest.getQuantity());
         return ResponseEntity.ok(ApiResponse.success(cart));
     }
 

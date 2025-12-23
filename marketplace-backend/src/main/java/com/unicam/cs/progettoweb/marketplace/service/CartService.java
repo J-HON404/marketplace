@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,12 +39,10 @@ public class CartService {
 
     @PreAuthorize("hasRole('SELLER') and @shopSecurity.isProductBelongsToShop(#shopId,#productId)")
     public boolean existsProductInCustomersCartsForShop(Long shopId, Long productId) {
-        List<Cart> carts = cartRepository.findByShop_Id(shopId);
-        return carts.stream()
+        return cartRepository.findByShop_Id(shopId).stream()
                 .flatMap(cart -> cart.getItems().stream())
                 .anyMatch(item -> item.getProduct().getId().equals(productId));
     }
-
 
     private Optional<Cart> getCartByProfile(Long profileId) {
         return cartRepository.findByUser_Id(profileId);
@@ -61,18 +58,19 @@ public class CartService {
     }
 
     @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
-    public Cart addProduct(Long profileId, Long shopId, Long productId, int quantity) {
-        Cart cart = prepareCart(profileId, shopId);
+    public Cart addProduct(Long profileId, Long shopId, Long productId, int quantityToAdd) {
+        Cart cart = prepareCartForShop(profileId, shopId);
         Product product = productService.getProductById(productId);
-        int currentInCart = cart.getItems().stream()
+        int quantityInCart = cart.getItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
-                .mapToInt(CartItem::getQuantity).sum();
-        verifyProductStock(product, currentInCart + quantity);
-        updateCartItems(cart, product, quantity);
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+        verifyProductStock(product, quantityInCart, quantityToAdd);
+        updateCartItems(cart, product, quantityToAdd);
         return cartRepository.save(cart);
     }
 
-    private Cart prepareCart(Long profileId, Long shopId) {
+    private Cart prepareCartForShop(Long profileId, Long shopId) {
         Cart cart = getCartByProfile(profileId).orElseGet(() -> createCart(profileId, shopId));
         if (!cart.getShop().getId().equals(shopId)) {
             cart.getItems().clear();
@@ -82,11 +80,13 @@ public class CartService {
         return cart;
     }
 
-    private void verifyProductStock(Product product, int quantity) {
+    private void verifyProductStock(Product product, int quantityInCart, int quantityToAdd) {
         productService.checkProductDateAvailability(product);
-        if (quantity > product.getQuantity()) {
+        int totalRequested = quantityInCart + quantityToAdd;
+        if (totalRequested > product.getQuantity()) {
             throw new MarketplaceException(HttpStatus.BAD_REQUEST,
-                    "Quantità non disponibile per " + product.getName() + ". In magazzino: " + product.getQuantity());
+                    "Quantità non disponibile per " + product.getName() +
+                            ". Nel carrello hai già " + quantityInCart + " unità");
         }
     }
 
@@ -107,15 +107,14 @@ public class CartService {
     }
 
     @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
-    public Cart updateProductQuantity(Long profileId, Long shopId, Long productId, int newQuantity) {
+    public Cart updateCartProductQuantity(Long profileId, Long shopId, Long productId, int newQuantity) {
         Cart cart = getCart(profileId, shopId)
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Carrello non trovato"));
-
         CartItem item = cart.getItems().stream()
                 .filter(i -> i.getProduct().getId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new MarketplaceException(HttpStatus.NOT_FOUND, "Prodotto non presente nel carrello"));
-        verifyProductStock(item.getProduct(), newQuantity);
+        verifyProductStock(item.getProduct(), 0, newQuantity);
         item.setQuantity(newQuantity);
         return cartRepository.save(cart);
     }
@@ -128,19 +127,20 @@ public class CartService {
         });
     }
 
-    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #cart.user.id")
-    public void validateCartForCheckout(Cart cart) {
-        if (cart.getItems().isEmpty()) {
-            throw new MarketplaceException(HttpStatus.BAD_REQUEST, "Il carrello è vuoto");
-        }
-        cart.getItems().forEach(item -> verifyProductStock(item.getProduct(), item.getQuantity()));
-    }
-
     @PreAuthorize("hasRole('CUSTOMER') and principal.id == #profileId")
     public void clearCart(Long profileId, Long shopId) {
         getCart(profileId, shopId).ifPresent(cart -> {
             cart.getItems().clear();
             cartRepository.save(cart);
+        });
+    }
+
+    @PreAuthorize("hasRole('CUSTOMER') and principal.id == #cart.user.id")
+    public void lockProductsForCheckout(Cart cart) {
+        cart.getItems().forEach(item -> {
+            Product lockedProduct = productService.lockProductById(item.getProduct().getId());
+            verifyProductStock(lockedProduct, 0, item.getQuantity());
+            item.setProduct(lockedProduct);
         });
     }
 }
