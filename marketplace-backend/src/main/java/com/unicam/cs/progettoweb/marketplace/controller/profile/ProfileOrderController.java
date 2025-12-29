@@ -9,6 +9,11 @@ import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileOrderService
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller REST per la gestione del carrello e degli ordini
+ * associati a un profilo e a un negozio specifico.
+ */
+
 @RestController
 @RequestMapping("/api/profiles/{profileId}/shops/{shopId}/cart")
 public class ProfileOrderController {

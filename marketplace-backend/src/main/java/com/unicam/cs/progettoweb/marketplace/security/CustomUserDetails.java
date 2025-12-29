@@ -9,6 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Implementazione di UserDetails per Spring Security basata sul profilo dell'utente.
+ * Fornisce informazioni necessarie all'autenticazione e all'autorizzazione.
+ */
+
 @Getter
 public class CustomUserDetails implements UserDetails {
 

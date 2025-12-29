@@ -14,6 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Servizio per la gestione dei negozi dei seller
+ * Fornisce operazioni CRUD sui negozi e metodi di validazione:
+ * - Recupero del negozio di un profilo venditore
+ * - Recupero di un negozio tramite ID
+ * - Recupero di tutti i negozi
+ * - Creazione di un nuovo negozio per un venditore
+ * - Aggiornamento di un negozio esistente
+ */
+
 @Transactional
 @Service
 public class SellerShopService {

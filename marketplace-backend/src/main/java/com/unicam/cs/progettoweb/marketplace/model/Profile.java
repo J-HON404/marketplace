@@ -6,6 +6,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Rappresenta un profilo utente nel marketplace.
+ * Contiene informazioni di autenticazione, indirizzo e ruolo dell'utente.
+ */
+
 @Entity
 @Table(name = "profiles")
 @Data

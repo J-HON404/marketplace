@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller REST per la gestione dei negozi associati a un profilo seller.
+ */
+
 @RestController
 @RequestMapping("/api/profiles/{profileId}")
 public class ProfileShopController {

@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller REST per l'autenticazione e la registrazione degli utenti.
+ */
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -24,26 +28,34 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * Registra un nuovo profilo seller o customer
+     */
+
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Profile>> register(@RequestParam(required = false) String role, @RequestBody Profile profile) {
+    public ResponseEntity<ApiResponse<Profile>> register(@RequestBody Profile profile) {
         profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-        if (role == null || role.isEmpty()) {
+        if (profile.getRole() == null) {
             profile.setRole(ProfileRole.CUSTOMER);
         } else {
             try {
-                profile.setRole(ProfileRole.valueOf(role.toUpperCase()));
+                profile.setRole(ProfileRole.valueOf(profile.getRole().name().toUpperCase()));
             } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(ApiResponse.error("Invalid role: " + role));
+                return ResponseEntity.badRequest().body(ApiResponse.error("Invalid role: " + profile.getRole()));
             }
         }
         Profile created = profileService.createProfile(profile);
         return ResponseEntity.ok(ApiResponse.success(created));
     }
 
+
+    /**
+     * Effettua il login di un profilo e restituisce un token JWT.
+     */
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginRequest request) {
         Profile profile = profileService.findProfileByUsername(request.getUsername());
-
         if (profile == null || !passwordEncoder.matches(request.getPassword(), profile.getPassword())) {
             return ResponseEntity.status(401).body(ApiResponse.error("Invalid credentials"));
         }

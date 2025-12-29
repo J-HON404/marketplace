@@ -17,6 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Servizio per la gestione degli ordini da parte di un profilo customer.
+ * La classe utilizza altri servizi per:
+ * - Recuperare e verificare i profili dei customer (ProfileService)
+ * - Gestire gli ordini (OrderService)
+ * - Gestire i carrelli (CartService)
+ * - Aggiornare la disponibilità dei prodotti (ShopProductService)
+ */
 @Transactional
 @Service
 public class ProfileOrderService {

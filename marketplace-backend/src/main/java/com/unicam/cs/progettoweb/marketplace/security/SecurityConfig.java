@@ -12,6 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configurazione della sicurezza Spring Security.
+ * Definisce i filtri, la gestione delle sessioni, i permessi e i
+ * bean necessari per autenticazione e password encoding.
+ */
+
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {

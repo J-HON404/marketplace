@@ -1,5 +1,9 @@
 package com.unicam.cs.progettoweb.marketplace.model.enums;
 
+/**
+ * Enum che rappresenta lo stato di un ordine nel marketplace.
+ */
+
 public enum OrderStatus {
     READY_TO_ELABORATING,    // se il customer ha creato un ordine
     SHIPPING_DETAILS_SET,    //se il seller ha impostato i dettagli ordine(track_code e data consegna) e ha spedito l'ordine

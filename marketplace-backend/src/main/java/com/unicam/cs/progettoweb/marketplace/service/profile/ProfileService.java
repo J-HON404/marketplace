@@ -7,6 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Servizio per la gestione dei profili utente.
+ * Fornisce operazioni CRUD sui profili:
+ * - Creazione e aggiornamento dei profili
+ * - Recupero dei profili per ID o username
+ * - Cancellazione dei profili
+ */
+
 @Transactional
 @Service
 public class ProfileService  {

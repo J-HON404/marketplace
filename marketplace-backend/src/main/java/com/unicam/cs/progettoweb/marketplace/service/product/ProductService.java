@@ -11,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Servizio per la gestione dei prodotti.
+ * Fornisce CRUD per la gestione dei prodotti.
+ */
+
 @Transactional
 @Service
 public class ProductService {

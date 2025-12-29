@@ -16,6 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Servizio per la gestione dei carrelli dei customer
+ * Questo servizio consente di:
+ * - Recuperare il carrello di un customer per uno specifico shop
+ * - Creare un nuovo carrello per un customer legato ad uno shop
+ * - Aggiungere, aggiornare o rimuovere prodotti dal carrello
+ * - Svuotare completamente un carrello
+ * - Verificare la disponibilità dei prodotti durante l'aggiunta o aggiornamento
+ * - Bloccare i prodotti prima del checkout per evitare conflitti di concorrenza
+ */
+
 @Service
 @Transactional
 public class CartService {

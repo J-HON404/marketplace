@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * Controller REST per la gestione della cronologia ordini di un profilo.
+ */
+
 @RestController
 @RequestMapping("/api/profiles/{profileId}/orders")
 public class ProfileOrderHistoryController {

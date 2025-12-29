@@ -5,6 +5,11 @@ import com.unicam.cs.progettoweb.marketplace.repository.product.ProductRepositor
 import com.unicam.cs.progettoweb.marketplace.repository.ShopRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Componente di sicurezza per operazioni legate agli shop.
+ * Fornisce metodi per verificare se un seller è proprietario di uno shop, ordine o prodotto.
+ */
+
 @Component("shopSecurity")
 public class ShopSecurity {
 

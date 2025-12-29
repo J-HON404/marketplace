@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Controller REST per la gestione della cronologia ordini di un negozio.
+ */
+
 @RestController
 @RequestMapping("/api/shops/{shopId}/orders")
 public class ShopOrderHistoryController {

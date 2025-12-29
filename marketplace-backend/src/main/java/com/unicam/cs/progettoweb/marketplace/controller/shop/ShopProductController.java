@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller REST per la gestione dei prodotti di un negozio.
+ */
+
 @RestController
 @RequestMapping("/api/shops/{shopId}/products")
 public class ShopProductController {

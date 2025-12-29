@@ -15,6 +15,18 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servizio per la gestione degli ordini di uno shop.
+ * Questo servizio offre operazioni specifiche per i seller:
+ * - Recupero degli ordini di uno shop
+ * - Recupero degli ordini filtrati per stato
+ * - Recupero di tutti gli OrderItem di uno shop
+ * - Elaborazione di un ordine (impostazione tracking e data consegna)
+ * - Recupero degli ordini scaduti per conferma consegna
+ * - Verifica della presenza di un prodotto nei carrelli dei clienti dello shop
+ * - Eliminazione di un ordine appartenente allo shop
+ */
+
 @Transactional
 @Service
 public class ShopOrderService {

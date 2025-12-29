@@ -3,6 +3,10 @@ package com.unicam.cs.progettoweb.marketplace.security;
 import com.unicam.cs.progettoweb.marketplace.repository.OrderRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Componente di sicurezza per verificare i permessi dei clienti.
+ */
+
 @Component("customerSecurity")
 public class CustomerSecurity {
 

@@ -7,6 +7,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Rappresenta un negozio nel marketplace.
+ * Contiene informazioni sul nome, il venditore proprietario e la categoria del negozio.
+ */
+
 @Entity
 @Table(name = "shops")
 @Data

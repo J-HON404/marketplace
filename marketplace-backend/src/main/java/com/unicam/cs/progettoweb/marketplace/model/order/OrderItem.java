@@ -6,6 +6,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Rappresenta un singolo articolo all'interno di un ordine.
+ * Contiene il riferimento all'ordine, al prodotto, alla quantità e al prezzo.
+ */
+
 @Data
 @Entity
 @NoArgsConstructor

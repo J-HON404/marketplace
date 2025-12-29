@@ -11,6 +11,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Rappresenta un ordine effettuato da un cliente in un negozio.
+ * Contiene informazioni sullo stato dell'ordine, articoli, date e tracking.
+ */
+
 @Data
 @Entity
 @NoArgsConstructor

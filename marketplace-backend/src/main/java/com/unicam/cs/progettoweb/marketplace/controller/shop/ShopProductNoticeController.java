@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * Controller REST per la gestione dei ProductNotice (avvisi) associati a un prodotto.
+ */
+
 @RestController
 @RequestMapping("/api/products/{productId}/notices")
 public class ShopProductNoticeController {

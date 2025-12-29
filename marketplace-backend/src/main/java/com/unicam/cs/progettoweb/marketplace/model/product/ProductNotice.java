@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * Rappresenta una notifica associata a un prodotto.
+ * Contiene il testo della notifica, il tipo e una data di scadenza informativa.
+ */
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,7 +26,8 @@ public class ProductNotice {
     private String text;
 
     @Column
-    private LocalDate expireDate; //è solo a titolo informativo!
+    private LocalDate expireDate;
+    //è solo a titolo informativo, indica fino a quando è valida una promozione!
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

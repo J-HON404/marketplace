@@ -9,6 +9,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Rappresenta un prodotto all'interno di un negozio.
+ * Contiene informazioni sul nome, descrizione, prezzo, quantità, disponibilità e notifiche associate.
+ */
 @Data
 @Entity
 @NoArgsConstructor

@@ -11,6 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Servizio per la gestione degli ordini all'interno del marketplace
+ * Questo servizio consente di:
+ * - Recuperare ordini per ID, customer o shop
+ * - Creare nuovi ordini impostando automaticamente lo stato iniziale
+ * - Eliminare ordini esistenti
+ * - Aggiornare lo stato di un ordine
+ * - Recuperare lo stato corrente di un ordine
+ * - Ottenere ordini filtrati per shop e stato
+ * - Identificare ordini scaduti che richiedono conferma della consegna
+ * - Impostare i dettagli di spedizione (tracking e data stimata di consegna)
+ */
+
 @Transactional
 @Service
 public class OrderService {

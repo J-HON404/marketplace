@@ -9,6 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Servizio per la gestione delle ProductNotice.
+ * Fornisce metodi CRUD per la gestione degli avvisi legati a prodotti
+ */
+
 @Transactional
 @Service
 public class ProductNoticeService {

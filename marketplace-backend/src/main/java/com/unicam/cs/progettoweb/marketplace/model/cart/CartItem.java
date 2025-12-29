@@ -6,6 +6,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Rappresenta un singolo articolo all'interno di un carrello.
+ * Contiene il riferimento al carrello, al prodotto e alla quantità desiderata.
+ */
+
 @Data
 @Entity
 @NoArgsConstructor

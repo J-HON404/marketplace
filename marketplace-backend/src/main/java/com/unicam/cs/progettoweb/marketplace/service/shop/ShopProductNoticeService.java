@@ -10,6 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Servizio per la gestione dei ProductNotices (avvisi) dei prodotti di uno shop
+ * Questo servizio consente a venditori di:
+ * - Creare nuovi ProductNotice per un prodotto
+ * - Aggiornare ProductNotice esistenti
+ * - Eliminare ProductNotice
+ * - Recuperare tutti i ProductNotice di un prodotto o uno specifico per ID
+ */
+
 @Transactional
 @Service
 public class ShopProductNoticeService {

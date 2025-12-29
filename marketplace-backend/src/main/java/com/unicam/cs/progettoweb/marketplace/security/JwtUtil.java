@@ -11,6 +11,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * Utility per la generazione, validazione e parsing dei token JWT.
+ * Gestisce la creazione dei token firmati e l'estrazione dei dati dal token.
+ */
+
 @Component
 public class JwtUtil {
 

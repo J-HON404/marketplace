@@ -3,6 +3,12 @@ package com.unicam.cs.progettoweb.marketplace.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Wrapper generico per le risposte API.
+ * Contiene un messaggio opzionale e i dati della risposta.
+ * @param <T> Tipo dei dati contenuti nella risposta
+ */
+
 @Data
 @NoArgsConstructor
 public class ApiResponse<T> {

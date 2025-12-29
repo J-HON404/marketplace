@@ -6,6 +6,11 @@ import com.unicam.cs.progettoweb.marketplace.service.profile.ProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller REST per la gestione dei profili utente.
+ * Espone le API CRUD per l'entità Profile.
+ */
+
 @RestController
 @RequestMapping("/api/profiles")
 public class ProfileController {

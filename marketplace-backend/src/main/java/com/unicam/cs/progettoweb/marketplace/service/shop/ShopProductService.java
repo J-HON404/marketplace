@@ -14,6 +14,14 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Servizio per la gestione dei prodotti di uno shop.
+ * * Questo servizio consente di:
+ * - Recuperare prodotti di uno shop (tutti, non disponibili, disponibili in futuro)
+ * - Creare, aggiornare e cancellare prodotti dello shop
+ * - Gestire la quantità dei prodotti
+ */
+
 @Service
 public class ShopProductService {
 
