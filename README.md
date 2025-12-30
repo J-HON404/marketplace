@@ -21,14 +21,14 @@ Frontend:
 Angular 17
 
 Backend:
-Spring Boot
-Spring Security + JWT token
-Spring Data JPA con repository per entità
-Database: MySQL 
+Spring Boot,
+Spring Security + JWT token,
+Spring Data JPA ,
+Database: MySQL ,
 
 Requisiti
-Java 17+
-Node.js 20+ 
-MySQL 8+ 
-Gradle 
-Angular CLI
+Java 17+,
+Node.js 20+ ,
+MySQL 8+ ,
+Gradle ,
+Angular CLI,
