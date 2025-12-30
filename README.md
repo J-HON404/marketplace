@@ -1,6 +1,7 @@
-🛒 Marketplace Web Application
+Marketplace Web Application
+
 Descrizione
-Si tratta piattaforma marketplace full-stack che permette a utenti SELLER di gestire prodotti e ordini 
+Si tratta di una piccola piattaforma marketplace che permette a utenti SELLER di gestire prodotti avvisi ed ordini 
 a CUSTOMER di acquistare prodotti, gestire il carrello ed essere aggiornati sugli stati degli ordini.
 
 Funzionalità principali
@@ -24,7 +25,13 @@ Angular 17
 
 Backend:
 Spring Boot
-Spring Security + JWT
+Spring Security + JWT token
 Spring Data JPA con repository per entità
-Database:
-MySQL 
+Database: MySQL 
+
+Requisiti
+Java 17+
+Node.js 20+ 
+MySQL 8+ 
+Gradle 
+Angular CLI
