@@ -1,9 +1,10 @@
 🛒 Marketplace Web Application
 Descrizione
-Si tratta piattaforma marketplace full-stack che permette a utenti SELLER di gestire prodotti e ordini e a utenti CUSTOMER di acquistare prodotti, gestire il carrello ed essere aggiornati sugli stati degli ordini.
-Il frontend è sviluppato con Angular ed il backend con Spring Boot. Con token JWT per l’autenticazione.
+Si tratta piattaforma marketplace full-stack che permette a utenti SELLER di gestire prodotti e ordini 
+a CUSTOMER di acquistare prodotti, gestire il carrello ed essere aggiornati sugli stati degli ordini.
 
 Funzionalità principali
+
 Per i SELLER:
 Creare, modificare ed eliminare prodotti.
 Gestire ordini ricevuti: impostare dettagli di spedizione, monitorare ordini non ancora confermati di consegna.
@@ -17,6 +18,7 @@ Visualizzare e confermare lo stato delle consegne.
 Visualizzare notifiche sui prodotti.
 
 Tecnologie
+
 Frontend:
 Angular 17
 
