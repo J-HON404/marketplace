@@ -8,6 +8,17 @@ import { TokenService } from '../../core/services/token.service';
 import { OrdersTableComponent } from '../../components/orders-table.component/orders-table';
 import { HttpErrorResponse } from '@angular/common/http';
 
+/**
+ * AreaRiservataComponent è un componente che gestisce la pagina dell'area riservata 
+ * di un utente, mostrando informazioni sul profilo, sul negozio (se è un seller) e sugli ordini.
+ * Funzionalità principali:
+ * - Recupera l'ID del profilo dall'URL o dal token JWT.
+ * - Carica i dati del profilo tramite ProfileService.
+ * - Determina il ruolo dell'utente (SELLER o CUSTOMER) e adatta il comportamento della pagina.
+ * - Se l'utente è un SELLER, carica le informazioni del negozio associato tramite ShopService.
+ * - Carica gli ordini dell'utente o del negozio tramite OrdersService.
+ */
+
 @Component({
   selector: 'app-area-riservata',
   standalone: true,
@@ -50,15 +61,12 @@ export class AreaRiservataComponent implements OnInit {
       next: res => {
         this.profileData = res.data;
         this.loading = false;
-        
         if (!this.profileData || !this.profileData.role) {
           this.errorMessage = 'Profilo o ruolo non disponibile';
           return;
         }
-
         this.roleUpper = this.profileData.role.toUpperCase() as 'SELLER' | 'CUSTOMER';
         this.shopId = this.tokenService.getShopId();
-        
         if (this.roleUpper === 'SELLER') {
           this.loadShopInfo();
         } else {

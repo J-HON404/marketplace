@@ -10,6 +10,17 @@ import { ProductNotices, TypeNotice } from '../../interfaces/product-notice';
 import { Products } from '../../interfaces/product';
 import { ApiResponse } from '../../interfaces/api-response';
 
+/**
+ * ProductDetailsComponent è un componente standalone che mostra i dettagli di un singolo prodotto
+ * insieme agli avvisi (ProductNotices) associati.
+ * Funzioni principali:
+ * 1. Controlla se l'utente loggato è il proprietario del prodotto (solo per SELLER).
+ * 2. Carica i dati del prodotto dal backend tramite ProductService.
+ * 3. Carica gli avvisi associati al prodotto tramite NoticeService.
+ * 4. Permette ai SELLER di aggiungere nuovi avvisi/notifiche al prodotto.
+ * 5. Permette ai SELLER di eliminare avvisi esistenti.
+ */
+
 @Component({
   selector: 'app-product-details',
   standalone: true,

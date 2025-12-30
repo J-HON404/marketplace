@@ -1,5 +1,18 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Servizio Angular per la gestione del token JWT lato client.
+ * Si occupa di:
+ * 1. Memorizzare il token in sessionStorage.
+ * 2. Recuperare e rimuovere il token.
+ * 3. Decodificare il token per estrarre informazioni utili:
+ *    - ruolo dell'utente (role)
+ *    - ID del profilo (profileId)
+ *    - ID del negozio (shopId)
+ * Questo servizio viene utilizzato ad esempio dall'interceptor HTTP per aggiungere
+ * il token alle richieste e dai componenti per controllare permessi o dati dell'utente.
+ */
+
 @Injectable({
   providedIn: 'root'
 })

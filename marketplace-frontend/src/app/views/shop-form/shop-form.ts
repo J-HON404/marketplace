@@ -5,6 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from '../../services/shop.service';
 import { ShopCategory } from '../../interfaces/shops';
 
+/**
+ * ShopFormComponent è un componente che gestisce la creazione e la modifica di un negozio.
+ * Funzioni principali:
+ * 1. Gestisce un form reattivo per l’inserimento dei dati del negozio (nome e categoria).
+ * 2. Determina se è in modalità "creazione" o "modifica" basandosi sulla presenza di un shopId nella route.
+ * 3. Se in modalità modifica, carica i dati del negozio esistente e popola il form.
+ * 4. Invia i dati al backend tramite ShopService per creare o aggiornare il negozio.
+ */
+
 @Component({
   selector: 'app-shop-form',
   standalone: true,
@@ -26,7 +35,6 @@ export class ShopFormComponent implements OnInit {
     private shopService: ShopService
   ) {
     this.shopForm = this.fb.group({
-      // Usiamo 'category' per combaciare con updatedShop.getCategory() in Java
       name: ['', [Validators.required, Validators.minLength(3)]],
       category: ['', Validators.required] 
     });
@@ -43,7 +51,6 @@ export class ShopFormComponent implements OnInit {
       this.shopService.getShop(this.profileId).subscribe({
         next: (res) => {
           if (res.data) {
-            // MAPPATURA: res.data.shopCategory (dal server) -> category (nel form)
             this.shopForm.patchValue({
               name: res.data.name,
               category: res.data.shopCategory
@@ -51,7 +58,6 @@ export class ShopFormComponent implements OnInit {
           }
         },
         error: () => {
-          // Se 404, rimaniamo in modalità creazione
           this.isEditMode = false;
         }
       });
@@ -65,7 +71,6 @@ export class ShopFormComponent implements OnInit {
   onSubmit() {
     if (this.shopForm.invalid) return;
     
-    // Ora il payload conterrà { name: "...", category: "..." }
     const request = this.isEditMode 
       ? this.shopService.updateShop(this.profileId, this.shopId!, this.shopForm.value)
       : this.shopService.createShop(this.profileId, this.shopForm.value);

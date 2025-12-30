@@ -3,6 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ApiResponse } from '../interfaces/api-response';
 
+/**
+ * OrdersService è un servizio che gestisce le chiamate HTTP relative agli ordini.
+ * Si occupa di:
+ * - Recuperare gli ordini di un negozio o di un profilo cliente.
+ * - Confermare la consegna di un ordine da parte del cliente.
+ * - Confermare la spedizione di un ordine da parte del venditore.
+ * - Recuperare gli ordini scaduti per un negozio.
+ */
+
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
   constructor(private http: HttpClient) {}

@@ -6,6 +6,13 @@ import { TokenService } from '../../core/services/token.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Shop } from '../../interfaces/shops';
 
+/**
+ * ShopListComponent è un componente che mostra la lista dei negozi associati a un profilo.
+ * Funzioni principali:
+ * 1. Recupera l'ID del profilo dalla route o dal token dell'utente loggato.
+ * 2. Carica tutti i negozi associati a quel profilo tramite ShopService.
+ */
+
 @Component({
   selector: 'app-shop-list',
   standalone: true,
@@ -40,10 +47,7 @@ export class ShopListComponent implements OnInit {
     this.loading = true;
     this.shopService.getAllShops(profileId).subscribe({
       next: (res) => {
-        // Estraiamo l'array di shop da res.data
         const rawData = res.data || [];
-        
-        // Mappiamo i dati assicurandoci che il profileId sia presente per i link routerLink nel template
         this.shops = rawData.map((s: Shop) => ({
           ...s,
           profileId: s.profileId || profileId
@@ -52,7 +56,6 @@ export class ShopListComponent implements OnInit {
         this.loading = false;
       },
       error: (err: HttpErrorResponse) => {
-        // Mostriamo il messaggio d'errore del backend se presente
         this.errorMessage = err.error?.message || 'Si è verificato un errore nel caricamento dei negozi.';
         this.loading = false;
       }

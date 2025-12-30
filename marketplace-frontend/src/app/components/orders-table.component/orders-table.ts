@@ -4,6 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { OrdersService } from '../../services/order.service';
 import { OrdersHelperService } from '../../helpers/order-helper.service';
 
+/**
+ * Componente Angular che visualizza e gestisce una tabella di ordini.
+ *
+ * Il componente è riutilizzabile sia per utenti CUSTOMER che SELLER e
+ * adatta il comportamento in base al ruolo passato in input.
+ *
+ * Funzionalità principali:
+ * - Visualizzazione degli ordini ricevuti 
+ * - Gestione della spedizione degli ordini da parte del SELLER
+ * - Conferma della consegna da parte del CUSTOMER
+ * - Controllo automatico degli ordini con consegna scaduta (per SELLER)
+ *
+ * Utilizza OrdersService per comunicare con il backend e
+ * OrdersHelperService per la logica di supporto lato UI.
+ * ChangeDetectorRef è usato per forzare l'aggiornamento della vista
+ * dopo operazioni asincrone.
+ */
+
 @Component({
   selector: 'app-orders-table',
   standalone: true,
@@ -34,7 +52,6 @@ export class OrdersTableComponent implements OnInit {
     }
   }
 
-  // Inizializza i campi solo se non esistono già (evita sovrascritture)
   private initializeTempFields() {
     this.orders.forEach(order => {
       order._trackingTemp = order._trackingTemp || order.trackingId || '';
@@ -44,7 +61,6 @@ export class OrdersTableComponent implements OnInit {
 
   shipOrder(order: any) {
     if (!this.shopId) return;
-
     if (!order._trackingTemp || !order._estimatedTemp) {
       alert('Dati di spedizione incompleti.');
       return;
@@ -57,15 +73,11 @@ export class OrdersTableComponent implements OnInit {
       order._estimatedTemp
     ).subscribe({
       next: (res) => {
-        // AGGIORNAMENTO STATO: Deve corrispondere a quello cercato dall'helper
         order.status = 'SHIPPED'; 
         order.trackingId = order._trackingTemp;
         order.estimatedDeliveryDate = order._estimatedTemp;
-        
-        // Pulizia campi temporanei
         delete order._trackingTemp;
         delete order._estimatedTemp;
-        
         this.cdr.detectChanges();
         alert(res.message || 'Ordine spedito con successo!');
       },
@@ -75,7 +87,6 @@ export class OrdersTableComponent implements OnInit {
 
   confirmDelivery(order: any): void {
     if (!this.profileId) return;
-
     if (!this.helper.canCustomerConfirm(order)) {
       alert('Non puoi ancora confermare la consegna.');
       return;

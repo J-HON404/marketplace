@@ -3,11 +3,22 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-
 import { TokenService } from '../../core/services/token.service';
 import { Products } from '../../interfaces/product';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+
+/**
+ * ProductListComponent è un componente  che gestisce la visualizzazione
+ * dei prodotti di uno shop specifico e le azioni che l'utente può compiere sui prodotti.
+ * 
+ * Funzioni principali:
+ * 1. Carica i prodotti di uno shop specifico usando ProductService.
+ * 2. Permette all'utente di aggiungere prodotti al carrello tramite CartService.
+ * 3. Permette al proprietario dello shop (SELLER) di modificare o eliminare prodotti.
+ * 4. Gestisce la navigazione verso la pagina form del prodotto, per editare o aggiungere un prodotto.
+ */
+
 
 @Component({
   selector: 'app-product-list',

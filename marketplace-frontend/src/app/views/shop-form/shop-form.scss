@@ -1,4 +1,4 @@
-/* Contenitore principale per centrare la card nella pagina */
+
 .page-container {
   display: flex;
   justify-content: center;
@@ -8,7 +8,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* La card bianca che contiene il form */
+
 .form-card {
   background: #ffffff;
   padding: 2.5rem;
@@ -18,7 +18,7 @@
   max-width: 500px;
 }
 
-/* Header con titolo e tasto elimina allineati */
+
 .header-with-actions {
   display: flex;
   justify-content: space-between;
@@ -48,7 +48,7 @@
   }
 }
 
-/* Struttura dei gruppi di input */
+
 .form-group {
   margin-bottom: 1.5rem;
 
@@ -80,7 +80,6 @@
   }
 }
 
-/* Messaggi di errore */
 .error-text {
   color: #dc3545;
   font-size: 0.85rem;
@@ -88,7 +87,6 @@
   display: block;
 }
 
-/* Area dei pulsanti in fondo */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -96,7 +94,6 @@
   margin-top: 2.5rem;
 }
 
-/* Pulsanti generici */
 .btn {
   padding: 0.75rem 1.5rem;
   border-radius: 6px;

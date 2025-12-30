@@ -5,6 +5,15 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { TokenService } from '../../core/services/token.service';
 
+/**
+ * LoginComponent gestisce la pagina di login dell'applicazione.
+ * Funzioni principali:
+ * 1. Gestisce i campi di input username e password.
+ * 2. Interagisce con AuthService per inviare le credenziali al backend.
+ * 3. Se il login ha successo, salva il token JWT tramite TokenService.
+ * 4. Recupera il profileId dal token e reindirizza l'utente alla home
+ */
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -31,21 +40,15 @@ export class LoginComponent {
 
     this.authService.login(this.username, this.password).subscribe({
       next: (res) => {
-        // Supponendo che il backend risponda con ApiResponse<string> dove string è il JWT
         const token = res.data; 
         
         if (token) {
           this.tokenService.setToken(token);
-          
-          // Recuperiamo il profileId dal token appena salvato
           const profileId = this.tokenService.getProfileId();
           this.loginMessage = 'Login effettuato con successo!';
-
-          // Navighiamo al profilo
           if (profileId) {
             this.router.navigate(['/profile', profileId]);
           } else {
-            // Fallback se il token non contiene il profileId correttamente
             this.router.navigate(['/home']);
           }
         } else {
@@ -53,7 +56,6 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        // Usiamo il messaggio che arriva dal tuo DTO Java ApiResponse
         this.loginMessage = err.error?.message || 'Credenziali non valide o errore server.';
       }
     });

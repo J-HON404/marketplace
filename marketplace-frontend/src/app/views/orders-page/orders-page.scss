@@ -1,20 +1,20 @@
 .orders-container {
-  width: 90%;                /* container prende quasi tutta la pagina */
+  width: 90%;              
   display: flex;
-  flex-direction: column;    /* disposizione verticale */
-  align-items: center;       /* centra titolo e tabella */
-  margin: 0 auto 30px auto;  /* centra il container nella pagina */
+  flex-direction: column;    
+  align-items: center;       
+  margin: 0 auto 30px auto; 
 }
 
 .table-title {
-  text-align: center;        /* titolo centrato sopra la tabella */
+  text-align: center;      
   margin-bottom: 15px;
   font-size: 1.8rem;
   font-weight: bold;
 }
 
 table {
-  width: 100%;               /* tabella prende tutta la larghezza del container */
+  width: 100%;              
   border-collapse: collapse;
   border: 2px solid #ddd;
 }

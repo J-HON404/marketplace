@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ProductNotices } from '../interfaces/product-notice';
 
+/**
+ * Servizio helper per gestire la logica legata agli avvisi dei prodotti (ProductNotices).
+ * Si occupa di:
+ * 1. Verificare se un avviso è scaduto (`isExpired`) confrontando la data di scadenza con la data odierna.
+ * 2. Controllare se una data di scadenza inserita è valida (`isValidExpirationDate`), 
+ *    cioè non precedente alla data odierna.
+ */
+
 @Injectable({
   providedIn: 'root'
 })

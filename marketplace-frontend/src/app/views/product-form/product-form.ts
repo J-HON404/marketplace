@@ -4,6 +4,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 
+/**
+ * ProductFormComponent è un componente che gestisce il form per creare o modificare un prodotto.
+ * Funzioni principali:
+ * 1.  Permette di inserire un nuovo prodotto nel negozio specificato.
+ * 2. Carica i dati del prodotto esistente e permette di aggiornarli.
+ */
+
 @Component({
   selector: 'app-product-form',
   standalone: true,
@@ -36,7 +43,6 @@ export class ProductFormComponent implements OnInit {
   ngOnInit() {
     this.todayString = new Date().toISOString().split('T')[0];
     
-    // Recupero i parametri dalle rotte
     this.shopId = Number(this.route.snapshot.paramMap.get('shopId'));
     const productIdParam = this.route.snapshot.paramMap.get('productId');
 
@@ -49,7 +55,6 @@ export class ProductFormComponent implements OnInit {
         this.productForm.patchValue(stateData);
         this.productForm.get('name')?.disable();
       } else {
-        // Fallback: se l'utente ricarica la pagina col tasto F5
         this.productService.getProductById(this.shopId, this.productId).subscribe({
           next: (prod) => {
             this.productForm.patchValue(prod);

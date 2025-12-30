@@ -5,6 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { Cart } from '../../interfaces/cart';
 
+/**
+ * CartComponent è un componente che gestisce il carrello dell'utente.
+ * Funzionalità principali:
+ * - Recupera l'ID del profilo e del negozio dall'URL tramite ActivatedRoute.
+ * - Carica il carrello associato a un profilo e a uno shop tramite CartService.
+ * - Consente di aggiornare la quantità dei prodotti nel carrello.
+ * - Permette di rimuovere singoli prodotti o svuotare completamente il carrello.
+ * - Gestisce il checkout del carrello e reindirizza l'utente alla pagina del profilo dopo l'ordine.
+ * - Calcola il totale del carrello sommando prezzo e quantità di ciascun prodotto.
+ */
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -39,7 +50,6 @@ export class CartComponent implements OnInit {
     this.loading = true;
     this.cartService.getCart(this.profileId, this.shopId).subscribe({
       next: (res) => {
-        // Accediamo a .data del wrapper ApiResponse
         this.cart = res.data;
         this.loading = false;
       },

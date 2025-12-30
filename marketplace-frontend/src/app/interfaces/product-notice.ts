@@ -1,3 +1,4 @@
+// Enum dei possibili tipi di avvisi relativi ai prodotti.
 export enum TypeNotice {
     AVAILABILITY = 'AVAILABILITY',
     STOCK='STOCK',
@@ -5,7 +6,7 @@ export enum TypeNotice {
     WARNING='WARNING ',
     INFO='INFO'
 }
-
+// Rappresenta un avviso relativo a un prodotto.
 export interface ProductNotices {
   id: number;
   text: string;

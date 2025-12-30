@@ -4,6 +4,18 @@ import { Observable } from 'rxjs';
 import { Cart } from '../interfaces/cart';
 import { ApiResponse } from '../interfaces/api-response';
 
+/**
+ * CartService
+ * Questo servizio Angular gestisce le chiamate HTTP relative al carrello (Cart) di un utente.
+ * Funzionalità principali:
+ * - Recupera il carrello di un utente per uno specifico shop.
+ * - Crea un nuovo carrello se non esiste.
+ * - Aggiunge o rimuove prodotti dal carrello.
+ * - Aggiorna la quantità di un prodotto presente nel carrello.
+ * - Svuota completamente il carrello.
+ * - Effettua il checkout del carrello, creando un ordine lato backend.
+ */
+
 @Injectable({
   providedIn: 'root'
 })

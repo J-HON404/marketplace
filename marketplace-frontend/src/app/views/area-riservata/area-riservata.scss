@@ -1,8 +1,8 @@
 :host {
   display: flex;
-  flex-direction: column;     /* disposizione verticale */
-  justify-content: flex-start;/* contenuto dall’alto */
-  align-items: center;        /* CENTRA ORIZZONTALMENTE tutti i figli */
+  flex-direction: column;   
+  justify-content: flex-start;
+  align-items: center;        
   min-height: 100vh;
   font-family: Arial, sans-serif;
   padding-top: 2rem;
@@ -12,8 +12,8 @@
 
 .profile-container {
   padding: 2rem;
-  width: 90%;             /* adesso stesso della tabella */
-  max-width: 900px;       /* mantiene dimensione massima */
+  width: 90%;        
+  max-width: 900px;     
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
@@ -40,14 +40,14 @@
 .orders-container {
   width: 90%;
   max-width: 900px;
-  margin: 0 auto 2rem auto; /* centra il container e spazio sotto */
+  margin: 0 auto 2rem auto;
   display: flex;
-  flex-direction: column;    /* disposizione verticale */
-  align-items: center;       /* centra titolo e tabella */
+  flex-direction: column;   
+  align-items: center;      
 }
 
 .table-title {
-  text-align: center;        /* titolo sopra la tabella */
+  text-align: center;     
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: bold;

@@ -4,6 +4,14 @@ import { Observable } from 'rxjs';
 import { ProductNotices } from '../interfaces/product-notice';
 import { ApiResponse } from '../interfaces/api-response';
 
+/**
+ * NoticeService è un servizio che gestisce le chiamate HTTP relative ai Product Notices.
+ * Funzionalità principali:
+ * - Recuperare tutte le notifiche di un prodotto specifico.
+ * - Creare una nuova notifica per un prodotto.
+ * - Eliminare una notifica esistente di un prodotto.
+ */
+
 @Injectable({
   providedIn: 'root'
 })

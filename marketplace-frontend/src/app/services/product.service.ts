@@ -4,6 +4,17 @@ import { Observable } from 'rxjs';
 import { Products } from '../interfaces/product';
 import { ApiResponse } from '../interfaces/api-response';
 
+/**
+ * ProductService è un servizio che gestisce tutte le operazioni HTTP relative ai prodotti di un negozio.
+ * Funzionalità principali:
+ * - Recuperare tutti i prodotti di uno shop.
+ * - Recuperare un singolo prodotto tramite l'ID.
+ * - Creare un nuovo prodotto associato a uno shop.
+ * - Aggiornare un prodotto esistente.
+ * - Eliminare un prodotto.
+ * - Verificare se un profilo è il proprietario dello shop
+ */
+
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   constructor(private http: HttpClient) { }

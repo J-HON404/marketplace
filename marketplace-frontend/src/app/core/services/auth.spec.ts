@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { TokenService } from './token.service'; // Nome corretto
+import { TokenService } from './token.service';
 
-describe('TokenService', () => { // Nome descrittivo corretto
+describe('TokenService', () => { 
   let service: TokenService;
 
   beforeEach(() => {

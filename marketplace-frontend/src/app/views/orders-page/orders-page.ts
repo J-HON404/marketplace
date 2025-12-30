@@ -4,14 +4,17 @@ import { ActivatedRoute } from '@angular/router';
 import { OrdersService } from '../../services/order.service';
 import { TokenService } from '../../core/services/token.service';
 import { OrdersTableComponent } from '../../components/orders-table.component/orders-table';
+import { Order } from '../../interfaces/order';
 
-// Verifica che questi campi siano coerenti con il DTO Java
-interface Order {
-  id: number;
-  date: string;
-  total: number;
-  status: string;
-}
+/**
+ * OrdersPageComponent è una componente il cui scopo è mostrare gli ordini di un profilo
+ * Funzioni principali:
+ * 1. Determina il ruolo dell'utente (SELLER o CUSTOMER) leggendo il token JWT tramite TokenService.
+ * 2. Se l'utente è un SELLER, mostra gli ordini ricevuti dal negozio associato al suo account.
+ * 3. Se l'utente è un CUSTOMER, mostra gli ordini effettuati dal profilo loggato.
+ * 4. Utilizza OrdersService per recuperare gli ordini dal backend.
+ * 7. Visualizza gli ordini usando il componente OrdersTableComponent.
+ */
 
 @Component({
   selector: 'app-orders-page',
@@ -43,7 +46,6 @@ export class OrdersPageComponent implements OnInit {
     }
 
     this.loading = true;
-
     if (role === 'SELLER') {
       if (!shopId) {
         this.loading = false;
@@ -52,10 +54,8 @@ export class OrdersPageComponent implements OnInit {
       }
 
       this.ordersTitle = 'Ordini ricevuti';
-
       this.ordersService.getShopOrders(shopId).subscribe({
         next: res => {
-          // Accediamo a .data
           this.orders = res.data;
           this.loading = false;
         },
@@ -73,10 +73,8 @@ export class OrdersPageComponent implements OnInit {
       }
 
       this.ordersTitle = 'Ordini effettuati';
-
       this.ordersService.getProfileOrders(profileId).subscribe({
         next: res => {
-          // Accediamo a .data
           this.orders = res.data;
           this.loading = false;
         },

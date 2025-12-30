@@ -1,5 +1,15 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * OrdersHelperService fornisce funzioni di supporto per verificare lo stato degli ordini
+ * sia dal punto di vista del venditore (SELLER) sia del cliente (CUSTOMER). 
+ * Restituisce informazioni booleane utili per UI o logica di controllo.
+ * Funzioni principali:
+ * - canSellerShip(order): verifica se l'ordine è pronto per la spedizione da parte del venditore.
+ * - isExpired(order): controlla se la data stimata di consegna dell'ordine è passata e l'ordine non è ancora confermato come consegnato.
+ * - canCustomerConfirm(order): controlla se il cliente può confermare la consegna dell'ordine, basandosi sullo stato e sulla data stimata.
+ */
+
 @Injectable({
   providedIn: 'root'
 })

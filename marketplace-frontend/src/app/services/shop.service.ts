@@ -4,6 +4,17 @@ import { Observable } from 'rxjs';
 import { Shop } from '../interfaces/shops';
 import { ApiResponse } from '../interfaces/api-response';
 
+/**
+ * ShopService è un servizio che gestisce le operazioni HTTP relative ai negozi (Shop) dei profili
+ * Funzionalità principali:
+ * - Creare un nuovo negozio per un profilo.
+ * - Aggiornare i dati di un negozio esistente.
+ * - Eliminare un negozio associato a un profilo.
+ * - Recuperare i dati di un singolo negozio di un profilo.
+ * - Recuperare tutti i negozi di un profilo.
+ * - Verificare se un profilo è il proprietario di un negozio.
+ */
+
 @Injectable({
   providedIn: 'root'
 })
