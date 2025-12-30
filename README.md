@@ -1,6 +1,5 @@
 Marketplace Web Application
 
-Descrizione
 Si tratta di una piccola piattaforma marketplace che permette a utenti SELLER di gestire prodotti avvisi ed ordini 
 a CUSTOMER di acquistare prodotti, gestire il carrello ed essere aggiornati sugli stati degli ordini.
 
@@ -17,8 +16,6 @@ Navigare i prodotti disponibili.
 Aggiungere prodotti al carrello, aggiornare quantità e completare l’acquisto.
 Visualizzare e confermare lo stato delle consegne.
 Visualizzare notifiche sui prodotti.
-
-Tecnologie
 
 Frontend:
 Angular 17
