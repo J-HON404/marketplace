@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ShopService } from '../../services/shop.service';
 import { TokenService } from '../../core/services/token.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Shop } from '../../interfaces/shops';
+import { Shop } from '../../models/interfaces/shops';
 
 /**
  * ShopListComponent è un componente che mostra la lista dei negozi associati a un profilo.
@@ -17,8 +17,8 @@ import { Shop } from '../../interfaces/shops';
   selector: 'app-shop-list',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './shop-list.html',
-  styleUrls: ['./shop-list.scss']
+  templateUrl: '../../views/shop-list/shop-list.html',
+  styleUrls: ['../../views/shop-list/shop-list.scss']
 })
 export class ShopListComponent implements OnInit {
   profileId: number | null = null;

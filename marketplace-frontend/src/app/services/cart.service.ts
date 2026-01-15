@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cart } from '../interfaces/cart';
-import { ApiResponse } from '../interfaces/api-response';
+import { Cart } from '../models/interfaces/cart';
+import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
  * CartService

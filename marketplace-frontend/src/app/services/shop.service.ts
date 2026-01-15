@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Shop } from '../interfaces/shops';
-import { ApiResponse } from '../interfaces/api-response';
+import { Shop } from '../models/interfaces/shops';
+import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
  * ShopService è un servizio che gestisce le operazioni HTTP relative ai negozi (Shop) dei profili

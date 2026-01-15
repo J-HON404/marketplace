@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from '../../services/shop.service';
-import { ShopCategory } from '../../interfaces/shops';
+import { ShopCategory } from '../../models/interfaces/shops';
 
 /**
  * ShopFormComponent è un componente che gestisce la creazione e la modifica di un negozio.
@@ -18,8 +18,8 @@ import { ShopCategory } from '../../interfaces/shops';
   selector: 'app-shop-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule], 
-  templateUrl: './shop-form.html',
-  styleUrl: './shop-form.scss',
+  templateUrl: '../../views/shop-form/shop-form.html',
+  styleUrl: '../../views/shop-form/shop-form.scss',
 })
 export class ShopFormComponent implements OnInit {
   shopForm: FormGroup;

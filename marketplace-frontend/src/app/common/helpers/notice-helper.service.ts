@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProductNotices } from '../interfaces/product-notice';
+import { ProductNotices } from '../../models/interfaces/product-notice';
 
 /**
  * Servizio helper per gestire la logica legata agli avvisi dei prodotti (ProductNotices).

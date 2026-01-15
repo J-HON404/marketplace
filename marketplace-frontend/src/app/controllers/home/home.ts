@@ -16,8 +16,8 @@ import { RouterModule, Router } from '@angular/router';
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './home.html',
-  styleUrls: ['./home.scss']
+  templateUrl: '../../views/home/home.html',
+  styleUrls: ['../../views/home/home.scss']
 })
 export class HomeComponent implements OnInit {
   role: string | null;

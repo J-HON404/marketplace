@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserRole } from '../../interfaces/profile'; 
-import { ApiResponse } from '../../interfaces/api-response'; // Importa l'interfaccia
+import { UserRole } from '../../models/interfaces/profile'; 
+import { ApiResponse } from '../../models/interfaces/api-response'; // Importa l'interfaccia
 
 /**
  * Servizio di autenticazione per Angular.

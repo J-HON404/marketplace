@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TokenService } from '../../core/services/token.service';
-import { Products } from '../../interfaces/product';
+import { Products } from '../../models/interfaces/product';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 
@@ -24,8 +24,8 @@ import { CartService } from '../../services/cart.service';
   selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './product-list.html',
-  styleUrls: ['./product-list.scss']
+  templateUrl: '../../views/product-list/product-list.html',
+  styleUrls: ['../../views/product-list/product-list.scss']
 })
 export class ProductListComponent implements OnInit {
   profileId: number | null = null;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProductNotices } from '../interfaces/product-notice';
-import { ApiResponse } from '../interfaces/api-response';
+import { ProductNotices } from '../models/interfaces/product-notice';
+import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
  * NoticeService è un servizio che gestisce le chiamate HTTP relative ai Product Notices.

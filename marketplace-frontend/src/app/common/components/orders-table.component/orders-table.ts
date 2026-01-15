@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OrdersService } from '../../services/order.service';
+import { OrdersService } from '../../../services/order.service';
 import { OrdersHelperService } from '../../helpers/order-helper.service';
 
 /**

@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './views/login/login';
-import { RegisterComponent } from './views/register/register';
-import { HomeComponent } from './views/home/home'; 
-import { AreaRiservataComponent } from './views/area-riservata/area-riservata';
-import { OrdersPageComponent } from './views/orders-page/orders-page'; 
-import { ShopListComponent } from './views/shop-list/shop-list';
-import { ProductListComponent } from './views/product-list/product-list';
-import { ProductFormComponent } from './views/product-form/product-form';
-import { ProductDetailsComponent } from './views/product-details/product-details';
-import { CartComponent } from './views/cart/cart';
-import { ShopFormComponent } from './views/shop-form/shop-form';
+import { LoginComponent } from './controllers/login/login';
+import { RegisterComponent } from './controllers/register/register';
+import { HomeComponent } from './controllers/home/home'; 
+import { AreaRiservataComponent } from './controllers/area-riservata/area-riservata';
+import { OrdersPageComponent } from './controllers/orders-page/orders-page'; 
+import { ShopListComponent } from './controllers/shop-list/shop-list';
+import { ProductListComponent } from './controllers/product-list/product-list';
+import { ProductFormComponent } from './controllers/product-form/product-form';
+import { ProductDetailsComponent } from './controllers/product-details/product-details';
+import { CartComponent } from './controllers/cart/cart';
+import { ShopFormComponent } from './controllers/shop-form/shop-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

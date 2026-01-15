@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Products } from '../interfaces/product';
-import { ApiResponse } from '../interfaces/api-response';
+import { Products } from '../models/interfaces/product';
+import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
  * ProductService è un servizio che gestisce tutte le operazioni HTTP relative ai prodotti di un negozio.

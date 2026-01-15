@@ -5,7 +5,7 @@ import { ProfileService } from '../../services/profile.service';
 import { OrdersService } from '../../services/order.service';
 import { ShopService } from '../../services/shop.service';
 import { TokenService } from '../../core/services/token.service';
-import { OrdersTableComponent } from '../../components/orders-table.component/orders-table';
+import { OrdersTableComponent } from '../../common/components/orders-table.component/orders-table';
 import { HttpErrorResponse } from '@angular/common/http';
 
 /**
@@ -23,8 +23,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   selector: 'app-area-riservata',
   standalone: true,
   imports: [CommonModule, RouterModule, OrdersTableComponent],
-  templateUrl: './area-riservata.html',
-  styleUrls: ['./area-riservata.scss']
+  templateUrl: '../../views/area-riservata/area-riservata.html',
+  styleUrls: ['../../views/area-riservata/area-riservata.scss']
 })
 export class AreaRiservataComponent implements OnInit {
   profileId: number | null = null;

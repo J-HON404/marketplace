@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { NoticeService } from '../../services/product-notice.service'; 
 import { TokenService } from '../../core/services/token.service';
-import { NoticeHelperService } from '../../helpers/notice-helper.service';
-import { ProductNotices, TypeNotice } from '../../interfaces/product-notice';
-import { Products } from '../../interfaces/product';
-import { ApiResponse } from '../../interfaces/api-response';
+import { NoticeHelperService } from '../../common/helpers/notice-helper.service';
+import { ProductNotices, TypeNotice } from '../../models/interfaces/product-notice';
+import { Products } from '../../models/interfaces/product';
+import { ApiResponse } from '../../models/interfaces/api-response';
 
 /**
  * ProductDetailsComponent è un componente standalone che mostra i dettagli di un singolo prodotto
@@ -25,8 +25,8 @@ import { ApiResponse } from '../../interfaces/api-response';
   selector: 'app-product-details',
   standalone: true,
   imports: [CommonModule, FormsModule], 
-  templateUrl: './product-details.html',
-  styleUrls: ['./product-details.scss']
+  templateUrl: '../../views/product-details/product-details.html',
+  styleUrls: ['../../views/product-details/product-details.scss']
 })
 export class ProductDetailsComponent implements OnInit {
   product: Products | null = null;

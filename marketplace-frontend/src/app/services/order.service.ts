@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { ApiResponse } from '../interfaces/api-response';
+import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
  * OrdersService è un servizio che gestisce le chiamate HTTP relative agli ordini.

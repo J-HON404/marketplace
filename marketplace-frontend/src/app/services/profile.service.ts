@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../interfaces/api-response';
+import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
  * ProfileService è un servizio che gestisce le operazioni HTTP relative ai profili

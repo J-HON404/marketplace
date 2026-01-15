@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService, RegisterPayload } from '../../core/services/auth.service';
-import { UserRole } from '../../interfaces/profile'; 
+import { UserRole } from '../../models/interfaces/profile'; 
 import { RouterModule, Router } from '@angular/router';
 
 /**
@@ -18,8 +18,8 @@ import { RouterModule, Router } from '@angular/router';
   selector: 'app-register',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule], 
-  templateUrl: './register.html',
-  styleUrls: ['./register.scss'] 
+  templateUrl: '../../views/register/register.html',
+  styleUrls: ['../../views/register/register.scss'] 
 })
 export class RegisterComponent {
   username = '';

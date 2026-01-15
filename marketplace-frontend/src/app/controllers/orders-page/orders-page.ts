@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { OrdersService } from '../../services/order.service';
 import { TokenService } from '../../core/services/token.service';
-import { OrdersTableComponent } from '../../components/orders-table.component/orders-table';
-import { Order } from '../../interfaces/order';
+import { OrdersTableComponent } from '../../common/components/orders-table.component/orders-table';
+import { Order } from '../../models/interfaces/order';
 
 /**
  * OrdersPageComponent è una componente il cui scopo è mostrare gli ordini di un profilo
@@ -20,8 +20,8 @@ import { Order } from '../../interfaces/order';
   selector: 'app-orders-page',
   standalone: true,
   imports: [CommonModule, OrdersTableComponent],
-  templateUrl: './orders-page.html',
-  styleUrls: ['./orders-page.scss']
+  templateUrl: '../../views/orders-page/orders-page.html',
+  styleUrls: ['../../views/orders-page/orders-page.scss']
 })
 export class OrdersPageComponent implements OnInit {
   orders: Order[] = [];

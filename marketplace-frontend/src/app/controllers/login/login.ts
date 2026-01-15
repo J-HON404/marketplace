@@ -18,8 +18,8 @@ import { TokenService } from '../../core/services/token.service';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss']
+  templateUrl: '../../views/login/login.html',
+  styleUrls: ['../../views/login/login.scss']
 })
 export class LoginComponent {
   username = '';

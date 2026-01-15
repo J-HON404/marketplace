@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
-import { Cart } from '../../interfaces/cart';
+import { Cart } from '../../models/interfaces/cart';
 
 /**
  * CartComponent è un componente che gestisce il carrello dell'utente.
@@ -20,8 +20,8 @@ import { Cart } from '../../interfaces/cart';
   selector: 'app-cart',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './cart.html',
-  styleUrls: ['./cart.scss']
+  templateUrl: '../../views/cart/cart.html',
+  styleUrls: ['../../views/cart/cart.scss']
 })
 export class CartComponent implements OnInit {
   profileId!: number;
