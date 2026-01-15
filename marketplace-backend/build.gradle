@@ -36,12 +36,6 @@ dependencies {
 	// MySQL connector
 	implementation 'com.mysql:mysql-connector-j'
 
-	//Email sender
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-	//Spring web socket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
