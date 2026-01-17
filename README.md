@@ -1,15 +1,90 @@
-Ecco una versione formattata e ottimizzata del tuo progetto per un file README.md, pronta per essere incollata nel tuo repository. Ho organizzato le informazioni utilizzando una gerarchia chiara, icone descrittive e blocchi di codice per migliorare la leggibilità.🛒 Marketplace Web ApplicationBenvenuto nel repository di Marketplace Web Application, un ecosistema full-stack moderno progettato per la gestione multi-venditore. La piattaforma permette agli utenti di interagire in un mercato digitale dinamico, distinguendo chiaramente i flussi di lavoro tra venditori e acquirenti.🚀 Panoramica del ProgettoL'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli e una logica di business che copre l’intero ciclo di vendita, dal caricamento del prodotto fino alla conferma di ricezione dell’ordine.Architettura: REST a livelli (Controller, Service, Repository).Frontend: Single Page Application (SPA) moderna e reattiva sviluppata in Angular.Sicurezza: Autenticazione stateless basata su JWT con Spring Security.⚙️ Funzionalità Principali🔐 Autenticazione e SicurezzaIl sistema gestisce la registrazione e il login distinguendo i ruoli SELLER e CUSTOMER.Generazione, validazione e gestione della sessione con JWT.Controllo degli accessi basato su ruoli (RBAC).Protezione granulare delle API tramite Spring Security.🏪 Area Venditore (SELLER)Shop Management: Creazione e personalizzazione del proprio negozio.Gestione Catalogo: CRUD completo dei prodotti, gestione stock e date di disponibilità.Logistica: Monitoraggio ordini ricevuti, inserimento del Tracking ID e della data di consegna stimata.Notifiche Prodotto: Sistema di alert per promozioni e aggiornamenti sullo stato delle scorte.🛍 Area Acquirente (CUSTOMER)Shopping: Navigazione fluida tra negozi e prodotti.Carrello: Gestione dinamica delle quantità e checkout integrato.Tracking: Storico ordini e conferma di ricezione (abilitata solo dopo la data di consegna stimata).Alert: Ricezione di annunci e promozioni mirate sui prodotti di interesse.🧱 Stack TecnologicoBackendJava 21 & Spring Boot 3.5.8Persistenza: Spring Data JPA con database MySQL.Pattern: Utilizzo di DTO per lo scambio dati, gestione centralizzata delle eccezioni e validazione lato server.FrontendAngular 20.3 (TypeScript)Architettura: Standalone Components e Angular Routing.Networking: HttpInterceptor per l’iniezione automatica del token JWT.Reattività: Gestione asincrona dei flussi tramite RxJS (Observable).🗄 Struttura del DatabaseIl database relazionale organizza i dati attorno alle seguenti entità principali:EntitàDescrizioneProfileGestione utenze e credenziali (Seller/Customer).ShopInformazioni relative ai negozi dei venditori.ProductCatalogo articoli con dettagli, prezzi e stock.CartGestione temporanea dei prodotti pre-acquisto.OrderStato transazioni, logistica e tracking.ProductNoticeAvvisi e promozioni associate ai prodotti.📁 Organizzazione del ProgettoBackend StructurePlaintextsrc/main/java/com/unicam/cs/progettoweb/marketplace
-├── controller    # Endpoint REST API
-├── dto           # Oggetti di trasferimento dati (Data Transfer Objects)
-├── exception     # Handler per errori personalizzati e globali
-├── model         # Entity JPA e modelli del database
-├── repository    # Interfacce per l'accesso ai dati (Spring Data JPA)
-├── security      # Configurazione JWT, filtri e permessi
-└── service       # Logica di business e servizi applicativi
-Frontend StructurePlaintextsrc/app
-├── common        # Componenti condivisi (Navbar, Footer, UI Kit)
-├── core          # Interceptor, Guard e servizi core di sistema
-├── models        # Interfacce e tipi TypeScript
-├── services      # Servizi per le chiamate API di dominio
-└── views         # Componenti pagina (Home, Dashboard, Checkout)
-🛠 Setup e InstallazioneRequisiti minimiJava 21 & GradleNode.js ≥ 20Angular CLI ≥ 20.3MySQL ServerPassaggi iniziali
+# 🛒 Marketplace Web Application
+
+Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'applicazione gestisce un sistema multi-venditore in cui gli utenti possono operare come `SELLER` o `CUSTOMER` per gestire shop, prodotti e ordini in tempo reale.
+
+---
+
+## 🚀 Panoramica del Progetto
+
+L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli e una logica di business che permetta dal caricamento del prodotto , alla vendita fino alla conferma di ricezione dell’ordine.
+
+* **Architettura:** REST a livelli (Controller, Service, Repository).
+* **Frontend:** Single Page Application (SPA) .
+* **Sicurezza:** Autenticazione  basata su **JWT** con Spring Security.
+
+---
+
+## ⚙️ Funzionalità Principali
+
+### 🔐 Autenticazione e Sicurezza
+* Registrazione e login con distinzione ruoli (`SELLER` / `CUSTOMER`).
+* Generazione e validazione dei token **JWT**.
+* Controllo degli accessi basato su ruoli.
+* Protezione delle API tramite filtri Spring Security.
+
+### 🏪 Area Venditore (SELLER)
+* **Shop Management:** Gestione completa del profilo negozio.
+* **Gestione Catalogo:** CRUD prodotti, gestione stock e date di disponibilità.
+* **Logistica:** Monitoraggio ordini, inserimento **Tracking ID** e data di consegna stimata.
+* **Notifiche:** Creazione di avvisi, promozioni e alert sulle scorte.
+
+### 🛍 Area Acquirente (CUSTOMER)
+* **Shopping:** Navigazione tra negozi e prodotti disponibili.
+* **Carrello:** Gestione dinamica delle quantità e processo di checkout.
+* **Tracking:** Storico ordini e conferma di ricezione (abilitata post-consegna).
+* **Alert:** Ricezione di annunci e promozioni dedicate.
+
+---
+
+## 🧱 Architettura Tecnica
+
+### **Backend**
+* **Java 21** & **Spring Boot 3.5.8**
+* **Persistenza:** Spring Data JPA con **MySQL**.
+* **Pattern:** DTO, Global Exception Handling, Server-side Validation.
+
+### **Frontend**
+* **Angular 20.3** & **TypeScript**.
+* **Core:** Standalone Components e Angular Routing.
+* **Networking:** HttpInterceptor per l’iniezione automatica del token JWT.
+* **Reattività:** Gestione asincrona tramite **RxJS** (Observable).
+
+---
+
+## 🗄 Struttura del Database
+
+
+
+| Entità | Descrizione |
+| :--- | :--- |
+| **Profile** | Anagrafica utenti, credenziali e ruoli. |
+| **Shop** | Dettagli del negozio associato a un venditore. |
+| **Product** | Catalogo articoli, prezzi e inventario. |
+| **Cart** | Stato del carrello corrente dell'utente. |
+| **Order** | Dettagli transazione, tracking e stato consegna. |
+| **ProductNotice** | Log delle notifiche e promozioni attive. |
+
+---
+
+## 📁 Organizzazione delle Cartelle
+
+### **Backend** 
+```text
+└── marketplace
+    ├── controller    # Endpoint REST API
+    ├── dto           # Data Transfer Objects
+    ├── exception     # Handler per errori e risposte personalizzate
+    ├── model         # Entity JPA 
+    ├── repository    # Interfacce Spring Data JPA
+    ├── security      # Configurazione JWT, filtri e permessi
+    └── service       # Logica di business applicativa
+```
+### **Frontend**
+```text
+└── src/app
+    ├── common        # Componenti condivisi
+    ├── core          # Logica di sistema: Interceptor JWT e configurazioni
+    ├── models        # Definizioni di interfacce
+    ├── services      # Servizi per chiamate API (HttpClient) e gestione stato
+    └── views         # Componenti di pagina (Home, Dashboard, Shop, Checkout)
+```
