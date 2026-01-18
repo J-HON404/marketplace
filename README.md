@@ -27,12 +27,12 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 * **Shop Management:** Gestione completa del profilo negozio.
 * **Gestione Catalogo:** CRUD prodotti, gestione stock e date di disponibilità.
 * **Logistica:** Monitoraggio ordini, inserimento **Tracking ID** e data di consegna stimata.
-* **Notifiche:** Creazione di avvisi, promozioni e alert sulle scorte.
+* **Alert:** Creazione di avvisi, promozioni ed annunci sui prodotti venduti.
 
 ### 🛍 Area Acquirente (CUSTOMER)
 * **Shopping:** Navigazione tra negozi e prodotti disponibili.
 * **Carrello:** Gestione dinamica delle quantità e processo di checkout.
-* **Tracking:** Storico ordini e conferma di ricezione (abilitata post-consegna).
+* **Tracking:** Storico ordini e conferma di ricezione consegna.
 * **Alert:** Ricezione di annunci e promozioni dedicate.
 
 ---
@@ -63,7 +63,7 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 | **Product** | Catalogo articoli, prezzi e inventario. |
 | **Cart** | Stato del carrello corrente dell'utente. |
 | **Order** | Dettagli transazione, tracking e stato consegna. |
-| **ProductNotice** | Log delle notifiche e promozioni attive. |
+| **ProductNotice** | Avvisi e promozioni attive sui prodotti. |
 
 ---
 
