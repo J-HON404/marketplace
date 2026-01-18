@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Order } from '../../models/interfaces/order';
 
 /**
  * OrdersHelperService fornisce funzioni di supporto per verificare lo stato degli ordini
@@ -15,12 +16,12 @@ import { Injectable } from '@angular/core';
 })
 export class OrdersHelperService {
 
-  canSellerShip(order: any): boolean {
+  canSellerShip(order: Order): boolean {
     return order.status === 'READY_TO_ELABORATING' || order.status === 'PENDING';
   }
 
 
-  isExpired(order: any): boolean {
+  isExpired(order: Order): boolean {
     if (!order.estimatedDeliveryDate || order.status === 'CONFIRMED_DELIVERED') return false;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -29,7 +30,7 @@ export class OrdersHelperService {
     return today > estimated; 
   }
 
-canCustomerConfirm(order: any): boolean {
+canCustomerConfirm(order: Order): boolean {
   if (order.status !== 'SHIPPING_DETAILS_SET' && order.status !== 'SHIPPED' && order.status !== 'REMIND_DELIVERY') {
     return false;
   }

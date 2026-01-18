@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrdersService } from '../../../services/order.service';
 import { OrdersHelperService } from '../../helpers/order-helper.service';
+import { Order } from '../../../models/interfaces/order';
 
 /**
  * Componente Angular che visualizza e gestisce una tabella di ordini.
@@ -30,7 +31,15 @@ import { OrdersHelperService } from '../../helpers/order-helper.service';
   styleUrls: ['./orders-table.scss']
 })
 export class OrdersTableComponent implements OnInit {
-  @Input() orders: any[] = [];
+  // Estendiamo Order con le proprietà aggiuntive usate dal componente
+  @Input() orders: (Order & {
+    _trackingTemp?: string;
+    _estimatedTemp?: string | null;
+    trackingId?: string;
+    estimatedDeliveryDate?: string | null;
+    expired?: boolean;
+  })[] = [];
+
   @Input() role!: 'SELLER' | 'CUSTOMER';
   @Input() profileId!: number | null;
   @Input() shopId!: number | null;
@@ -59,33 +68,44 @@ export class OrdersTableComponent implements OnInit {
     });
   }
 
-  shipOrder(order: any) {
-    if (!this.shopId) return;
+  shipOrder(order: Order & {
+    _trackingTemp?: string;
+    _estimatedTemp?: string | null;
+    trackingId?: string;
+    estimatedDeliveryDate?: string | null;
+    expired?: boolean;
+  }) {
+    if (this.shopId == null) return;
     if (!order._trackingTemp || !order._estimatedTemp) {
-      alert('Dati di spedizione incompleti.');
-      return;
-    }
-
-    this.ordersService.confirmShipping(
-      this.shopId,
-      order.id,
-      order._trackingTemp,
-      order._estimatedTemp
-    ).subscribe({
-      next: (res) => {
-        order.status = 'SHIPPED'; 
-        order.trackingId = order._trackingTemp;
-        order.estimatedDeliveryDate = order._estimatedTemp;
-        delete order._trackingTemp;
-        delete order._estimatedTemp;
-        this.cdr.detectChanges();
-        alert(res.message || 'Ordine spedito con successo!');
-      },
-      error: (err) => alert(err.error?.message || 'Errore durante la spedizione')
-    });
+    alert('Dati di spedizione incompleti.');
+    return;
+   }
+  this.ordersService.confirmShipping(
+    this.shopId,
+    order.id,
+    order._trackingTemp,
+    order._estimatedTemp
+  ).subscribe({
+    next: (res) => {
+      order.trackingId = order._trackingTemp;
+      order.estimatedDeliveryDate = order._estimatedTemp;
+      order._trackingTemp = undefined;
+      order._estimatedTemp = undefined;
+      order.expired = order.expired ?? false;
+      this.cdr.detectChanges();
+      alert(res.message || 'Ordine spedito con successo!');
+    },
+    error: (err) => alert(err.error?.message || 'Errore durante la spedizione')
+  });
   }
 
-  confirmDelivery(order: any): void {
+  confirmDelivery(order: Order & {
+    _trackingTemp?: string;
+    _estimatedTemp?: string | null;
+    trackingId?: string;
+    estimatedDeliveryDate?: string | null;
+    expired?: boolean;
+  }): void {
     if (!this.profileId) return;
     if (!this.helper.canCustomerConfirm(order)) {
       alert('Non puoi ancora confermare la consegna.');
@@ -106,7 +126,7 @@ export class OrdersTableComponent implements OnInit {
     if (!this.shopId) return;
     this.ordersService.expiredDeliveries(this.shopId).subscribe({
       next: (res) => {
-        const expiredOrderIds = res.data || [];
+        const expiredOrderIds: number[] = res.data || [];
         this.orders.forEach(order => {
           if (expiredOrderIds.includes(order.id)) {
             order.expired = true;

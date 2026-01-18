@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserRole } from '../../models/interfaces/profile'; 
+import { Profile, UserRole } from '../../models/interfaces/profile'; 
 import { ApiResponse } from '../../models/interfaces/api-response'; // Importa l'interfaccia
 
 /**
@@ -29,8 +29,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(payload: RegisterPayload): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`${this.baseUrl}/register`, payload);
+  register(payload: RegisterPayload): Observable<ApiResponse<Profile>> {
+    return this.http.post<ApiResponse<Profile>>(`${this.baseUrl}/register`, payload);
   }
 
 

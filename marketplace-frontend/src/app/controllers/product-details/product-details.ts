@@ -73,12 +73,13 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  loadProductData() {
-    this.productService.getProductById(this.shopId, this.productId).subscribe({
-      next: (res: ApiResponse<Products>) => this.product = res.data,
-      error: () => this.goBack()
-    });
-  }
+loadProductData() {
+  if (this.shopId == null || this.productId == null) return;
+  this.productService.getProductById(this.shopId, this.productId).subscribe({
+    next: (res: ApiResponse<Products>) => this.product = res.data,
+    error: () => this.goBack()
+  });
+}
 
   loadNotices() {
     this.noticeService.getProductNoticeOfProduct(this.productId).subscribe({

@@ -5,7 +5,8 @@ export enum UserRole {
 }
 
 // Payload per la registrazione di un nuovo utente
-export interface RegisterPayload {
+export interface Profile {
+  id:number;
   username: string;
   password: string;
   email: string;

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cart } from '../models/interfaces/cart';
+import { Order } from '../models/interfaces/order';
+import{ Cart } from '../models/interfaces/cart';
 import { ApiResponse } from '../models/interfaces/api-response';
 
 /**
@@ -47,7 +48,7 @@ export class CartService {
     return this.http.put<ApiResponse<Cart>>(`/api/profiles/${profileId}/shops/${shopId}/cart/update`, { productId, quantity });
   }
 
-  checkout(profileId: number, shopId: number): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`/api/profiles/${profileId}/shops/${shopId}/cart/checkout`, {});
+  checkout(profileId: number, shopId: number): Observable<ApiResponse<Order>> {
+    return this.http.post<ApiResponse<Order>>(`/api/profiles/${profileId}/shops/${shopId}/cart/checkout`, {});
   }
 }

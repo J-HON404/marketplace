@@ -7,6 +7,7 @@ import { TokenService } from '../../core/services/token.service';
 import { Products } from '../../models/interfaces/product';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import { ApiResponse } from '../../models/interfaces/api-response'; 
 
 /**
  * ProductListComponent è un componente  che gestisce la visualizzazione
@@ -74,7 +75,7 @@ export class ProductListComponent implements OnInit {
       this.profileId, 
       this.shopId, 
       product.id, 
-      1 
+      1 //quantità
     ).subscribe({
       next: (cart) => {
         alert(`${product.name} aggiunto al carrello!`);
@@ -104,9 +105,9 @@ export class ProductListComponent implements OnInit {
   loadProducts(shopId: number) {
     this.loading = true;
     this.productService.getProducts(shopId).subscribe({
-      next: (res: any) => {
+      next: (res: ApiResponse<Products[]>) => {
         const rawData = res.data || res;
-        this.products = rawData.map((p: any) => ({
+        this.products = rawData.map((p: Products) => ({
           ...p,
           shopId: p.shopId || shopId 
         }));
@@ -121,7 +122,13 @@ export class ProductListComponent implements OnInit {
 
 onDeleteProduct(productId: number) {
   if (!window.confirm('Eliminare definitivamente questo prodotto?')) return;
-  this.productService.deleteProduct(this.shopId!, productId).subscribe({
+
+  if (this.shopId == null) {
+    alert('Errore: ID negozio mancante');
+    return;
+  }
+
+  this.productService.deleteProduct(this.shopId, productId).subscribe({
     next: () => {
       this.products = this.products.filter(p => p.id !== productId);
     },
@@ -141,7 +148,7 @@ onDeleteProduct(productId: number) {
     return date > today;
   }
 
-onEditProduct(product: any) {
+onEditProduct(product: Products) {
   if (!product || !product.id) {
     console.error("Dati prodotto mancanti per la modifica");
     return;

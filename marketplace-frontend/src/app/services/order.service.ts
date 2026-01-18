@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ApiResponse } from '../models/interfaces/api-response';
+import { Order } from '../models/interfaces/order';
 
 /**
  * OrdersService è un servizio che gestisce le chiamate HTTP relative agli ordini.
@@ -16,12 +17,12 @@ import { ApiResponse } from '../models/interfaces/api-response';
 export class OrdersService {
   constructor(private http: HttpClient) {}
 
-  getShopOrders(shopId: number): Observable<ApiResponse<any[]>> {
-    return this.http.get<ApiResponse<any[]>>(`/api/shops/${shopId}/orders`);
+  getShopOrders(shopId: number): Observable<ApiResponse<Order[]>> {
+    return this.http.get<ApiResponse<Order[]>>(`/api/shops/${shopId}/orders`);
   }
 
-  getProfileOrders(profileId: number): Observable<ApiResponse<any[]>> {
-    return this.http.get<ApiResponse<any[]>>(`/api/profiles/${profileId}/orders`);
+  getProfileOrders(profileId: number): Observable<ApiResponse<Order[]>> {
+    return this.http.get<ApiResponse<Order[]>>(`/api/profiles/${profileId}/orders`);
   }
 
   confirmDelivered(profileId: number, orderId: number): Observable<ApiResponse<void>> {

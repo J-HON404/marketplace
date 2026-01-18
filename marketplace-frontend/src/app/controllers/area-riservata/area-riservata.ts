@@ -7,6 +7,9 @@ import { ShopService } from '../../services/shop.service';
 import { TokenService } from '../../core/services/token.service';
 import { OrdersTableComponent } from '../../common/components/orders-table.component/orders-table';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Order } from '../../models/interfaces/order';
+import { Profile } from '../../models/interfaces/profile';
+import { Shop } from '../../models/interfaces/shops';
 
 /**
  * AreaRiservataComponent è un componente che gestisce la pagina dell'area riservata 
@@ -18,7 +21,6 @@ import { HttpErrorResponse } from '@angular/common/http';
  * - Se l'utente è un SELLER, carica le informazioni del negozio associato tramite ShopService.
  * - Carica gli ordini dell'utente o del negozio tramite OrdersService.
  */
-
 @Component({
   selector: 'app-area-riservata',
   standalone: true,
@@ -28,13 +30,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AreaRiservataComponent implements OnInit {
   profileId: number | null = null;
-  profileData: any = null;
-  orders: any[] = [];
+  profileData!: Profile;                  // inizializzato più tardi
+  orders: Order[] = [];
   loading = false;
   errorMessage = '';
   roleUpper!: 'SELLER' | 'CUSTOMER';
-  shopId: number | null = null;
-  shopData: any = null;
+  shopId: number | null = null;          // può essere null
+  shopData!: Shop | null;                // Shop può essere null
 
   constructor(
     private route: ActivatedRoute,
@@ -66,7 +68,7 @@ export class AreaRiservataComponent implements OnInit {
           return;
         }
         this.roleUpper = this.profileData.role.toUpperCase() as 'SELLER' | 'CUSTOMER';
-        this.shopId = this.tokenService.getShopId();
+        this.shopId = this.tokenService.getShopId(); // può essere null
         if (this.roleUpper === 'SELLER') {
           this.loadShopInfo();
         } else {
@@ -82,17 +84,18 @@ export class AreaRiservataComponent implements OnInit {
 
   loadOrders() {
     if (this.roleUpper === 'SELLER') {
-      if (!this.shopId) return;
-      this.ordersService.getShopOrders(this.shopId).subscribe({
-        next: res => this.orders = res.data,
-        error: () => this.errorMessage = 'Errore nel caricamento ordini'
-      });
-    } else {
-      this.ordersService.getProfileOrders(this.profileId!).subscribe({
-        next: res => this.orders = res.data,
-        error: () => this.errorMessage = 'Errore nel caricamento ordini'
-      });
-    }
+    if (this.shopId == null) return;  
+    this.ordersService.getShopOrders(this.shopId).subscribe({
+      next: res => this.orders = res.data,
+      error: () => this.errorMessage = 'Errore nel caricamento ordini'
+    });
+  } else {
+    if (this.profileId == null) return;  
+    this.ordersService.getProfileOrders(this.profileId).subscribe({
+      next: res => this.orders = res.data,
+      error: () => this.errorMessage = 'Errore nel caricamento ordini'
+    });
+  }
   }
 
   loadShopInfo() {
@@ -103,6 +106,8 @@ export class AreaRiservataComponent implements OnInit {
         if (this.shopData) {
           this.shopId = this.shopData.id;
           this.loadOrders();
+        } else {
+          this.shopId = null; // ok perché shopId è number | null
         }
       },
       error: (err: HttpErrorResponse) => {
