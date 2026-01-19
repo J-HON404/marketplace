@@ -107,8 +107,9 @@ export class CartComponent implements OnInit {
     });
   }
 
-  getTotal(): number {
-    if (!this.cart || !this.cart.items) return 0;
-    return this.cart.items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  }
+getTotal(): number {
+  return this.cart?.items.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,0) ?? 0;
+}
+
 }

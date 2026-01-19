@@ -37,9 +37,7 @@ export class HomeComponent implements OnInit {
     if (this.role === 'ROLE_SELLER' && this.profileId) {
       this.shopService.getShop(this.profileId).subscribe({
         next: (res) => {
-          if (res.data) {
             this.shopId = res.data.id;
-          }
         },
         error: () => {
           this.shopId = null; 

@@ -71,7 +71,10 @@ export class ProductFormComponent implements OnInit {
     const productPayload = this.productForm.getRawValue();
 
     if (this.isEditMode && this.productId) {
-      this.productService.updateProduct(this.shopId!, this.productId, productPayload).subscribe({
+      if (!this.shopId) {
+        return;
+      }
+      this.productService.updateProduct(this.shopId, this.productId, productPayload).subscribe({
         next: () => this.goBack(),
         error: (err) => alert(err.error?.message || 'Errore durante l\'aggiornamento')
       });

@@ -50,12 +50,10 @@ export class ShopFormComponent implements OnInit {
       
       this.shopService.getShop(this.profileId).subscribe({
         next: (res) => {
-          if (res.data) {
             this.shopForm.patchValue({
               name: res.data.name,
               category: res.data.shopCategory
             });
-          }
         },
         error: () => {
           this.isEditMode = false;

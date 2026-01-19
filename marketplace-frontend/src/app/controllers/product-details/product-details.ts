@@ -39,9 +39,9 @@ export class ProductDetailsComponent implements OnInit {
   selectedType: TypeNotice = TypeNotice.INFO;
   typeOptions = Object.values(TypeNotice);
   
-  productId!: number;
-  shopId!: number;
-  profileId!: number;
+  shopId: number | null = null;
+  productId: number | null = null;
+  profileId: number | null = null;
   isOwner: boolean = false;
 
   constructor(
@@ -55,9 +55,19 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.paramMap;
-    this.productId = Number(params.get('productId'));
-    this.shopId = Number(params.get('shopId'));
-    this.profileId = Number(params.get('profileId'));
+   const productParam = params.get('productId');
+   const shopParam = params.get('shopId');
+   const profileParam = params.get('profileId');
+
+    this.productId = productParam ? Number(params.get('productId')) : null;
+    this.shopId = shopParam ? Number(params.get('shopId')) : null;
+    this.profileId = profileParam ? Number(params.get('profileId')) : null;
+
+  if (this.productId == null || this.shopId == null || this.profileId == null) {
+    console.error('Parametri mancanti o invalidi');
+    this.goBack();
+    return;
+  }
 
     this.checkPermissions();
     this.loadProductData();
@@ -66,7 +76,7 @@ export class ProductDetailsComponent implements OnInit {
 
   checkPermissions() {
     if (this.tokenService.getUserRole() === 'SELLER') {
-      this.productService.checkOwnership(this.profileId, this.shopId).subscribe({
+      this.productService.checkOwnership(this.profileId!, this.shopId!).subscribe({ //non può essere null
         next: (res: ApiResponse<boolean>) => this.isOwner = res.data === true,
         error: () => this.isOwner = false
       });
@@ -74,15 +84,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
 loadProductData() {
-  if (this.shopId == null || this.productId == null) return;
-  this.productService.getProductById(this.shopId, this.productId).subscribe({
+  this.productService.getProductById(this.shopId!, this.productId!).subscribe({ //non può essere null
     next: (res: ApiResponse<Products>) => this.product = res.data,
     error: () => this.goBack()
   });
 }
 
   loadNotices() {
-    this.noticeService.getProductNoticeOfProduct(this.productId).subscribe({
+    this.noticeService.getProductNoticeOfProduct(this.productId!).subscribe({ //non può essere null
       next: (res: ApiResponse<ProductNotices[]>) => this.notices = res.data || [],
       error: () => this.notices = []
     });
@@ -98,7 +107,7 @@ loadProductData() {
       expireDate: this.newNoticeExpireDate || undefined
     } as ProductNotices;
 
-    this.noticeService.createProductNotice(this.productId, noticeToSave).subscribe({
+    this.noticeService.createProductNotice(this.productId!, noticeToSave).subscribe({  //non può essere null
       next: () => {
         this.newNoticeContent = '';
         this.newNoticeExpireDate = '';
@@ -109,7 +118,7 @@ loadProductData() {
 
   onDeleteNotice(noticeId: number) {
     if (!window.confirm('Eliminare definitivamente questo avviso?')) return;
-    this.noticeService.deleteProductNotice(this.productId, noticeId).subscribe({
+    this.noticeService.deleteProductNotice(this.productId!, noticeId).subscribe({ //non può essere null
       next: () => {
         this.notices = this.notices.filter(n => n.id !== noticeId);
       }

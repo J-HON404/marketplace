@@ -106,8 +106,7 @@ export class ProductListComponent implements OnInit {
     this.loading = true;
     this.productService.getProducts(shopId).subscribe({
       next: (res: ApiResponse<Products[]>) => {
-        const rawData = res.data || res;
-        this.products = rawData.map((p: Products) => ({
+        this.products = res.data.map((p: Products) => ({
           ...p,
           shopId: p.shopId || shopId 
         }));

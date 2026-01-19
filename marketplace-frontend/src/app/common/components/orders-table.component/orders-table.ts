@@ -126,7 +126,7 @@ export class OrdersTableComponent implements OnInit {
     if (!this.shopId) return;
     this.ordersService.expiredDeliveries(this.shopId).subscribe({
       next: (res) => {
-        const expiredOrderIds: number[] = res.data || [];
+        const expiredOrderIds: number[] = res.data ;
         this.orders.forEach(order => {
           if (expiredOrderIds.includes(order.id)) {
             order.expired = true;

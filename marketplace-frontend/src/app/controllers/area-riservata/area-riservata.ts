@@ -30,13 +30,14 @@ import { Shop } from '../../models/interfaces/shops';
 })
 export class AreaRiservataComponent implements OnInit {
   profileId: number | null = null;
-  profileData!: Profile;                  // inizializzato più tardi
+  profileData: Profile | null = null; 
   orders: Order[] = [];
   loading = false;
   errorMessage = '';
   roleUpper!: 'SELLER' | 'CUSTOMER';
-  shopId: number | null = null;          // può essere null
-  shopData!: Shop | null;                // Shop può essere null
+  shopId: number | null = null;         
+  shopData: Shop | null = null;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -82,21 +83,23 @@ export class AreaRiservataComponent implements OnInit {
     });
   }
 
-  loadOrders() {
-    if (this.roleUpper === 'SELLER') {
-    if (this.shopId == null) return;  
+loadOrders() {
+  if (this.roleUpper === 'SELLER' && this.shopId != null) {
     this.ordersService.getShopOrders(this.shopId).subscribe({
       next: res => this.orders = res.data,
       error: () => this.errorMessage = 'Errore nel caricamento ordini'
     });
-  } else {
-    if (this.profileId == null) return;  
+    return;
+  }
+
+  if (this.roleUpper === 'CUSTOMER' && this.profileId != null) {
     this.ordersService.getProfileOrders(this.profileId).subscribe({
       next: res => this.orders = res.data,
       error: () => this.errorMessage = 'Errore nel caricamento ordini'
     });
   }
-  }
+}
+
 
   loadShopInfo() {
     if (!this.profileId) return;
@@ -107,7 +110,7 @@ export class AreaRiservataComponent implements OnInit {
           this.shopId = this.shopData.id;
           this.loadOrders();
         } else {
-          this.shopId = null; // ok perché shopId è number | null
+          this.shopId = null;
         }
       },
       error: (err: HttpErrorResponse) => {
