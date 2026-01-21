@@ -3,7 +3,6 @@ import { LoginComponent } from './controllers/login/login';
 import { RegisterComponent } from './controllers/register/register';
 import { HomeComponent } from './controllers/home/home'; 
 import { AreaRiservataComponent } from './controllers/area-riservata/area-riservata';
-import { OrdersPageComponent } from './controllers/orders-page/orders-page'; 
 import { ShopListComponent } from './controllers/shop-list/shop-list';
 import { ProductListComponent } from './controllers/product-list/product-list';
 import { ProductFormComponent } from './controllers/product-form/product-form';
@@ -17,7 +16,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent }, 
   { path: 'profile/:id', component: AreaRiservataComponent },
-  { path: 'profiles/:profileId/orders', component: OrdersPageComponent },
   { path: 'profiles/:profileId/shops', component: ShopListComponent },
   { path: 'profiles/:profileId/shop/editor', component: ShopFormComponent },
   { path: 'profiles/:profileId/shop/editor/:shopId', component: ShopFormComponent },
