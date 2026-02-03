@@ -41,7 +41,7 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 
 ### **Backend**
 * **Java 21** & **Spring Boot 3.5.8**
-* **Persistenza:** Spring Data JPA con **MySQL**.
+* **Persistenza:** Spring Data JPA con **MariaDB**.
 * **Pattern:** DTO, Global Exception Handling, Server-side Validation.
 
 ### **Frontend**
