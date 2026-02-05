@@ -20,7 +20,6 @@ export class OrdersHelperService {
     return order.status === 'READY_TO_ELABORATING' || order.status === 'PENDING';
   }
 
-
   isExpired(order: Order): boolean {
     if (!order.estimatedDeliveryDate || order.status === 'CONFIRMED_DELIVERED') return false;
     const today = new Date();

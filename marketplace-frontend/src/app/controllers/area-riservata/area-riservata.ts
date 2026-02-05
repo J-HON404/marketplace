@@ -100,7 +100,6 @@ loadOrders() {
   }
 }
 
-
   loadShopInfo() {
     if (!this.profileId) return;
     this.shopService.getShop(this.profileId).subscribe({
