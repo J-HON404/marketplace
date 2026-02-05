@@ -1,0 +1,14 @@
+
+build/
+.gradle/
+
+
+*.log
+*.tmp
+
+
+*.iml
+.idea/
+
+*.bak
+*.swp
