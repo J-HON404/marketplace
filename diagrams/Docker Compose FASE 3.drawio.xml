@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.7">
+  <diagram id="oy1a-HL9XBKzJUwXPGIg" name="Pagina-1">
+    <mxGraphModel dx="2902" dy="1091" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-28" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=12 12;" value="" vertex="1">
+          <mxGeometry height="290" width="990" x="20" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-16" edge="1" parent="1" source="z4ml59rrzWtkZgCO4Qi5-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" target="z4ml59rrzWtkZgCO4Qi5-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-2" parent="1" style="swimlane;" value="Springboot Container" vertex="1">
+          <mxGeometry height="190" width="210" x="440" y="181" as="geometry">
+            <mxRectangle height="30" width="150" x="90" y="110" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-3" parent="z4ml59rrzWtkZgCO4Qi5-2" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Port : 8080" vertex="1">
+          <mxGeometry height="30" width="100" x="50" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-4" parent="z4ml59rrzWtkZgCO4Qi5-2" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Multi-stage build" vertex="1">
+          <mxGeometry height="20" width="140" x="30" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-5" parent="z4ml59rrzWtkZgCO4Qi5-2" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Env Variables: DB_URL, JWT" vertex="1">
+          <mxGeometry height="30" width="165" x="25" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-19" edge="1" parent="1" source="z4ml59rrzWtkZgCO4Qi5-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440" y="281" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-7" parent="1" style="swimlane;" value="Angular Container" vertex="1">
+          <mxGeometry height="200" width="200" x="60" y="181" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-8" parent="z4ml59rrzWtkZgCO4Qi5-7" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Multi-stage build" vertex="1">
+          <mxGeometry height="20" width="140" x="30" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-9" parent="z4ml59rrzWtkZgCO4Qi5-7" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Port : 80&amp;nbsp;" vertex="1">
+          <mxGeometry height="25" width="130" x="35" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-10" parent="1" style="swimlane;" value="MariaDB Container" vertex="1">
+          <mxGeometry height="200" width="200" x="780" y="176" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-11" parent="z4ml59rrzWtkZgCO4Qi5-10" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Docker image" vertex="1">
+          <mxGeometry height="30" width="95" x="52.5" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-12" parent="z4ml59rrzWtkZgCO4Qi5-10" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Port: 3306" vertex="1">
+          <mxGeometry height="30" width="60" x="70" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-13" parent="z4ml59rrzWtkZgCO4Qi5-10" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Env Variables:&amp;nbsp; MARIADB_*" vertex="1">
+          <mxGeometry height="30" width="155" x="25" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="TCP (PORT: 3306 )" vertex="1">
+          <mxGeometry height="16" width="170" x="630" y="253" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="HTTP (REST)" vertex="1">
+          <mxGeometry height="30" width="80" x="300" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(Nginx proxy /api/)" vertex="1">
+          <mxGeometry height="20" width="130" x="280" y="301" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-26" edge="1" parent="1" source="z4ml59rrzWtkZgCO4Qi5-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="60" y="261" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-25" parent="1" style="sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.cisco.computers_and_peripherals.web_browser;" value="" vertex="1">
+          <mxGeometry height="64" width="62" x="-160" y="229" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="localhost:4200" vertex="1">
+          <mxGeometry height="30" width="80" x="-80" y="223" as="geometry" />
+        </mxCell>
+        <mxCell id="z4ml59rrzWtkZgCO4Qi5-31" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="marketplace-network&amp;nbsp; (Docker Bridge Network)" vertex="1">
+          <mxGeometry height="30" width="270" x="440" y="399" as="geometry" />
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-3" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="" vertex="1">
+          <mxGeometry height="114" width="110" x="1150" y="226" as="geometry" />
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-6" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1150" y="295" as="sourcePoint" />
+            <mxPoint x="979.9999999999995" y="295" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="db_data volume" vertex="1">
+          <mxGeometry height="60" width="95" x="1157.5" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="/var/lib/mysql" vertex="1">
+          <mxGeometry height="30" width="60" x="1060" y="266" as="geometry" />
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-12" edge="1" parent="1" source="y6iCax4849SCfxOEYlSj-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="y6iCax4849SCfxOEYlSj-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-9" parent="1" style="whiteSpace=wrap;html=1;shape=mxgraph.basic.document" value="" vertex="1">
+          <mxGeometry height="116" width="100" x="1155" y="414" as="geometry" />
+        </mxCell>
+        <mxCell id="y6iCax4849SCfxOEYlSj-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="marketplace.sql" vertex="1">
+          <mxGeometry height="30" width="60" x="1175" y="457" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
