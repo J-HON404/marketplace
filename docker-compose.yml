@@ -1,0 +1,44 @@
+networks:
+  marketplace-network:
+    driver: bridge
+
+services:
+  marketplace-db:
+    image: mariadb:12
+    container_name: marketplace-db
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    networks:
+      - marketplace-network
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./marketplace.sql:/docker-entrypoint-initdb.d/marketplace.sql
+
+  marketplace-backend:
+    build: ./marketplace-backend
+    container_name: marketplace-backend
+    env_file:
+      - .env
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - marketplace-db
+    networks:
+      - marketplace-network
+
+  marketplace-frontend:
+    build: ./marketplace-frontend
+    container_name: marketplace-frontend
+    env_file:
+      - .env
+    depends_on:
+      - marketplace-backend
+    ports:
+      - "4200:80"
+    networks:
+      - marketplace-network
+
+volumes:
+  db_data:
