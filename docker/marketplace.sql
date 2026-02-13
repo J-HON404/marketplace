@@ -40,10 +40,6 @@ CREATE TABLE `cart_items` (
 -- Dumping data for table `cart_items`
 --
 
-LOCK TABLES `cart_items` WRITE;
-/*!40000 ALTER TABLE `cart_items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cart_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `carts`
@@ -88,11 +84,6 @@ CREATE TABLE `customers` (
 --
 -- Dumping data for table `customers`
 --
-
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `order_items`
@@ -144,11 +135,6 @@ CREATE TABLE `order_notices` (
 -- Dumping data for table `order_notices`
 --
 
-LOCK TABLES `order_notices` WRITE;
-/*!40000 ALTER TABLE `order_notices` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_notices` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `orders`
 --
@@ -176,11 +162,6 @@ CREATE TABLE `orders` (
 --
 -- Dumping data for table `orders`
 --
-
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product_followers`
@@ -303,12 +284,6 @@ CREATE TABLE `sellers` (
 --
 -- Dumping data for table `sellers`
 --
-
-LOCK TABLES `sellers` WRITE;
-/*!40000 ALTER TABLE `sellers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sellers` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `shops`
 --
@@ -357,10 +332,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
