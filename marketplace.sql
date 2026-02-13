@@ -68,11 +68,6 @@ CREATE TABLE `carts` (
 -- Dumping data for table `carts`
 --
 
-LOCK TABLES `carts` WRITE;
-/*!40000 ALTER TABLE `carts` DISABLE KEYS */;
-INSERT INTO `carts` VALUES (1,21,25),(2,20,29),(3,20,30);
-/*!40000 ALTER TABLE `carts` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `customers`
@@ -123,12 +118,6 @@ CREATE TABLE `order_items` (
 --
 -- Dumping data for table `order_items`
 --
-
-LOCK TABLES `order_items` WRITE;
-/*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (52.99,1,2,3,4),(78,1,14,12,5),(52.99,1,15,12,4),(78,1,16,13,5),(78,1,17,14,5),(52.99,10,18,14,4),(78,1,19,15,5),(52.99,1,20,16,4),(52.99,3,21,17,4),(52.99,7,22,18,4),(52.99,1,23,19,4),(1,1,24,20,14),(1,1,27,23,27),(100000,2,28,24,27),(1,1,29,25,38),(1,1,30,26,36),(23.65,5,31,27,43),(17.98,3,32,28,44),(11.1,1,33,29,45),(11.1,6,34,30,45),(11,1,35,31,45);
-/*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `order_notices`
@@ -190,7 +179,6 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (3,'2025-12-17 14:30:00.000000',52.99,20,'2025-12-20','CONFIRMED_DELIVERED','1',25),(12,'2025-12-20 20:06:36.005100',130.99,20,'2025-12-21','CONFIRMED_DELIVERED','1111111',25),(13,'2025-12-20 20:19:57.148609',78,20,'2025-12-20','CONFIRMED_DELIVERED','111',25),(14,'2025-12-20 20:23:16.959741',607.9,20,'2025-12-20','CONFIRMED_DELIVERED','1111',25),(15,'2025-12-20 21:06:09.714151',78,20,'2025-12-20','CONFIRMED_DELIVERED','111',25),(16,'2025-12-20 21:06:43.904145',52.99,20,'2025-12-21','CONFIRMED_DELIVERED','111',25),(17,'2025-12-21 17:42:03.617718',158.97,20,NULL,'READY_TO_ELABORATING',NULL,25),(18,'2025-12-21 17:42:33.551127',370.93,20,NULL,'READY_TO_ELABORATING',NULL,25),(19,'2025-12-21 18:15:53.901899',52.99,20,NULL,'READY_TO_ELABORATING',NULL,25),(20,'2025-12-22 18:23:59.815566',1,21,'2025-12-22','CONFIRMED_DELIVERED','111',25),(21,'2025-12-22 18:43:39.942308',1,20,'2025-12-22','CONFIRMED_DELIVERED','111',25),(22,'2025-12-22 18:58:21.308912',1,20,NULL,'READY_TO_ELABORATING',NULL,25),(23,'2025-12-22 19:18:30.182302',1,20,NULL,'READY_TO_ELABORATING',NULL,25),(24,'2025-12-22 21:25:44.582220',200000,20,'2025-12-22','CONFIRMED_DELIVERED','111111',25),(25,'2025-12-23 08:06:09.076290',1,20,'2025-12-26','CONFIRMED_DELIVERED','111',25),(26,'2025-12-23 14:23:00.679310',1,21,'2025-12-23','CONFIRMED_DELIVERED','44442233232',25),(27,'2025-12-23 14:44:05.684779',118.25,20,NULL,'READY_TO_ELABORATING',NULL,25),(28,'2025-12-23 15:08:04.656102',53.94,20,NULL,'READY_TO_ELABORATING',NULL,25),(29,'2025-12-23 20:43:32.265882',11.1,20,NULL,'READY_TO_ELABORATING',NULL,25),(30,'2026-01-13 11:35:25.401526',66.6,20,'2026-01-18','CONFIRMED_DELIVERED','11',25),(31,'2026-01-18 16:11:19.096167',11,20,'2026-01-19','SHIPPING_DETAILS_SET','111',25);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,10 +206,6 @@ CREATE TABLE `product_followers` (
 -- Dumping data for table `product_followers`
 --
 
-LOCK TABLES `product_followers` WRITE;
-/*!40000 ALTER TABLE `product_followers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_followers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product_notices`
@@ -246,11 +230,6 @@ CREATE TABLE `product_notices` (
 -- Dumping data for table `product_notices`
 --
 
-LOCK TABLES `product_notices` WRITE;
-/*!40000 ALTER TABLE `product_notices` DISABLE KEYS */;
-INSERT INTO `product_notices` VALUES ('2026-01-30',35,45,'prossima settimana sconto speciale 50%','PROMOTION'),('2026-01-23',36,45,'messaggio','PROMOTION'),('2026-01-25',37,52,'Spedizioni bloccate','WARNING');
-/*!40000 ALTER TABLE `product_notices` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `products`
@@ -277,11 +256,6 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (4,'2025-12-19','hydro-protein ','Nutraff Whey-Pepti',52.99,0,20),(5,'2025-12-20','integratore','Metadone-XK',78,0,20),(14,'2025-12-21','fff','fff',1,0,21),(27,'2025-12-22','vvvv','vvv',100000,0,20),(36,'2025-12-23','100% vegana','poltrona',1,0,21),(38,'2025-12-23','aaa','lampadina',1,0,20),(43,'2025-12-23','60 compresse','eaa',23.65,0,20),(44,'2025-12-23','100% plastica contaminata','Protein shaker',17.98,0,20),(45,'2026-01-22','bevanda a base di caffeina e taurina','Energy powder ',12,11,20),(52,'2026-01-25','55 pollici','televisione',789,12,21);
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `profiles`
@@ -307,11 +281,6 @@ CREATE TABLE `profiles` (
 -- Dumping data for table `profiles`
 --
 
-LOCK TABLES `profiles` WRITE;
-/*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` VALUES (21,'mario@mail.com','$2a$10$pGHExnvdVZ98CSB41M6ciOLoy9bVlSjmR0Yk46CVDyfAquG0AYZ4G','mario','via roma','SELLER'),(22,'gigi@mail.com','$2a$10$ppVV8jjF4A/u03zqNQCxhem6NwkYzi8Hv4cKzlLqkgEe2rHwkcgBW','gigi','via roma 1 ','SELLER'),(25,'mirko@mail.com','$2a$10$ptrh8YWRFcSert8bimKA8upItid5PrwTeWTojbKFxdPsJHXwa67UK','mirko','via roma 1','CUSTOMER'),(29,'giorgio@mail.com','$2a$10$BXsVPAx9vEBTrI.VdnJldOLLn.tO5UhmEdJ9AKVjN0W5ShkSnhf0y','giorgio','via roma 1','CUSTOMER'),(30,'andrea@mail.com','$2a$10$f0/aVZ6ZzKAqlgqk.GIoBu6rxnLQCNVTxapPprwIoQcfYJkj4jWKe','andrea','via roma 1','CUSTOMER'),(31,'luca@mail.com','$2a$10$bVf91fAyx3ruMUh1BJe2LuBSd8LQqr3U9wErGStDC20LBn1qWYD7O','luca','via roma 1 ','SELLER');
-/*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sellers`
@@ -364,11 +333,6 @@ CREATE TABLE `shops` (
 -- Dumping data for table `shops`
 --
 
-LOCK TABLES `shops` WRITE;
-/*!40000 ALTER TABLE `shops` DISABLE KEYS */;
-INSERT INTO `shops` VALUES (20,'marioShop',21,'SALUTE_FITNESS','CASA_ARREDAMENTO'),(21,'gigiShop',22,NULL,'TECNOLOGIA_ELETTRONICA'),(22,'lucaShop',31,NULL,'CASA_ARREDAMENTO');
-/*!40000 ALTER TABLE `shops` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
