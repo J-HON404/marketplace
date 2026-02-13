@@ -10,7 +10,7 @@ services:
       - marketplace-network
     volumes:
       - db_data:/var/lib/mysql
-      - ./marketplace-schema.sql:/docker-entrypoint-initdb.d/marketplace.sql
+      - ./marketplace-schema.sql:/docker-entrypoint-initdb.d/marketplace-schema.sql
 
   marketplace-backend:
     build:
@@ -46,4 +46,5 @@ networks:
 
 volumes:
   db_data:
+
 
