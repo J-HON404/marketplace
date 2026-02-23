@@ -38,11 +38,6 @@ public class ProfileController {
         Profile profile = profileService.updateProfile(profileId, updatedProfile);
         return ResponseEntity.ok(ApiResponse.success(profile));
     }
-    
-    @DeleteMapping("/{profileId}")
-    public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable Long profileId) {
-        profileService.deleteProfile(profileId);
-        return ResponseEntity.noContent().build();
-    }
+
 
 }
