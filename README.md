@@ -42,6 +42,22 @@ EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
 ### Frontend (Angular)
 ```
+## Build,Run e verifica
+```dockerfile
+docker build -t marketplace-backend
+docker run -d --name marketplace-backend `
+  --link marketplace-db:marketplace-db `
+  -p $env:PORT:$env:PORT `
+  -e DB_URL=$env:DB_URL `
+  -e DB_USER=$env:DB_USER `
+  -e DB_PASSWORD=$env:DB_PASSWORD `
+  -e PORT=$env:PORT `
+  -e JWT_SECRET=$env:JWT_SECRET `
+  -e JWT_EXPIRATION=$env:JWT_EXPIRATION `
+  marketplace-backend
+docker run -d --name marketplace-backend `
+docker logs -f marketplace-backend 
+```
 ### FRONTEND (Angular)
 ```dockerfile
 # Stage 1: Build Angular
@@ -57,6 +73,16 @@ COPY --from=build /app/dist/marketplace-frontend/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+```
+## Build,Run e verifica
+```dockerfile
+
+docker build -t marketplace-frontend .
+docker run -d --name marketplace-frontend -p 4200:80 marketplace-frontend
+
+4200:80 → Mappa la porta 80 del container sulla porta 4200 dell’host.
+Internamente, il container continua a usare la porta 80, ma Docker ridirige il traffico dalla 4200 dell’host.
+docker logs -f marketplace-frontend
 ```
 ## 🌐 Configurazione reverse proxy Nginx
 
