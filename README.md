@@ -160,4 +160,6 @@ L'infrastruttura dell'applicazione è stata ottimizzata per garantire stabilità
     
     Questa impostazione permette al backend di rimanere in attesa della disponibilità effettiva del database, evitando crash improvvisi durante la fase di startup dell'intero ecosistema.
 
+  Nella cartella docker sono presenti tutti i file di configurazione 
+
 
