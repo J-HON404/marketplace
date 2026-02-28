@@ -2,6 +2,8 @@
 
 Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'applicazione gestisce un sistema multi-venditore in cui gli utenti possono operare come `SELLER` o `CUSTOMER` per gestire shop, prodotti e ordini in tempo reale.
 
+---
+
 ## 🚀 Obiettivi Fase 2: Containerizzazione
 
 L'obiettivo è rendere l'applicazione portabile, isolata e facilmente scalabile attraverso l'uso di **Docker** e **Docker Compose**. Il sistema è stato suddiviso in tre micro-servizi indipendenti:
@@ -38,9 +40,9 @@ WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
-```
 ### Frontend (Angular)
-
+```
+### FRONTEND (Angular)
 ```dockerfile
 # Stage 1: Build Angular
 FROM node:20 AS build
