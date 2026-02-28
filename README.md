@@ -153,7 +153,7 @@ L'infrastruttura dell'applicazione è stata ottimizzata per garantire stabilità
 * **Rete Bridge Personalizzata (`marketplace-network`):** Abilita la risoluzione DNS automatica tra i servizi. Questo permette ai container di comunicare utilizzando gli **hostname** (es. `marketplace-db`) anziché indirizzi IP statici, che risulterebbero instabili in caso di riavvio.
 
 * **Coordinamento dell'Ordine di Avvio:** Grazie alla direttiva `depends_on`, viene garantita la corretta sequenza logica di accensione dei servizi: 
-    1.  **Database** 2.  **Backend** 3.  **Frontend**
+    **Database** ->  **Backend** ->  **Frontend**
 
 * **Resilienza del Database (Spring Boot):** Dato che MariaDB richiede tempi di inizializzazione superiori rispetto al runtime Java, è stata configurata la proprietà:
     `spring.datasource.hikari.initialization-fail-timeout=-1`
