@@ -42,7 +42,7 @@ EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
 ### Frontend (Angular)
 ```
-## Build,Run e verifica
+## Build Run 
 ```dockerfile
 docker build -t marketplace-backend
 docker run -d --name marketplace-backend `
@@ -74,13 +74,12 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
-## Build,Run e verifica
+## Build & Run 
 ```dockerfile
-
 docker build -t marketplace-frontend .
 docker run -d --name marketplace-frontend -p 4200:80 marketplace-frontend
 
-4200:80 → Mappa la porta 80 del container sulla porta 4200 dell’host.
+p 4200:80 → Mappa la porta 80 del container sulla porta 4200 dell’host.
 Internamente, il container continua a usare la porta 80, ma Docker ridirige il traffico dalla 4200 dell’host.
 docker logs -f marketplace-frontend
 ```
