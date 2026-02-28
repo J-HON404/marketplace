@@ -99,6 +99,7 @@ Per superare l'isolamento dei container e rendere la comunicazione possibile, la
 
 ## Docker Compose 
 
+```dockerfile
 networks:
   marketplace-network:
     driver: bridge
@@ -143,6 +144,8 @@ services:
 
 volumes:
   db_data:
+
+  ```
 
   ### 🛠️ Considerazioni
 
