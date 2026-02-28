@@ -84,7 +84,6 @@ Inizialmente il backend comunicava con il contaiener db tramite l' Utilizzo di -
 
 ## ⚙️ Analisi delle Criticità e Passaggio a Docker Compose
 
-### Limiti del collegamento tramite `--link`
 Il collegamento iniziale tra backend e database tramite il flag `--link` si è rivelato limitante a causa della sua natura **statica**:
 
 * **Dipendenza dall'IP:** Nel container Spring Boot vengono iniettati automaticamente i riferimenti e l'indirizzo IP del database. Tuttavia, poiché non esiste un servizio di risoluzione DNS dinamica tra i due, se il container MariaDB dovesse essere riavviato ottenendo un nuovo IP, il backend perderebbe la connessione, rendendo necessario un riavvio manuale del container backend.
