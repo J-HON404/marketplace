@@ -2,10 +2,6 @@
 
 Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'applicazione gestisce un sistema multi-venditore in cui gli utenti possono operare come `SELLER` o `CUSTOMER` per gestire shop, prodotti e ordini in tempo reale.
 
-> **Nota:** La versione attuale è sviluppata seguendo una struttura modulare e facilmente estendibile. Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dati o carichi ad alta scala, né per scenari enterprise con requisiti avanzati di performance. Rappresenta una base solida, sicura ed organizzata per progetti di media dimensione.
-
----
-
 ## 🚀 Obiettivi Fase 2: Containerizzazione
 
 L'obiettivo è rendere l'applicazione portabile, isolata e facilmente scalabile attraverso l'uso di **Docker** e **Docker Compose**. Il sistema è stato suddiviso in tre micro-servizi indipendenti:
@@ -84,13 +80,20 @@ server {
 
 Inizialmente il backend comunicava con il contaiener db tramite l' Utilizzo di --link marketplace-db:marketplace-db. Questa soluzione si è rivelata limitante a causa della gestione statica degli IP e della mancanza di risoluzione DNS dinamica.
 
-## Considerazione Configurazioni
+## ⚙️ Analisi delle Criticità e Passaggio a Docker Compose
 
-Il collegamento by link tra backend e databse si è rivelato limitante , poichè 
-anche se due container riescono a comunicare perché vengono inseriti nella stessa rete bridge, il loro collegamento è però statico. In particolare nel container springboot viene iniettato automaticamente nelle variabili d'ambiente DB , i riferimenti a ques'utltimo e quindi anche il suo indirizzo ip , che il container spring boot non conosco direttamente, tuttavia se i riferimenti del db cambiassero, sarebbe necessario riavviare il container di springboot. Poiché non esiste un servizio di risoluzione DNS dinamica tra i due, se il container MariaDB dovesse essere riavviato e ottenere un nuovo IP, il backend perderebbe la connessione.
-Inoltre i container backend e frontend non possono comunicare correttamete con il solo file Ngnix che funge da reverse proxy tra le parti.
-Dal momento che ogni container è isolato ed ha una rete propria interna, per rendere la comunicazione psosibile con altri container è crare una rete docker condivisa e soprattuto sarebbe utile avere un orchestatore che permetta l'esecuzione di questi container creati simultaneamente, la soluzione a questi problemi si chiama 
-Dokcer Compose
+### Limiti del collegamento tramite `--link`
+Il collegamento iniziale tra backend e database tramite il flag `--link` si è rivelato limitante a causa della sua natura **statica**:
+
+* **Dipendenza dall'IP:** Nel container Spring Boot vengono iniettati automaticamente i riferimenti e l'indirizzo IP del database. Tuttavia, poiché non esiste un servizio di risoluzione DNS dinamica tra i due, se il container MariaDB dovesse essere riavviato ottenendo un nuovo IP, il backend perderebbe la connessione, rendendo necessario un riavvio manuale del container backend.
+* **Isolamento di Rete:** Ogni container opera in una propria rete interna isolata. Di conseguenza, i container backend e frontend non possono comunicare correttamente utilizzando esclusivamente il file Nginx come reverse proxy, poiché manca un'infrastruttura di rete condivisa.
+
+### La Soluzione: Docker Compose
+Per superare l'isolamento dei container e rendere la comunicazione possibile, la strategia corretta è la creazione di una **rete Docker condivisa**. L'utilizzo di un orchestratore come **Docker Compose** risolve queste problematiche permettendo di:
+
+1.  **Esecuzione Simultanea:** Gestisce l'avvio coordinato di tutti i container creati nello stesso momento.
+2.  **Risoluzione DNS Dinamica:** Abilita la comunicazione tra servizi tramite il loro nome (es. `marketplace-db`) anziché tramite indirizzi IP instabili.
+3.  **Rete Comune:** Inserisce automaticamente tutti i servizi in un'unica rete bridge, eliminando la necessità di collegamenti statici e manuali.
 
 ## Docker Compose 
 
@@ -139,6 +142,18 @@ services:
 volumes:
   db_data:
 
- L'architettura si basa su una **Rete Bridge** personalizzata (`marketplace-network`) che abilita la risoluzione DNS automatica tra i servizi, permettendo ai container di comunicare tramite hostname anziché IP statici. L'**ordine di avvio** è coordinato tramite la direttiva `depends_on`, garantendo la sequenza logica Database → Backend → Frontend. 
-Per gestire la **resilienza del Database**, dato che MariaDB richiede tempi di inizializzazione superiori rispetto al runtime Java, è stata configurata la proprietà `spring.datasource.hikari.initialization-fail-timeout=-1` in Spring Boot; questo permette al backend di restare in attesa della disponibilità del DB senza crashare durante lo startup. 
-La **persistenza dei dati** è affidata a un volume Docker dedicato (`db_data`), che preserva lo stato del database anche in caso di rimozione dei container. L'**inizializzazione** dello schema avviene in modo trasparente tramite il montaggio del file `marketplace.sql` nella directory `/docker-entrypoint-initdb.d/`, eseguito esclusivamente alla prima creazione del volume. Infine, la **gestione delle variabili d'ambiente** è centralizzata nel file `.env` tramite la direttiva `env_file`, garantendo sicurezza, ordine e facilità di configurazione tra i diversi ambienti.
+  ### 🛠️ Considerazioni
+
+L'infrastruttura dell'applicazione è stata ottimizzata per garantire stabilità e comunicazione fluida tra i servizi:
+
+* **Rete Bridge Personalizzata (`marketplace-network`):** Abilita la risoluzione DNS automatica tra i servizi. Questo permette ai container di comunicare utilizzando gli **hostname** (es. `marketplace-db`) anziché indirizzi IP statici, che risulterebbero instabili in caso di riavvio.
+
+* **Coordinamento dell'Ordine di Avvio:** Grazie alla direttiva `depends_on`, viene garantita la corretta sequenza logica di accensione dei servizi: 
+    1.  **Database** 2.  **Backend** 3.  **Frontend**
+
+* **Resilienza del Database (Spring Boot):** Dato che MariaDB richiede tempi di inizializzazione superiori rispetto al runtime Java, è stata configurata la proprietà:
+    `spring.datasource.hikari.initialization-fail-timeout=-1`
+    
+    Questa impostazione permette al backend di rimanere in attesa della disponibilità effettiva del database, evitando crash improvvisi durante la fase di startup dell'intero ecosistema.
+
+
