@@ -102,6 +102,16 @@ server {
 }
 ```
 
+L’utente fa una chiamata Angular a /api/products,
+
+Nginx intercetta ef inoltra la richiesta al backend
+
+http://backend-server:8080/api/products
+
+Il backend risponde a Nginx, e Nginx passa la risposta al browser.
+
+Il backend non deve sapere nulla della posizione del frontend. Tutto è gestito da Nginx.
+
 ## 🌐 Network backend e database
 
 Inizialmente il backend comunicava con il contaiener db tramite l' Utilizzo di --link marketplace-db:marketplace-db. Questa soluzione si è rivelata limitante a causa della gestione statica degli IP e della mancanza di risoluzione DNS dinamica.
