@@ -1,4 +1,4 @@
-{
+{ #Configurazione sviluppo locale, poichè considera backend come docker container
   "/api": {
     "target": "http://marketplace-backend:8080",
     "secure": false,
