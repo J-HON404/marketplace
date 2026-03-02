@@ -68,7 +68,7 @@ docker run -d \
 p 4200:80 → Mappa la porta 80 del container sulla porta 4200 dell’host.
 Internamente, il container continua a usare la porta 80, ma Docker ridirige il traffico dalla 4200 dell’host.
 docker logs -f marketplace-frontend
-```
+
 ## 🌐 Modifica Configurazione reverse proxy Nginx
 
 Per permettere al frontend di comunicare con il backend senza incorrere in problemi di CORS, Nginx è configurato come Reverse Proxy:
@@ -121,20 +121,16 @@ server {
         proxy_http_version 1.1;
     }
 }
-```
-## 🌐 Introduzione Script docker-entrypoint
+ ```
+
+## 🌐 Introduzione Script Docker-entrypoint
 
 #!/bin/sh
-
-# Sostituisci le variabili di ambiente nel template
 envsubst '${BACKEND_URL} ${HOST_BACKEND}' \
     < /etc/nginx/conf.d/default.conf.template \
     > /etc/nginx/conf.d/default.conf
-
-# Avvia Nginx in primo piano
 exec nginx -g 'daemon off;'
      
-
   ### 🛠️ Considerazioni
 
 In precedenza, il Dockerfile Angular serviva l’app tramite Nginx usando un file di configurazione statico (nginx.conf). Questo significava che il collegamento al backend era hardcoded, e ogni volta che l’URL del backend cambiava, era necessario ricostruire l’immagine Docker. In questa versione è stato introdotto un template Nginx (nginx.conf.template),due nuove variabili di ambiente (BACKEND_URL e HOST_BACKEND) ed uno script di entrypoint (docker-entrypoint.sh), che sostituisce le variabili di ambiente nel template nginx al momento dell’avvio del container, generando il file di configurazione Nginx finale. 
