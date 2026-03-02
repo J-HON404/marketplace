@@ -122,12 +122,14 @@ server {
 
 ## 🌐 Introduzione Script Docker-entrypoint
 
+```dockerfile
 #!/bin/sh
+
 envsubst '${BACKEND_URL} ${HOST_BACKEND}' \
     < /etc/nginx/conf.d/default.conf.template \
     > /etc/nginx/conf.d/default.conf
 exec nginx -g 'daemon off;'
-     
+ ```
   ### 🛠️ Considerazioni
 
 In precedenza, il Dockerfile Angular serviva l’app tramite Nginx usando un file di configurazione statico (nginx.conf). Questo significava che il collegamento al backend era hardcoded, e ogni volta che l’URL del backend cambiava, era necessario ricostruire l’immagine Docker. In questa versione è stato introdotto un template Nginx (nginx.conf.template),due nuove variabili di ambiente (BACKEND_URL e HOST_BACKEND) ed uno script di entrypoint (docker-entrypoint.sh), che sostituisce le variabili di ambiente nel template nginx al momento dell’avvio del container, generando il file di configurazione Nginx finale. 
