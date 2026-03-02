@@ -22,6 +22,16 @@ Per il Backend e il Frontend è stata adottata la tecnica della **Multi-stage bu
 
 ## 📄 Dockerfile dei Servizi
 
+## DATABASE (MariaDB)
+```dockerfile
+docker run -d --name marketplace-db `
+  -e MYSQL_ROOT_PASSWORD=$env:MYSQL_ROOT_PASSWORD `
+  -e MYSQL_DATABASE=$env:MYSQL_DATABASE `
+  -e MYSQL_USER=$env:MYSQL_USER `
+  -e MYSQL_PASSWORD=$env:MYSQL_PASSWORD `
+  -p 3306:3306 mariadb:latest
+```
+
 ### Backend (Spring Boot)
 
 ```dockerfile
