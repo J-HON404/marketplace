@@ -6,13 +6,11 @@ Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'appli
 
 ## 🚀 Obiettivi Fase 3: Ottimizzare Containerizzazione
 
-L'obiettivo è prendere l'applicazione portabile, isolata e facilmente scalabile attraverso l'uso di **Docker** e **Docker Compose**, in cui il sistema è stato suddiviso in tre micro-servizi indipendenti:
+L'obiettivo è prendere l'applicazione presente nel branch 'stage/local-docker' , il cui obiettivo è trasformare l'applicazione in modo che sia portabile, isolata e facilmente scalabile  attraverso l'uso di **Docker** e **Docker Compose**. Il sistema è stato suddiviso in tre micro-servizi indipendenti:
 
 1.  **Backend**: Spring Boot (Java 21)
 2.  **Frontend**: Angular (Nginx come Web Server)
 3.  **Database**: MariaDB
-
-e permettere la portabilità di questi container su ambienti differenti, come cloud o dove è necessario sostituire parti del sistema con altre, in base anche agli ambienti di produzione.
 
 Rispetto alla versione dell'applicazione presente nel branch 'stage/local-docker', sono state apportate le segeunti modifiche
 
@@ -67,7 +65,6 @@ docker run -d \
 
 p 4200:80 → Mappa la porta 80 del container sulla porta 4200 dell’host.
 Internamente, il container continua a usare la porta 80, ma Docker ridirige il traffico dalla 4200 dell’host.
-docker logs -f marketplace-frontend
 
 ## 🌐 Modifica Configurazione reverse proxy Nginx
 
@@ -134,14 +131,14 @@ exec nginx -g 'daemon off;'
   ### 🛠️ Considerazioni
 
 In precedenza, il Dockerfile Angular serviva l’app tramite Nginx usando un file di configurazione statico (nginx.conf). Questo significava che il collegamento al backend era hardcoded, e ogni volta che l’URL del backend cambiava, era necessario ricostruire l’immagine Docker. In questa versione è stato introdotto un template Nginx (nginx.conf.template),due nuove variabili di ambiente (BACKEND_URL e HOST_BACKEND) ed uno script di entrypoint (docker-entrypoint.sh), che sostituisce le variabili di ambiente nel template nginx al momento dell’avvio del container, generando il file di configurazione Nginx finale. 
-Il file Nginx introdotto già nella precdente versione, serve a configurare il server web che distribuisce la tua applicazione Angular e gestisce il proxy verso il backend. Tutte le richieste che iniziano con /api/ vengono inviate al backend. ora questo indirizzo backend è variabile e dinamico,sostituita all'avvio del container dallo script, così da non dover modificare o fare un nuovo deploy dell'immagine container.
+Il file Nginx introdotto già nella precdente versione, serve a configurare il server web che distribuisce la tua applicazione Angular e gestisce il proxy verso il backend. Tutte le richieste che iniziano con /api/ vengono inviate al backend. Ora questo indirizzo backend è variabile e dinamico,sostituita all'avvio del container dallo script, così da non dover modificare o fare un nuovo deploy dell'immagine container.
 Riassumendo i vantaggi ottenuti sono: 
 
 Flessibilità: la stessa immagine Docker può puntare a backend diversi senza ricostruzione.
 
 Portabilità: la configurazione è adattabile a più ambienti (staging, produzione, test).
 
-Semplicità nel deploy: basta impostare le variabili di ambiente corrette su Azure o in qualsiasi altro ambiente.
+Semplicità nel deploy: basta impostare le variabili di ambiente corrette su Azure,AWS o in qualsiasi altro ambiente.
 
 Sicurezza e manutenzione: evita modifiche manuali al file statico e riduce errori di configurazione.
 
