@@ -94,7 +94,7 @@ docker logs -f marketplace-frontend
 ```
 ## 🌐 Configurazione reverse proxy Nginx
 
-Per permettere al frontend di comunicare con il backend senza incorrere in problemi di CORS, Nginx è configurato come Reverse Proxy:
+Per permettere al frontend di comunicare con il backend, per mezzo del suo hostname container, senza incorrere in problemi di CORS, Nginx è configurato come Reverse Proxy:
 
 ```dockerfile
 server {
