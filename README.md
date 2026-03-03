@@ -130,11 +130,22 @@ envsubst '${BACKEND_URL} ${HOST_BACKEND}' \
     > /etc/nginx/conf.d/default.conf
 exec nginx -g 'daemon off;'
  ```
-  ### 🛠️ Considerazioni
+### 🛠️ Considerazioni
 
-In precedenza, il Dockerfile Angular serviva l’app tramite Nginx usando un file di configurazione statico (nginx.conf). Questo significava che il collegamento al backend era hardcoded, e ogni volta che l’URL del backend cambiava, era necessario ricostruire l’immagine Docker. In questa versione è stato introdotto un template Nginx (nginx.conf.template),due nuove variabili di ambiente (BACKEND_URL e HOST_BACKEND) ed uno script di entrypoint (docker-entrypoint.sh), che sostituisce le variabili di ambiente nel template nginx al momento dell’avvio del container, generando il file di configurazione Nginx finale. 
-Il file Nginx introdotto già nella precdente versione, serve a configurare il server web che distribuisce la tua applicazione Angular e gestisce il proxy verso il backend. Tutte le richieste che iniziano con /api/ vengono inviate al backend. Ora questo indirizzo backend è variabile e dinamico,sostituita all'avvio del container dallo script, così da non dover modificare o fare un nuovo deploy dell'immagine container.
-Riassumendo i vantaggi ottenuti sono: 
+In precedenza, il Dockerfile Angular serviva l’app tramite Nginx usando un file di configurazione statico (`nginx.conf`).  
+Questo significava che il collegamento al backend era **hardcoded**, e ogni volta che l’URL del backend cambiava era necessario **ricostruire l’immagine Docker**.  
+
+In questa versione, sono stati introdotti:  
+- un **template Nginx** (`nginx.conf.template`),  
+- due **variabili di ambiente** (`BACKEND_URL` e `HOST_BACKEND`),  
+- uno **script di entrypoint** (`docker-entrypoint.sh`).  
+
+Lo script sostituisce le variabili di ambiente nel template Nginx al momento dell’avvio del container, generando il **file di configurazione finale**.  
+
+Il file Nginx, già presente nella versione precedente, configura il server web che distribuisce l’app Angular e gestisce il **proxy verso il backend**. Tutte le richieste che iniziano con `/api/` vengono inviate al backend.  
+Ora questo indirizzo è **variabile e dinamico**, sostituito all’avvio del container dallo script, evitando di modificare o ridistribuire l’immagine container ogni volta che l’URL del backend cambia.  
+
+**Vantaggi principali ottenuti:**  
 
 Flessibilità: la stessa immagine Docker può puntare a backend diversi senza ricostruzione.
 
