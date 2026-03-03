@@ -94,7 +94,7 @@ az mysql flexible-server create \
 ```dockerfile
 
 az mysql flexible-server db create \
-  --resource-group rg-database-esame \
+  --resource-group rg-esame-cloud  \
   --server-name server-database-esame \
   --database-name marketplace
 ```
