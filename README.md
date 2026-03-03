@@ -6,7 +6,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi Fase 4 : Introduzione Microsoft Azure
 
-L'obiettivo è migrare l'applicazione presente nel branch stage/local-dockerV2 in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di trasformare l'applicazione in un approccio cloud-native.
+L'obiettivo è migrare l'applicazione presente nel branch stage/local-dockerV2 in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native tramite un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
 Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risulta limitato in contesti produttivi perché opera principalmente su un ambiente single-host e richiede una gestione manuale di aspetti fondamentali come scalabilità, disponibilità e monitoraggio. Al contrario, adottando servizi Azure per il frontend Angular e per il backend , è possibile ottenere un’infrastruttura più moderna e adatta ad ambienti reali di produzione, sfruttando i vantaggi del cloud.
 
 
@@ -71,6 +71,7 @@ az acr create \
 - **MySQL Flexible Server**  
   È stato scelto un database relazionale MySQL per garantire una gestione dei dati efficiente, scalabile e sicura.  
   L’approccio relazionale è stato preferito rispetto a soluzioni NoSQL, in quanto meglio adatto al modello dati e alle esigenze dell’applicazione.
+  Inoltre permette:   - *Backup automatici* - *Restoring dati* - *Alta disponbilità*  
 
 ```dockerfile
 az mysql flexible-server create \
@@ -115,4 +116,58 @@ az keyvault secret set --vault-name kv-esame-marketplace --name DbPassword --val
 
 ```dockerfile
 az keyvault secret set --vault-name kv-esame-marketplace --name JwtSecret --value "yyyyyy"
+```
+
+- **Azure Container Apps**  
+  È stato scelto per la gestione dei container, perchè permette di eseguire container Docker senza doversi occupare manualmente dell’orchestrazione tramite macchine virtuali o Kubernetes,    perché questa parte viene gestita automaticamente dal servizio internamente. In pratica sarà sufficiente caricare i container dell’applicazione e Azure si occuperà della loro esecuzione    e gestione. Inoltre permette la gestione automatica di:
+  - *Auto Scaling* - *Networking* - *Load balancer*  -  *Aggiornamenti e deployment*
+ 
+    *Container Apps Environment*
+    È l'ambiente che gestisce in modo centralizzato i diversi Container Apps di cui è composta un applicazione. Fornendo i seguenti vantaggi:
+      - *Networking interno condiviso tra i container*  - *Auto Scaling* -  *Monitoraggio e logging*
+        
+```dockerfile
+    az containerapp env create \
+    --name managedEnvironment-rgesamecloud-8803 \
+    --resource-group rg-esame-cloud \
+    --location "France Central"
+```
+
+  Container Backend
+```dockerfile
+az containerapp create ^
+  --name ca-backend-esame ^
+  --resource-group rg-esame-cloud ^
+  --environment managedEnvironment-rgesamecloud-8803 ^
+  --image acresamecloud.azurecr.io/backend:v1 ^
+  --registry-server acresamecloud.azurecr.io ^
+  --registry-username %ACR_USER% ^
+  --registry-password %ACR_PASS% ^
+  --ingress external ^
+  --target-port 8080 ^
+  --cpu 0.25 ^
+  --memory 0.5Gi ^
+  --set-env-vars ^
+    DB_URL = 
+    DB_HOST=  ^
+    ..ecc....
+```
+
+Container Frontend
+```dockerfile
+  az containerapp create \
+  --name ca-frontend-esame \
+  --resource-group rg-esame-cloud \
+  --environment managedEnvironment-rgesamecloud-8803 \
+  --image acresamecloud.azurecr.io/frontend:v1 \
+  --registry-server acresamecloud.azurecr.io \
+  --registry-username <ACR_USER> \
+  --registry-password <ACR_PASS> \
+  --ingress external \
+  --target-port 80 \
+  --cpu 0.25 \
+  --memory 0.5Gi
+    --set-env-vars ^
+    BACKEND_URL = 
+    HOST_BACKEND =  ^
 ```
