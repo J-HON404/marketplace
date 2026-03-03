@@ -6,7 +6,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi Fase 4 : Introduzione Microsoft Azure
 
-L'obiettivo è migrare l'applicazione presente nel branch **stage/local-dockerV2** in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native tramite un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
+L'obiettivo è migrare l'applicazione presente nel branch **stage/local-dockerV2** in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native con un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
 Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risulta limitato in contesti produttivi perché opera principalmente su un ambiente single-host e richiede una gestione manuale di aspetti fondamentali come scalabilità, disponibilità e monitoraggio. Al contrario, adottando servizi Azure per il frontend Angular e per il backend , è possibile ottenere un’infrastruttura più moderna e adatta ad ambienti reali di produzione, sfruttando i vantaggi del cloud.
 
 
@@ -47,7 +47,8 @@ Questo approccio consente di sfruttare pienamente la flessibilità, la scalabili
 
 > *Nota:* I comandi inseriti sono solo a scopo descrittivo, non rappresentano tutte le configurazioni associate per ogni singolo componente.
 
-- **Resource Group**  
+- **Resource Group**
+  
     È il contentitore logico in cui vengono raggruppate tutte le risorse dell'applicazione, permette di monitorare facilmente le componenti di una stessa applicazione.
 
 ```dockerfile
@@ -56,7 +57,8 @@ az group create \
   --location swedencentral
 ```
 
-- **Azure Container Registry**  
+- **Azure Container Registry**
+  
     È il registro logico in cui vengono raggruppate tutte le immagini docker, pronte per il deploy dei container dell'applicazione
   
 ```dockerfile
@@ -68,7 +70,8 @@ az acr create \
   --location swedencentral
 ```
 
-- **MySQL Flexible Server**  
+- **MySQL Flexible Server**
+  
   È stato scelto un database relazionale MySQL per garantire una gestione dei dati efficiente, scalabile e sicura.  
   L’approccio relazionale è stato preferito rispetto a soluzioni NoSQL, in quanto meglio adatto al modello dati e alle esigenze dell’applicazione.
   Inoltre permette:   - *Backup automatici* - *Restoring dati* - *Alta disponbilità*  
@@ -99,7 +102,8 @@ az mysql flexible-server db create \
   --database-name marketplace
 ```
 
-- **Azure Key Vault**  
+- **Azure Key Vault**
+  
   È stato scelto per la gestione sicura di secret, chiavi e variabili di ambiente, evitando di inserirli direttamente nei container o in chiaro nelle immagini Docker.  
   Garantisce sicurezza e controllo granulare degli accessi, permettendo di concedere l’accesso ai dati in base ai ruoli degli utenti o dei servizi.
 
