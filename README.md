@@ -6,7 +6,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi Fase 4 : Introduzione Microsoft Azure
 
-L'obiettivo è migrare l'applicazione presente nel branch stage/local-dockerV2 in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native tramite un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
+L'obiettivo è migrare l'applicazione presente nel branch **stage/local-dockerV2** in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native tramite un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
 Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risulta limitato in contesti produttivi perché opera principalmente su un ambiente single-host e richiede una gestione manuale di aspetti fondamentali come scalabilità, disponibilità e monitoraggio. Al contrario, adottando servizi Azure per il frontend Angular e per il backend , è possibile ottenere un’infrastruttura più moderna e adatta ad ambienti reali di produzione, sfruttando i vantaggi del cloud.
 
 
@@ -118,7 +118,7 @@ az keyvault secret set --vault-name kv-esame-marketplace --name DbPassword --val
 az keyvault secret set --vault-name kv-esame-marketplace --name JwtSecret --value "yyyyyy"
 ```
 
--# **Azure Container Apps**
+- **Azure Container Apps**
 È stato scelto per la gestione dei container, perché permette di eseguire container Docker senza doversi occupare manualmente dell’orchestrazione tramite macchine virtuali o Kubernetes, poiché questa parte viene gestita automaticamente dal servizio internamente.
 
 In pratica, sarà sufficiente caricare i container dell’applicazione e **Azure** si occuperà della loro esecuzione e gestione. Inoltre, permette la gestione automatica di:
@@ -128,9 +128,7 @@ In pratica, sarà sufficiente caricare i container dell’applicazione e **Azure
 - **Load Balancer**
 - **Aggiornamenti e deployment**
 
----
-
-# Container Apps Environment
+Container Apps Environment
 È l'ambiente che gestisce in modo centralizzato i diversi **Container Apps** di cui è composta un’applicazione, fornendo i seguenti vantaggi:
 
 - **Networking interno condiviso tra i container**
@@ -181,4 +179,20 @@ Container Frontend
     --set-env-vars ^
     BACKEND_URL = 
     HOST_BACKEND =  ^
+```
+----
+
+# Caricamento immagini docker sul ACR AZURE (Azure Container Registry)
+```dockerfile
+docker tag marketplace-frontend acresamecloud.azurecr.io/frontend:v2
+docker tag marketplace-backend acresamecloud.azurecr.io/backend:v2
+docker push acresamecloud.azurecr.io/frontend:v2
+docker push acresamecloud.azurecr.io/backend:v2
+```
+Le immagini Docker vengono caricata sul container registry Azure e saranno disponibili per il deploy su Container App.
+
+# Verifica immagini presenti nel ACR AZURE (Azure Container Registry)
+```dockerfile
+az acr repository list --name acresamecloud --output table
+az acr repository show-tags --name acresamecloud --repository backend --output table
 ```
