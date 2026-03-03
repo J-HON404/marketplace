@@ -188,6 +188,23 @@ Container Frontend
 ```
 ----
 
+**Mapping secret e variabili Key Vault con Container Apps**
+```dockerfile
+# Esempio di mapping secret
+az containerapp secret set \
+  --name ca-backend-esame \
+  --resource-group rg-esame-cloud \
+  --secrets db-password=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/DbPassword
+```
+```dockerfile
+# Esempio di mapping secret
+az containerapp secret set \
+  --name ca-frontend-esame \
+  --resource-group rg-esame-cloud \
+  --secrets backend_url=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/BackendUrl
+```
+----
+
 **Caricamento immagini docker sul ACR AZURE (Container Registry)**
 ```dockerfile
 docker tag marketplace-frontend acresamecloud.azurecr.io/frontend:v2
