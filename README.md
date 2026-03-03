@@ -6,7 +6,7 @@ Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'appli
 
 ## 🚀 Obiettivi Fase 2: Containerizzazione
 
-L'obiettivo è rendere l'applicazione portabile, isolata e facilmente scalabile attraverso l'uso di **Docker** e **Docker Compose**. Il sistema è stato suddiviso in tre micro-servizi indipendenti:
+L'obiettivo è rendere l'applicazione presente nel **branch stage/rest-api** portabile, isolata e facilmente scalabile attraverso l'uso di **Docker** e **Docker Compose**. Il sistema è stato suddiviso in tre micro-servizi indipendenti:
 
 1.  **Backend**: Spring Boot (Java 21)
 2.  **Frontend**: Angular (Nginx come Web Server)
