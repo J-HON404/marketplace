@@ -119,6 +119,7 @@ az keyvault secret set --vault-name kv-esame-marketplace --name JwtSecret --valu
 ```
 
 - **Azure Container Apps**
+- 
 È stato scelto per la gestione dei container, perché permette di eseguire container Docker senza doversi occupare manualmente dell’orchestrazione tramite macchine virtuali o Kubernetes, poiché questa parte viene gestita automaticamente dal servizio internamente.
 
 In pratica, sarà sufficiente caricare i container dell’applicazione e **Azure** si occuperà della loro esecuzione e gestione. Inoltre, permette la gestione automatica di:
@@ -128,7 +129,8 @@ In pratica, sarà sufficiente caricare i container dell’applicazione e **Azure
 - **Load Balancer**
 - **Aggiornamenti e deployment**
 
-Container Apps Environment
+**Container Apps Environment**
+-
 È l'ambiente che gestisce in modo centralizzato i diversi **Container Apps** di cui è composta un’applicazione, fornendo i seguenti vantaggi:
 
 - **Networking interno condiviso tra i container**
@@ -182,7 +184,7 @@ Container Frontend
 ```
 ----
 
-# Caricamento immagini docker sul ACR AZURE (Azure Container Registry)
+**Caricamento immagini docker sul ACR AZURE (Container Registry)**
 ```dockerfile
 docker tag marketplace-frontend acresamecloud.azurecr.io/frontend:v2
 docker tag marketplace-backend acresamecloud.azurecr.io/backend:v2
@@ -191,8 +193,21 @@ docker push acresamecloud.azurecr.io/backend:v2
 ```
 Le immagini Docker vengono caricata sul container registry Azure e saranno disponibili per il deploy su Container App.
 
-# Verifica immagini presenti nel ACR AZURE (Azure Container Registry)
+**Verifica immagini presenti nel ACR AZURE (Container Registry)**
 ```dockerfile
 az acr repository list --name acresamecloud --output table
 az acr repository show-tags --name acresamecloud --repository backend --output table
 ```
+
+## ⚙️ Analisi delle Criticità
+
+1. **Esposizione dei Container:**  
+   I container frontend e backend creati hanno un **ingress type `external`** e quindi sono esposti pubblicamente.
+
+2. **Rete Interna del Container Apps Environment:**  
+   La comunicazione tra i container non avviene all'interno della rete interna del **Container Apps Environment**, ma tramite URL dei container pubblici.  
+   Di conseguenza, si registra una maggiore latenza nelle risposte, perché le richieste non sfruttano il DNS interno e vengono inoltrate attraverso la rete pubblica.
+
+3. **Architettura rigida:**  
+   Nella versione attuale, l'applicazione è poco modulare e flessibile.  
+   Il backend non sfrutta microservizi, ma contiene tutta la logica applicativa all'interno dello stesso container.
