@@ -6,7 +6,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi Fase 4 : Introduzione Microsoft Azure
 
-L'obiettivo è migrare l'applicazione presente nel branch **stage/local-dockerV2** in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native con un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
+L'obiettivo è migrare l'applicazione presente nel **branch stage/local-dockerV2** in un ambiente cloud professionale, come Microsoft Azure, con lo scopo di avvaire l'applicazione in un approccio cloud-native con un architettura containerizzata composta da: container frontend, container backend e database. Nelle iterazioni successive si andrà a migliorare l'archiettura ed applicare meglio i principi cloud native.
 Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risulta limitato in contesti produttivi perché opera principalmente su un ambiente single-host e richiede una gestione manuale di aspetti fondamentali come scalabilità, disponibilità e monitoraggio. Al contrario, adottando servizi Azure per il frontend Angular e per il backend , è possibile ottenere un’infrastruttura più moderna e adatta ad ambienti reali di produzione, sfruttando i vantaggi del cloud.
 
 
