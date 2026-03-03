@@ -36,4 +36,4 @@ Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risul
 
 ### Conclusione
 
-La migrazione da Docker Compose locale a un’infrastruttura Azure basata su servizi gestiti consente di ottenere un sistema più **scalabile, sicuro, monitorabile e ottimizzato**, rendendo l’applicazione più adatta a un utilizzo reale e pienamente allineata ai principi di un’architettura **cloud-native**.
+La migrazione da Docker Compose locale a un’infrastruttura Azure basata su servizi gestiti consente di ottenere un sistema più scalabile, sicuro, monitorabile e ottimizzato, rendendo l’applicazione più adatta a un utilizzo reale e pienamente allineata ai principi di un’architettura cloud-native.
