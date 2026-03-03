@@ -51,7 +51,7 @@ COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
 ```
-## Build Run 
+## Build & Run 
 ```dockerfile
 docker build -t marketplace-backend
 docker run -d --name marketplace-backend `
