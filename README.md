@@ -97,3 +97,22 @@ az mysql flexible-server db create \
   --server-name server-database-esame \
   --database-name marketplace
 ```
+
+- **Azure Key Vault**  
+  È stato scelto per la gestione sicura di secret, chiavi e variabili di ambiente, evitando di inserirli direttamente nei container o in chiaro nelle immagini Docker.  
+  Garantisce sicurezza e controllo granulare degli accessi, permettendo di concedere l’accesso ai dati in base ai ruoli degli utenti o dei servizi.
+
+```dockerfile
+az keyvault create \
+  --name kv-esame-marketplace \
+  --resource-group rg-database-esame \
+  --location francecentral
+```
+
+```dockerfile
+az keyvault secret set --vault-name kv-esame-marketplace --name DbPassword --value "xxxx"
+```
+
+```dockerfile
+az keyvault secret set --vault-name kv-esame-marketplace --name JwtSecret --value "yyyyyy"
+```
