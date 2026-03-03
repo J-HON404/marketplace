@@ -119,7 +119,7 @@ az keyvault secret set --vault-name kv-esame-marketplace --name JwtSecret --valu
 ```
 
 - **Azure Container Apps**
-- 
+  
 È stato scelto per la gestione dei container, perché permette di eseguire container Docker senza doversi occupare manualmente dell’orchestrazione tramite macchine virtuali o Kubernetes, poiché questa parte viene gestita automaticamente dal servizio internamente.
 
 In pratica, sarà sufficiente caricare i container dell’applicazione e **Azure** si occuperà della loro esecuzione e gestione. Inoltre, permette la gestione automatica di:
@@ -130,7 +130,7 @@ In pratica, sarà sufficiente caricare i container dell’applicazione e **Azure
 - **Aggiornamenti e deployment**
 
 **Container Apps Environment**
--
+
 È l'ambiente che gestisce in modo centralizzato i diversi **Container Apps** di cui è composta un’applicazione, fornendo i seguenti vantaggi:
 
 - **Networking interno condiviso tra i container**
