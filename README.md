@@ -14,7 +14,7 @@ Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risul
 
 - **Scalabilità automatica**  
   Azure permette di aumentare o ridurre dinamicamente le risorse in base al carico di lavoro, arrivando anche alla possibilità di *scalare a zero* quando l’applicazione non viene utilizzata, riducendo così i costi.  
-  Questo introduce un modello **pay-per-use**, molto più efficiente rispetto all’approccio tradizionale in cui una macchina deve rimanere sempre attiva anche in assenza di traffico.
+  Questo introduce un modello pay-per-use, molto più efficiente rispetto all’approccio tradizionale in cui una macchina deve rimanere sempre attiva anche in assenza di traffico.
 
 - **Gestione centralizzata di credenziali e secret**  
   È possibile gestire in modo centralizzato e professionale credenziali e secret applicativi, evitando di inserirli in file locali o variabili d’ambiente non protette.  
@@ -24,7 +24,7 @@ Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risul
   Backup automatici, aggiornamenti e manutenzione gestita, maggiore affidabilità e strumenti integrati di monitoraggio riducono il rischio di malfunzionamenti e il lavoro operativo rispetto a un database containerizzato in locale.
 
 - **Deployment migliorato**  
-  È possibile versionare e distribuire in modo ordinato le immagini Docker, integrando facilmente pipeline CI/CD e rendendo il rilascio dell’applicazione più stabile e ripetibile rispetto a un semplice `docker compose up`.
+  È possibile versionare e distribuire in modo ordinato le immagini Docker, integrando facilmente pipeline CI/CD e rendendo il rilascio dell’applicazione più stabile e ripetibile rispetto a un semplice docker compose up.
 
 - **Strumenti di osservabilità**  
   Raccolta centralizzata di log, metriche, tracciamento delle richieste e analisi degli errori, per una visione completa dello stato dell’applicazione.
