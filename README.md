@@ -37,3 +37,63 @@ Docker Compose è uno strumento molto utile in fase di sviluppo e test, ma risul
 ### Conclusione
 
 La migrazione da Docker Compose locale a un’infrastruttura Azure basata su servizi gestiti consente di ottenere un sistema più scalabile, sicuro, monitorabile e ottimizzato, rendendo l’applicazione più adatta a un utilizzo reale e pienamente allineata ai principi di un’architettura cloud-native.
+
+
+## Architettura del sistema
+
+Tra i numerosi servizi disponibili, sono stati selezionati quelli più coerenti con la filosofia dell’applicazione e con gli obiettivi di crescita ed evoluzione della versione attuale.
+L’obiettivo finale non è mantenere un’applicazione cloud-native di tipo monolitico, come nella sua forma attuale, ma evolverla progressivamente verso un’architettura basata su microservizi. 
+Questo approccio consente di sfruttare pienamente la flessibilità, la scalabilità e l’affidabilità offerte da un ambiente cloud come Azure, permettendo a ciascun componente dell’applicazione di essere sviluppato, distribuito e scalato in modo indipendente.
+
+> *Nota:* I comandi inseriti sono solo a scopo descrittivo, non rappresentano tutte le configurazioni associate per ogni singolo componente.
+
+- **Resource Group**  
+    È il contentitore logico in cui vengono raggruppate tutte le risorse dell'applicazione, permette di monitorare facilmente le componenti di una stessa applicazione.
+
+```dockerfile
+az group create \
+  --name rg-esame-cloud \
+  --location swedencentral
+```
+
+- **Azure Container Registry**  
+    È il registro logico in cui vengono raggruppate tutte le immagini docker, pronte per il deploy dei container dell'applicazione
+  
+```dockerfile
+az acr create \
+  --resource-group rg-esame-cloud \
+  --name acresamecloud \
+  --sku Basic \
+  --admin-enabled true \
+  --location swedencentral
+```
+
+- **MySQL Flexible Server**  
+  È stato scelto un database relazionale MySQL per garantire una gestione dei dati efficiente, scalabile e sicura.  
+  L’approccio relazionale è stato preferito rispetto a soluzioni NoSQL, in quanto meglio adatto al modello dati e alle esigenze dell’applicazione.
+
+```dockerfile
+az mysql flexible-server create \
+    --name mysql-backend-esame \
+    --resource-group rg-esame-cloud \
+    --location francecentral \
+    --admin-user xxxxx \
+    --admin-password xxxxx \
+    --sku-name B1ms \
+    --tier Burstable \
+    --version 8.0 \
+    --storage-size 20 \
+    --backup-retention 7 \
+    --geo-redundant-backup Disabled \
+    --high-availability Disabled \
+    --lower-case-table-names 1 \
+    --public-access 0.0.0.0
+```
+
+```dockerfile
+
+az mysql flexible-server db create \
+  --resource-group rg-database-esame \
+  --server-name server-database-esame \
+  --database-name marketplace
+```
