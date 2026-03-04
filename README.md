@@ -188,6 +188,21 @@ Container Frontend
 ```
 ----
 
+**Autorizzare le Managed Identity dei Container App con il ruolo Key Vault Secrets Officer**
+```dockerfile
+az role assignment create \
+  --assignee ca-frontend-esame \
+  --role "Key Vault Secrets Officer" \
+  --scope /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/rg-esame-cloud/providers/Microsoft.KeyVault/vaults/<KEY_VAULT_NAME>
+```
+```dockerfile
+az role assignment create \
+  --assignee ca-backend-esame \
+  --role "Key Vault Secrets Officer" \
+  --scope /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/rg-esame-cloud/providers/Microsoft.KeyVault/vaults/<KEY_VAULT_NAME>
+```
+----
+
 **Mapping secret e variabili Key Vault con Container Apps**
 ```dockerfile
 # Esempio di mapping secret
