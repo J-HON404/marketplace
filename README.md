@@ -236,7 +236,7 @@ az acr repository list --name acresamecloud --output table
 az acr repository show-tags --name acresamecloud --repository backend --output table
 ```
 
-##  Analisi Comunicazione tra il container frontend e backend
+##  Analisi Comunicazione tra il Container frontend e backend
 
 **Rete Interna del Container Apps Environment:**  
    La comunicazione tra i container avviene all'interno della rete interna del **Container Apps Environment**, sfruttando il DNS presente all'interno . Il container frontend ricevuta la       richiesta da parte del browser, tramite reverse proxy Nginx risolve internamente indrizzo backend che è privato, ed inoltra la richiesta.
