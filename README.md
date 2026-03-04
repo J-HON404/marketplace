@@ -236,15 +236,17 @@ az acr repository list --name acresamecloud --output table
 az acr repository show-tags --name acresamecloud --repository backend --output table
 ```
 
+##  Analisi Comunicazione tra il container frontend e backend
+
+**Rete Interna del Container Apps Environment:**  
+   La comunicazione tra i container avviene all'interno della rete interna del **Container Apps Environment**, sfruttando il DNS presente all'interno . Il container frontend ricevuta la       richiesta da parte del browser, tramite reverse proxy Nginx risolve internamente indrizzo backend che è privato, ed inoltra la richiesta.
+   Di conseguenza, si registra una minore latenza nelle risposte, perché le richieste sfruttando il DNS interno non vengono inoltrate attraverso la rete pubblica.
+
 ## ⚙️ Analisi delle Criticità
 
 1. **Esposizione dei Container:**  
    I container frontend e backend creati hanno un **ingress type `external`** e quindi sono esposti pubblicamente.
 
-2. **Rete Interna del Container Apps Environment:**  
-   La comunicazione tra i container non avviene all'interno della rete interna del **Container Apps Environment**, ma tramite URL dei container pubblici.  
-   Di conseguenza, si registra una maggiore latenza nelle risposte, perché le richieste non sfruttano il DNS interno e vengono inoltrate attraverso la rete pubblica.
-
-3. **Architettura rigida:**  
+2. **Architettura rigida:**  
    Nella versione attuale, l'applicazione è poco modulare e flessibile.  
    Il backend non sfrutta microservizi, ma contiene tutta la logica applicativa all'interno dello stesso container.
