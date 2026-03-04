@@ -222,6 +222,7 @@ az containerapp secret set \
 
 **Caricamento immagini docker sul ACR AZURE (Container Registry)**
 ```dockerfile
+az acr login --name acresamecloud 
 docker tag marketplace-frontend acresamecloud.azurecr.io/frontend:v2
 docker tag marketplace-backend acresamecloud.azurecr.io/backend:v2
 docker push acresamecloud.azurecr.io/frontend:v2
