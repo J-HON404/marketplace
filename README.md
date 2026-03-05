@@ -24,3 +24,43 @@ L'api-gateway per garantire tempi di risposta brevi e quindi efficienza all'inte
 6. **Protezione del sistema:**  
   L'api-gateway farà da protezione del sistema nei confronti del backend, dovrà quindi proteggere i servizi interni dell'applicazione da esposizioni esterne e pericoli, un utente esterno potrà interagire con l'applcazione solo passando da esso e quindi ricevendo la sua autorizzazione
 
+## ⚙️ Analisi Nucleo API Gateway
+Il nucleo della logica applicativa del gateway si basa sul seguente JwtAuthenticationFilter
+
+```dockerfile
+   public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        String path = exchange.getRequest().getPath().toString();
+
+        // Salta il controllo per Auth Module
+        if (path.startsWith("/api/auth")) {
+            return chain.filter(exchange);
+        }
+
+        // Controllo header Authorization
+        String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+
+        String token = authHeader.substring(7);
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8)))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return chain.filter(exchange);
+
+        } catch (Exception e) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+    }
+
+```
+
+### Considerazioni
+Il seguente filtro ha lo scopo di verificare l'autenticazione legata alle richieste HTTP che arrivano dall'esterno. L'autenticazione si basa su un token jwt, che viene analizzato per determinare se la richiesta può passare al backend ed i suoi servizi. Il seguente filtro richiede che sia presente questo token all'interno dell'header della richiesta. Non richiede un autenticazione nella richiesta solo nel caso la destinazione della richiesta fosse sugli enpoint backend legati all'accesso o registrazione nella piattaforma, perchè in quel caso l'utente non può essere ancora autenticato nel sistema. Nel caso invece mancasse autenticazione nella richiesta per le altre destinazioni, verrà restituito il codice *401 Unauthorized* e la richiesta verrà scartata, senza essere inoltrata ai servizi interni. Il gateway per verificare autenticità del token usufruisce del *jwt secret*, una chiave segreta per verificare autenticità del token e che non sia stato modficato o generato da una fonte non autorizzata.Se la verifica va a buon fine, il token viene considerato valido e il filtro estrae le claims, cioè le informazioni contenute all’interno del JWT. Le claims possono includere dati come l’identificativo dell’utente, il ruolo o la data di scadenza del token. Successivamente la richiesta viene inoltrata al backend. Concludendo Il suo compito è verificare che tutte le richieste destinate ai servizi interni backend contengano un token JWT valido. In questo modo si garantisce che solo gli utenti autenticati possano accedere alle risorse del sistema.
+
+
