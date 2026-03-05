@@ -24,7 +24,7 @@ L'api-gateway per garantire tempi di risposta brevi e quindi efficienza all'inte
 6. **Protezione del sistema:**  
   L'api-gateway farà da protezione del sistema nei confronti del backend, dovrà quindi proteggere i servizi interni dell'applicazione da esposizioni esterne e pericoli, un utente esterno potrà interagire con l'applcazione solo passando da esso e quindi ricevendo la sua autorizzazione
 
-## ⚙️ Analisi Nucleo API Gateway
+## ⚙️ Analisi Filtro API Gateway
 Il nucleo della logica applicativa del gateway si basa sul seguente JwtAuthenticationFilter
 
 ```dockerfile
