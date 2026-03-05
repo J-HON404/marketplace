@@ -9,7 +9,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 L'obiettivo di questa fase è introdurre un api-gateway che funga da ponte nella comuncazione tra le parti del sistema. Il suo ruolo principale sarà quello di instradare le richieste che arrivano dall'host e quindi dal frontend, ed inoltrarle al backend. In aggiunta dovrà rispettare i seguenti aspetti all'interno dell'infrsatruttura:
 
-1. **Punto di ingresso unico:**
+1. **Punto di ingresso unico:**\n
     Il seguente api-gateway rappresenterà il punto nevralgico e centrale dell'applicazione. L'intera infrastruttura dipenderà da esso, il quale dovrà coordinare la comunicazione tra i vari        servizi, valutando in base alla richiesta, a quale servizio instradarla
 
 3. **Controlli centralizzati:**  
