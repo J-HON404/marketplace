@@ -1,0 +1,3 @@
+rootProject.name = 'api-gateway'
+include 'auth_service'
+
