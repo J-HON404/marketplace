@@ -248,14 +248,14 @@ az acr repository show-tags --name acresamecloud --repository backend --output t
    I container frontend e backend hanno un **ingress type `external`** e quindi sono esposti pubblicamente e raggiungibili tramite url pubbliche.
    Per il backend questo rappresenta un esposizione ai dati pericolosa!
 
-3. **Architettura rigida e centralizzata:**  
+2. **Architettura rigida e centralizzata:**  
      Nella versione attuale, l'applicazione è poco modulare e flessibile.  
       Il backend non sfrutta microservizi, ma contiene tutta la logica applicativa all'interno dello stesso container.
       In particolare il container backend si occupa della parte di autenticazione e generazione del token jwt che dell'esposizione dell'api.
       L'obiettivo è che si focalizzi unicamente sull'esposizione dei dati, previo controllo validità jwt e permessi legati ai ruoli
 
-4. **Mancanza di layer intermedio:**  
-   Il container frontend comunica direttamente con il container backend e non è presente un layer intermedio che si occupi di instradare le richieste e di verificare delle regole di           ropouting, ad esempio si potrebbe controllare se nell'header della richiesta è presente o meno il token jwt per autenticare l'host e non permettere di comunciare con il backend.
+3. **Mancanza di layer intermedio:**  
+   Il container frontend comunica direttamente con il container backend e non è presente un layer intermedio che si occupi di instradare le richieste e di verificare delle regole di           routing, ad esempio si potrebbe controllare se nell'header della richiesta è presente o meno il token jwt per autenticare l'host e non permettere di comunciare con il backend.
    
 
 
