@@ -90,3 +90,5 @@ server {
     }
 }
 ```
+### Considerazioni
+Il seguente codice, mostra come le informazioni legate al backend: *host-backend* e *url backen* vengano gestite per mezzo di variabili di ambiente. Questo consente di non dovere modificare il codice e di poter cambiare facilmente destinazione del servizio backend sulla base dell'ambiente di sviluppo in cui ci troviamo, consentendo in qualiasi momento di instradare le richieste verso un'altro servizio, favoreggiando così la flessibilità del comportamento. 
