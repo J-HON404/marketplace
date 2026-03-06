@@ -81,6 +81,10 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 Il backend-api dovrebbe limitarsi ad esporre gli enpoint pubblici dell'api, tuttavia per garantire la sicurezza nell'accesso alle informazioni dell'applicazione, è necessario verificare che le richieste ricevute dal frontend, siano autenticate , per poi andare a verificare le autorizzazioni e vietare l'accesso nel caso non si abbiano i permessi richiesti. 
 Il backend-api dovrà quindi dove è necessario analizzare la richiesta ricevuta, prendendo dall'header il token jwt ed estrendo le claims, utili per autenticare l'utente e le autorizzazioni associate. La versione attuale del backend-api tramite il filtro  JwtAuthenticationFilter che gli permette di intercettare le richieste HTTP ricevute, gli permrette di capire quando è necessario analizzare in interezza la validità del token jwt e quando invece la richiesta è già stata validata e necessità di ulteriori verifiche. Questo è possibile manipolando l'header della richiesta ed inserendo direttamente i valori della claims del token, ch permettono al backend di non preoccuparsi quindi di estrarle dla token jwt, perchè è già stato fatto. Tuttavavia ci potrebbero essere situazioni in cui il token jwt nell'header della richiesta non è stato analizzato e di conseguenza dovrà essere analizzato dal backend-api, per poi nel caso fosse valido estrarre dal body le claims. L'obiettivo è quindi facilitare la fase di autenticazione nei confronti del backend-api, ma allo stesso tempo garantire la sicurezza nel caso non sia stato fatto un controllo preventivo sul token e quindi il backend debba in prima persona verificarlo, prima di decidere se elaborare la richiesta.
 
+---
+
+
+
 ```dockerfile
 /**
  * Filtro JWT intelligente:
