@@ -89,8 +89,9 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
 ```
 
 ### Considerazioni
-La versione precedente del gateway passava il token JWT originale ai microservizi backend. Il backend doveva verificare la validità del token da solo. Se il token era assente o invalido → 401. Se il token era valido → veniva inoltrata la richiesta con il token originale nell’header Authorization. La nuova versione punta a ridurre il carico lato backend, delegando al gateway: Validazione JWT: verifica firma, scadenza e claims principali. Blocco immediato delle richieste non valide (401 Unauthorized). L'api gateway aggiunge nell'header solo i campi necessarie:     X-Profile-Id , X-Role , X-Shop-Id, 
-in questo modo il backend non deve più decodificare il token JWT originale. Può basarsi direttamente sugli header per:
+La versione precedente del gateway passava il token JWT originale ai microservizi backend. Il backend doveva verificare la validità del token da solo. Se il token era assente o invalido → 401. Se il token era valido → veniva inoltrata la richiesta con il token originale nell’header Authorization. La nuova versione punta a ridurre il carico lato backend, delegando al gateway: Validazione JWT: verifica firma, scadenza e claims principali. Blocco immediato delle richieste non valide (401 Unauthorized). L'api gateway aggiunge nell'header solo i campi necessarie:
+ X-Profile-Id , X-Role , X-Shop-Id .
+In questo modo il backend non deve più decodificare il token JWT originale. Può basarsi direttamente sugli header per:
 
 1)Determinare il profilo utente
 2)Applicare autorizzazioni con @PreAuthorize o controlli specifici
