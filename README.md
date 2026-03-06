@@ -59,7 +59,8 @@ L'obiettivo è fornire un interfaccia completa con gestione separata dei ruoli e
 
 Il frontend angular dell'applicazione viene servito da un server web Nginx che nell'attuale configurazione funge da reverse proxy verso il backend.
 Nginx è fondamentale per gestire correttamente le richieste HTTP che arrivano dall'host e instradarle correttamente ai servizi dell'applicazione.
-Con la sua configurazione reverse proxy funge da ponte tra i servizi dell'applicazione permettendo la comunicazione.
+Con la sua configurazione reverse proxy Nginx inoltra tutte le richieste destinate alle API (`/api/`) verso il servizio backend, fungendo da
+punto di ingresso unico per il sistema e separando la gestione del frontend da quella delle logiche applicative.
 
 ```dockerfile
 server {
@@ -91,4 +92,16 @@ server {
 }
 ```
 ### Considerazioni
-Il seguente codice, mostra come le informazioni legate al backend: *host-backend* e *url backen* vengano gestite per mezzo di variabili di ambiente. Questo consente di non dovere modificare il codice e di poter cambiare facilmente destinazione del servizio backend sulla base dell'ambiente di sviluppo in cui ci troviamo, consentendo in qualiasi momento di instradare le richieste verso un'altro servizio, favoreggiando così la flessibilità del comportamento. 
+Il codice mostra come le informazioni legate al backend(`BACKEND_URL` e `HOST_BACKEND`) vengano gestite tramitevariabili di ambiente.
+Questo approccio evita di hardcodare gli indirizzi dei serviziall'interno della configurazione e consente di adattare facilmenteil comportamento dell'applicazione ai diversi ambienti di esecuzione (sviluppo, staging, produzione).
+In questo modo è possibile modificare la destinazione delle richiesteAPI senza dover cambiare la configurazione del server o ricompilare l'applicazione, migliorando la flessibilità e la portabilità del sistema.
+
+---
+
+## 🔗 Flusso delle richieste
+
+1. Il client accede all'applicazione tramite browser.
+2. Nginx serve i file statici del frontend Angular.
+3. Le richieste verso `/api/` vengono intercettate da Nginx.
+4. Nginx inoltra tali richieste al backend tramite reverse proxy.
+5. Il backend Spring Boot elabora la richiesta e restituisce la risposta.
