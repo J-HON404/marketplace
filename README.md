@@ -62,6 +62,16 @@ Nginx è fondamentale per gestire correttamente le richieste HTTP che arrivano d
 Con la sua configurazione reverse proxy Nginx inoltra tutte le richieste destinate alle API (`/api/`) verso il servizio backend, fungendo da
 punto di ingresso unico per il sistema e separando la gestione del frontend da quella delle logiche applicative.
 
+## 🔗 Flusso delle richieste
+
+1. Il client accede all'applicazione tramite browser.
+2. Nginx serve i file statici del frontend Angular.
+3. Le richieste verso `/api/` vengono intercettate da Nginx.
+4. Nginx inoltra tali richieste al backend tramite reverse proxy.
+5. Il backend Spring Boot elabora la richiesta e restituisce la risposta.
+
+---
+
 ```dockerfile
 server {
     listen 80;
@@ -96,12 +106,3 @@ Il codice mostra come le informazioni legate al backend(`BACKEND_URL` e `HOST_BA
 Questo approccio evita di hardcodare gli indirizzi dei serviziall'interno della configurazione e consente di adattare facilmenteil comportamento dell'applicazione ai diversi ambienti di esecuzione (sviluppo, staging, produzione).
 In questo modo è possibile modificare la destinazione delle richiesteAPI senza dover cambiare la configurazione del server o ricompilare l'applicazione, migliorando la flessibilità e la portabilità del sistema.
 
----
-
-## 🔗 Flusso delle richieste
-
-1. Il client accede all'applicazione tramite browser.
-2. Nginx serve i file statici del frontend Angular.
-3. Le richieste verso `/api/` vengono intercettate da Nginx.
-4. Nginx inoltra tali richieste al backend tramite reverse proxy.
-5. Il backend Spring Boot elabora la richiesta e restituisce la risposta.
