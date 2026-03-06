@@ -5,13 +5,9 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 ---
 
-## 🚀 Panoramica del Progetto
+## 🚀 Panoramica Frontend
 
-L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli e una logica di business che permetta dal caricamento del prodotto , alla vendita fino alla conferma di ricezione dell’ordine.
-
-* **Architettura:** REST a livelli (Controller, Service, Repository).
-* **Frontend:** Single Page Application (SPA) .
-* **Sicurezza:** Autenticazione  basata su **JWT** con Spring Security.
+L'obiettivo è fornire un interfaccia completa con gestione separata dei ruoli e che permetta dal caricamento del prodotto , alla vendita fino alla conferma di ricezione dell’ordine.
 
 ---
 
@@ -39,11 +35,6 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 
 ## 🧱 Architettura Tecnica
 
-### **Backend**
-* **Java 21** & **Spring Boot 3.5.8**
-* **Persistenza:** Spring Data JPA con **MariaDB**.
-* **Pattern:** DTO, Global Exception Handling, Server-side Validation.
-
 ### **Frontend**
 * **Angular 20.3** & **TypeScript**.
 * **Core:** Standalone Components e Angular Routing.
@@ -52,34 +43,8 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 
 ---
 
-## 🗄 Struttura del Database
-
-
-
-| Entità | Descrizione |
-| :--- | :--- |
-| **Profile** | Anagrafica utenti, credenziali e ruoli. |
-| **Shop** | Dettagli del negozio associato a un venditore. |
-| **Product** | Catalogo articoli, prezzi e inventario. |
-| **Cart** | Stato del carrello corrente dell'utente. |
-| **Order** | Dettagli transazione, tracking e stato consegna. |
-| **ProductNotice** | Avvisi e promozioni attive sui prodotti. |
-
----
-
 ## 📁 Organizzazione delle Cartelle
 
-### **Backend** 
-```text
-└── marketplace
-    ├── controller    # Endpoint REST API
-    ├── dto           # Data Transfer Objects
-    ├── exception     # Handler per errori e risposte personalizzate
-    ├── model         # Entity JPA 
-    ├── repository    # Interfacce Spring Data JPA
-    ├── security      # Configurazione JWT, filtri e permessi
-    └── service       # Logica di business applicativa
-```
 ### **Frontend**
 ```text
 └── src/app
