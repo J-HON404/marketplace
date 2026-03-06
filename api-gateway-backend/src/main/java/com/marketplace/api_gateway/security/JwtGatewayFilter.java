@@ -9,10 +9,11 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * Filtro JWT  API Gateway.
- * - Blocca la request se JWT non valido
- * - Estrae claims principali se valido
- * - Invia header X-Profile-Id, X-Role, X-Shop-Id ai microservizi
+ * Filtro JWT API Gateway aggiornato.
+ * - Blocca le richieste non valide
+ * - Salta le richieste verso /api/auth
+ * - Estrae claims principali se il token è valido
+ * - Aggiunge header X-Profile-Id, X-Role, X-Shop-Id ai microservizi
  */
 @Component
 public class JwtGatewayFilter implements GlobalFilter, Ordered {
@@ -26,10 +27,16 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
 
+        String path = exchange.getRequest().getPath().toString();
+
+        // salta la validazione JWT per il modulo di autenticazione
+        if (path.startsWith("/api/auth")) {
+            return chain.filter(exchange);
+        }
+
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // Token assente → blocca con 401
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -37,18 +44,17 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
         String token = authHeader.substring(7);
 
         try {
-            // Se il token non è valido → blocca con 401
             if (!jwtUtil.isTokenValid(token)) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
 
-            // Token valido → estrai claims
+            // Token valido → estrai claims principali
             Long profileId = jwtUtil.extractProfileId(token);
             String role = jwtUtil.extractRole(token);
             Long shopId = jwtUtil.extractShopId(token);
 
-            // Aggiungi header ai microservizi
+            // Aggiungi header custom ai microservizi
             ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
                     .header("X-Profile-Id", String.valueOf(profileId))
                     .header("X-Role", role)
