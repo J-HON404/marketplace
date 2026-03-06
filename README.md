@@ -75,13 +75,56 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
     └── service       # Logica di business applicativa
 ```
 
+## 🔐 Gestione Autenticazione e Autorizzazione nel Backend API
+
+Il **backend-api** ha il compito principale di esporre gli endpoint dell'applicazione.  
+Tuttavia, per garantire la sicurezza nell'accesso alle informazioni, è necessario verificare che le richieste ricevute dal frontend siano **autenticate** e che l'utente disponga delle **autorizzazioni necessarie** per accedere alle risorse richieste.
+
+Per questo motivo il backend analizza le richieste HTTP ricevute e verifica la presenza di un **token JWT** all'interno dell'header della richiesta. Dal token vengono estratte le **claims**, che contengono le informazioni necessarie per identificare l'utente e i suoi permessi.
+
+----
 
 ## 🔗 Analisi JwtAuthenticationFilter
 
-Il backend-api dovrebbe limitarsi ad esporre gli enpoint pubblici dell'api, tuttavia per garantire la sicurezza nell'accesso alle informazioni dell'applicazione, è necessario verificare che le richieste ricevute dal frontend, siano autenticate , per poi andare a verificare le autorizzazioni e vietare l'accesso nel caso non si abbiano i permessi richiesti. 
-Il backend-api dovrà quindi dove è necessario analizzare la richiesta ricevuta, prendendo dall'header il token jwt ed estrendo le claims, utili per autenticare l'utente e le autorizzazioni associate. La versione attuale del backend-api tramite il filtro  JwtAuthenticationFilter che gli permette di intercettare le richieste HTTP ricevute, gli permrette di capire quando è necessario analizzare in interezza la validità del token jwt e quando invece la richiesta è già stata validata e necessità di ulteriori verifiche. Questo è possibile manipolando l'header della richiesta ed inserendo direttamente i valori della claims del token, ch permettono al backend di non preoccuparsi quindi di estrarle dla token jwt, perchè è già stato fatto. Tuttavavia ci potrebbero essere situazioni in cui il token jwt nell'header della richiesta non è stato analizzato e di conseguenza dovrà essere analizzato dal backend-api, per poi nel caso fosse valido estrarre dal body le claims. L'obiettivo è quindi facilitare la fase di autenticazione nei confronti del backend-api, ma allo stesso tempo garantire la sicurezza nel caso non sia stato fatto un controllo preventivo sul token e quindi il backend debba in prima persona verificarlo, prima di decidere se elaborare la richiesta.
+L'attuale implementazione del backend utilizza un filtro chiamato `JwtAuthenticationFilter`, che intercetta tutte le richieste HTTP in ingresso.  
+Questo filtro consente di determinare se la richiesta debba essere completamente validata oppure se sia già stata verificata da un componente a monte dell'architettura.
 
-----
+Il filtro permette quindi di distinguere due scenari principali.
+
+---
+
+### 1️⃣ Richiesta già validata da un gateway
+
+In alcuni casi la richiesta può provenire da un **API Gateway** o da un servizio intermedio che ha già verificato la validità del token JWT.
+
+In questo scenario:
+
+- le informazioni contenute nelle **claims** del token vengono inserite direttamente negli **header della richiesta**
+- il backend può leggere queste informazioni senza dover analizzare nuovamente il token
+- si evita quindi il processo di validazione del JWT
+
+Questo approccio consente di:
+
+- ridurre il carico sul backend
+- velocizzare il processo di autenticazione
+- delegare parte della sicurezza a un componente centralizzato dell'architettura
+
+---
+
+### 2️⃣ Richiesta non ancora validata
+
+In altri casi il token JWT potrebbe essere presente nell'header della richiesta ma **non essere stato ancora analizzato**.
+
+In questo scenario il backend deve:
+
+1. leggere il token JWT dall'header `Authorization`
+2. verificarne la validità (firma e scadenza)
+3. estrarre le **claims**
+4. utilizzare tali informazioni per autenticare l'utente e determinarne i permessi
+
+Se il token risulta **non valido o assente**, la richiesta viene bloccata e viene restituita una risposta **HTTP 401 Unauthorized**.
+
+---
 
 ```dockerfile
 @Component
@@ -140,3 +183,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 }
 ```
+---
+
+## 🎯 Obiettivo dell'architettura
+
+L'obiettivo di questo approccio è:
+
+- **facilitare il processo di autenticazione** quando la richiesta è già stata verificata
+- **garantire comunque la sicurezza del sistema** quando il backend deve effettuare autonomamente la validazione del token
+
+In questo modo il backend-api rimane flessibile e compatibile con architetture più complesse, mantenendo allo stesso tempo un livello di sicurezza nell'accesso alle risorse dell'applicazione.
