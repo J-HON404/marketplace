@@ -7,7 +7,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi : Introduzione Auth Service 
 
-L'obiettivo di questa fase è introdurre un auth service backend che funga da servizio di autenticazione all'interno del sistema. Il suo ruolo principale è autenticare gli utenti dell'applicazione e generare un **JWT (JSON Web Token)** firmato che verrà utilizzato per autenticare le richieste verso i servizi backend. In aggiunta dovrà rispettare i seguenti aspetti all'interno dell'infrastruttura:
+L'obiettivo di questa fase è introdurre un auth service backend che funga da servizio di autenticazione all'interno del sistema, centralizzando la logica di autenticazione. Il suo ruolo principale è autenticare gli utenti dell'applicazione e generare un **JWT (JSON Web Token)** firmato che verrà utilizzato per autenticare le richieste verso i servizi backend. In aggiunta dovrà rispettare i seguenti aspetti all'interno dell'infrastruttura:
 
 1. **Registrazione utente:**                                                                                                                                                          
     Il seguente servizio dovrà permettere a nuovi utenti di registrarsi all'interno dell'applicazione, registrando tutte le informazioni necessarie che saranno utili in un secondo momento ad autenticare l'utente.
