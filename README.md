@@ -7,56 +7,80 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi : Introduzione API Gateway 
 
-L'obiettivo di questa fase è andare a migliorare l'api-gateway presente nel **branch stage/api-gateway-backend**. Quella versione di gateway controllo
+L'obiettivo di questa fase è andare a migliorare l'api-gateway presente nel **branch stage/api-gateway-backend**. Quella versione di gateway usufruiva di un JwtAuthenticationFilter che andasse ad analizzare il token presente nell'header della richiesta e se non valido omancante andasse scartasse la richiesta inoltrando 401 Unauthorized, altrimenti la richiesta  con con all'interno dell'header il token originale verrebbe inoltrata ai servizi backend.
+Adesso però con questa nuova versione, l'obiettivo è limitare le operazioni lato backend, permettendo a questi ultimi di effettuare controlli più specifici sulla richiesta, quindi lasciando al gateway il compito di scartare le richieste non valide perchè prive di autenticazione.
 
-1. **Punto di ingresso unico:**                                                                                                                                                          
-Il seguente api-gateway rappresenterà il punto nevralgico e centrale dell'applicazione. L'intera infrastruttura dipenderà da esso, il quale dovrà coordinare la comunicazione tra i          vari servizi, valutando in base alla richiesta, a quale servizio instradarla
-
-3. **Controlli centralizzati:**  
-Un'altro aspetto da considerare è quello della sicurezza. Il seguente api-gateway dovrà validare la richiesta, verificando la sua validità. In un architettura REST-API questo si traduce nel verificare se la richiesta presenta nell'header un token jwt valido, quindi accertandosi della sua firma, scadenza e formato. Se il controllo non viene passato con scuccesso, dovrà scartare la richiesta e non dovrà inoltrarla al backend.
-   
-4. **Supporto verso servizi backend:**  
-  L'api-gateway dovrà fornire supporto nei confronti dei servizi backend, non delegando semplicemente le richieste ricevute, ma una volta identificata e validata la richiesta, potrà            manipolare il suo header, con lo scopo informare le parti backend, che quella richiesta è stata effettivamente analizzata e validata, permettendo così di procedere applicando controlli di autorizzazione approfonditi e di responsabilità della logica di business. In questo modo la parte backend non dovrà preoccuparsi di verficare la richiesta dall'inzio, ma potrà svolgere        controlli mirati e non ripetere controlli già effettuati.
-
- 5. **Tempi di risposta brevi:**  
-L'api-gateway per garantire tempi di risposta brevi e quindi efficienza all'interno del sistema, dovrà occuparsi di pochi compiti specifici. In questo modo non avrà alcun tipo di sovraccarico da gestire e le richieste possono passare velocemente alle altre parti del sistema, comportando meno latenza possibile. Il vantaggio nel limitare le operazioni da svolgere sta nel fatto che se si occupasse di effettuare controlli di sicurezza approfonditi legati ad esempio alla logica di autorizzazione dell'applicazione, andrebbe a prendere le vesti della logica di business e quindi del backend, portando così ad uno svantaggio in termini di manutenzione o espansione futura in termini di regole di business, obbligando ad aggiornare le regole da entrambe le parti.
-
-6. **Protezione del sistema:**  
-  L'api-gateway farà da protezione del sistema nei confronti del backend, dovrà quindi proteggere i servizi interni dell'applicazione da esposizioni esterne e pericoli, un utente esterno potrà interagire con l'applcazione solo passando da esso e quindi ricevendo la sua autorizzazione
+ **Manipolazione authorization header:**                                                                                                                                                      La seguente versione permette al gateway una volta ottenuta la richiesta, di andare ad analizzare il token presente nell'header ed estrapolare le informazioni necessarie per               determinarne la sua validità e completezza. Il passaggio integrato in questa versione, riguarda una manipolazione controllata dell'header della richiesta, poicè una volta analizzate le claims del token, il gateway andrà ad aggiungere le informazioni all'interno dell'header della richiesta, andandolo quindi a modificare. In questo modo il backend non dovrà più riceve ela richiesta con all'interno il token jwt originale da verificare, ma avrà pronti i campi presenti nelle claims direttamente nell'authorization header! Potrà quindi direttamente verificare le autorizzazioni sulla base delle informazioni ricevute
 
 ## ⚙️ Analisi Filtro API Gateway
-Il nucleo della logica applicativa del gateway si basa sul seguente JwtAuthenticationFilter
+Il nucleo della logica applicativa del gateway si basa sul seguente JwtAuthenticationFilter aggiornato
 
 ```dockerfile
-   public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String path = exchange.getRequest().getPath().toString();
+/**
+ * Filtro JWT  API Gateway.
+ * - Blocca la request se JWT non valido
+ * - Estrae claims principali se valido
+ * - Invia header X-Profile-Id, X-Role, X-Shop-Id ai microservizi
+ */
+@Component
+public class JwtGatewayFilter implements GlobalFilter, Ordered {
 
-        // Salta il controllo per Auth Module
-        if (path.startsWith("/api/auth")) {
-            return chain.filter(exchange);
-        }
+    private final JwtUtil jwtUtil;
 
-        // Controllo header Authorization
-        String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+    public JwtGatewayFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
+
+        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            // Token assente → blocca con 401
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
         String token = authHeader.substring(7);
+
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8)))
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            return chain.filter(exchange);
+            // Se il token non è valido → blocca con 401
+            if (!jwtUtil.isTokenValid(token)) {
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
+
+            // Token valido → estrai claims
+            Long profileId = jwtUtil.extractProfileId(token);
+            String role = jwtUtil.extractRole(token);
+            Long shopId = jwtUtil.extractShopId(token);
+
+            // Aggiungi header ai microservizi
+            ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
+                    .header("X-Profile-Id", String.valueOf(profileId))
+                    .header("X-Role", role)
+                    .header("X-Shop-Id", shopId != null ? String.valueOf(shopId) : "")
+                    .build();
+
+            ServerWebExchange mutatedExchange = exchange.mutate()
+                    .request(mutatedRequest)
+                    .build();
+
+            return chain.filter(mutatedExchange);
 
         } catch (Exception e) {
+            // Qualsiasi eccezione → blocca la request
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
     }
+
+    @Override
+    public int getOrder() {
+        return -1; // esegue prima degli altri filtri
+    }
+}
 
 ```
 
