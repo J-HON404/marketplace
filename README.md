@@ -54,3 +54,39 @@ L'obiettivo è fornire un interfaccia completa con gestione separata dei ruoli e
     ├── services      # Servizi per chiamate API (HttpClient) e gestione stato
     └── views         # Componenti di pagina (Home, Dashboard, Shop, Checkout)
 ```
+
+## 📄 Analisi web server Nginx
+
+Il frontend angular dell'applicazione viene servito da un server web Nginx che nell'attuale configurazione funge da reverse proxy verso il backend.
+Nginx è fondamentale per gestire correttamente le richieste HTTP che arrivano dall'host e instradarle correttamente ai servizi dell'applicazione.
+Con la sua configurazione reverse proxy funge da ponte tra i servizi dell'applicazione permettendo la comunicazione.
+
+```dockerfile
+server {
+    listen 80;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Angular SPA fallback
+    location / {
+        try_files $uri /index.html;
+    }
+
+    # Proxy verso backend Azure
+    location /api/ {
+        # URL del backend (https)
+        proxy_pass ${BACKEND_URL};
+
+        # Header utili per il backend
+        proxy_set_header Host ${HOST_BACKEND};
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # HTTPS specific
+        proxy_ssl_server_name on;
+        proxy_http_version 1.1;
+    }
+}
+```
