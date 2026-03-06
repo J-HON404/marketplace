@@ -62,7 +62,7 @@ Nginx è fondamentale per gestire correttamente le richieste HTTP che arrivano d
 Con la sua configurazione reverse proxy Nginx inoltra tutte le richieste destinate alle API (`/api/`) verso il servizio backend, fungendo da
 punto di ingresso unico per il sistema e separando la gestione del frontend da quella delle logiche applicative.
 
-## 🔗 Flusso delle richieste
+# Flusso delle richieste
 
 1. Il client accede all'applicazione tramite browser.
 2. Nginx serve i file statici del frontend Angular.
