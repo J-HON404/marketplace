@@ -73,7 +73,7 @@ server {
         try_files $uri /index.html;
     }
 
-    # Proxy verso backend Azure
+    # Proxy verso backend 
     location /api/ {
         # URL del backend (https)
         proxy_pass ${BACKEND_URL};
