@@ -44,12 +44,6 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
 * **Persistenza:** Spring Data JPA con **MariaDB**.
 * **Pattern:** DTO, Global Exception Handling, Server-side Validation.
 
-### **Frontend**
-* **Angular 20.3** & **TypeScript**.
-* **Core:** Standalone Components e Angular Routing.
-* **Networking:** HttpInterceptor per l’iniezione automatica del token JWT.
-* **Reattività:** Gestione asincrona tramite **RxJS** (Observable).
-
 ---
 
 ## 🗄 Struttura del Database
@@ -80,12 +74,4 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
     ├── security      # Configurazione JWT, filtri e permessi
     └── service       # Logica di business applicativa
 ```
-### **Frontend**
-```text
-└── src/app
-    ├── common        # Componenti condivisi
-    ├── core          # Logica di sistema: Interceptor JWT e configurazioni
-    ├── models        # Definizioni di interfacce
-    ├── services      # Servizi per chiamate API (HttpClient) e gestione stato
-    └── views         # Componenti di pagina (Home, Dashboard, Shop, Checkout)
-```
+
