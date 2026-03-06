@@ -75,3 +75,96 @@ L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli 
     └── service       # Logica di business applicativa
 ```
 
+
+## 🔗 Analisi JwtAuthenticationFilter
+
+Il backend-api dovrebbe limitarsi ad esporre gli enpoint pubblici dell'api, tuttavia per garantire la sicurezza nell'accesso alle informazioni dell'applicazione, è necessario verificare che le richieste ricevute dal frontend, siano autenticate , per poi andare a verificare le autorizzazioni e vietare l'accesso nel caso non si abbiano i permessi richiesti. 
+Il backend-api dovrà quindi dove è necessario analizzare la richiesta ricevuta, prendendo dall'header il token jwt ed estrendo le claims, utili per autenticare l'utente e le autorizzazioni associate. La versione attuale del backend-api tramite il filtro  JwtAuthenticationFilter che gli permette di intercettare le richieste HTTP ricevute, gli permrette di capire quando è necessario analizzare in interezza la validità del token jwt e quando invece la richiesta è già stata validata e necessità di ulteriori verifiche. Questo è possibile manipolando l'header della richiesta ed inserendo direttamente i valori della claims del token, ch permettono al backend di non preoccuparsi quindi di estrarle dla token jwt, perchè è già stato fatto. Tuttavavia ci potrebbero essere situazioni in cui il token jwt nell'header della richiesta non è stato analizzato e di conseguenza dovrà essere analizzato dal backend-api, per poi nel caso fosse valido estrarre dal body le claims. L'obiettivo è quindi facilitare la fase di autenticazione nei confronti del backend-api, ma allo stesso tempo garantire la sicurezza nel caso non sia stato fatto un controllo preventivo sul token e quindi il backend debba in prima persona verificarlo, prima di decidere se elaborare la richiesta.
+
+```dockerfile
+/**
+ * Filtro JWT intelligente:
+ * 1) Se le info principali (profileId, role, shopId) vengono passate negli header,
+ *    crea un Authentication leggero senza fare query al DB.
+ * 2) Se non ci sono, legge il JWT dall'Authorization header,
+ *    verifica firma e scadenza, e blocca con 401 se non valido.
+ */
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
+
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        //controllo se il gateway ha passato gli header
+        String gatewayProfileId = request.getHeader("X-Profile-Id");
+        String gatewayRole = request.getHeader("X-Role");
+        String gatewayShopId = request.getHeader("X-Shop-Id");
+
+        if (gatewayProfileId != null && gatewayRole != null) {
+            // Authentication leggero direttamente dalle info del gateway
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + gatewayRole);
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(
+                            new JwtPrincipal(Long.parseLong(gatewayProfileId),
+                                    gatewayRole,
+                                    gatewayShopId != null ? Long.parseLong(gatewayShopId) : null),
+                            null,
+                            Collections.singletonList(authority)
+                    );
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            filterChain.doFilter(request, response);
+            return;
+        }
+        // legge JWT dall'header Authorization
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            try {
+                String username = jwtUtil.extractUsername(token);
+                if (SecurityContextHolder.getContext().getAuthentication() == null &&
+                        jwtUtil.isTokenValid(token, username)) {
+                    // Carica utente dal DB
+                    CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    filterChain.doFilter(request, response);
+                    return; // token valido → request continua
+                }
+            } catch (Exception e) {
+                logger.warn("JWT validation failed: " + e.getMessage());
+            }
+        }
+        // token assente o non valido → blocca con 401
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.getWriter().write("Unauthorized: Invalid or missing JWT token");
+        response.getWriter().flush();
+    }
+    /*** Classe interna per rappresentare principal “leggero” basato sulle info del gateway.**/
+    public static class JwtPrincipal {
+        private final Long profileId;
+        private final String role;
+        private final Long shopId;
+        public JwtPrincipal(Long profileId, String role, Long shopId) {
+            this.profileId = profileId;
+            this.role = role;
+            this.shopId = shopId;
+        }
+        public Long getProfileId() { return profileId; }
+        public String getRole() { return role; }
+        public Long getShopId() { return shopId; }
+    }
+}
+```
