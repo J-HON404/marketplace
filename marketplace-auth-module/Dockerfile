@@ -1,17 +1,21 @@
-# Stage 1: Build
+# ---------- Stage 1: Build ----------
 ARG JAVA_VERSION=21
 FROM eclipse-temurin:${JAVA_VERSION}-jdk AS build
 WORKDIR /app
-# File comuni dalla root
-COPY gradlew settings.gradle build.gradle ./
-COPY gradle gradle
-# File specifici del modulo Auth
-COPY marketplace-auth-module/build.gradle marketplace-auth-module/
-COPY marketplace-auth-module/src marketplace-auth-module/src
-RUN chmod +x ./gradlew
+# Copia wrapper gradle
+COPY gradlew .
+COPY gradle ./gradle
+# Copia config gradle
+COPY settings.gradle .
+COPY build.gradle .
+# Copia modulo
+COPY marketplace-auth-module ./marketplace-auth-module
+# Fix permessi + CRLF
+RUN chmod +x gradlew
+RUN sed -i 's/\r$//' gradlew
+# Build modulo
 RUN ./gradlew :marketplace-auth-module:build -x test
-
-# Stage 2: Runtime
+# ---------- Stage 2: Runtime ----------
 FROM eclipse-temurin:${JAVA_VERSION}-jre
 WORKDIR /app
 COPY --from=build /app/marketplace-auth-module/build/libs/*.jar app.jar
