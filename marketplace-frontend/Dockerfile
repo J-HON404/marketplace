@@ -12,7 +12,7 @@ FROM nginx:alpine
 # 1. Copia i file compilati di Angular
 COPY --from=build /app/dist/marketplace-frontend/browser /usr/share/nginx/html
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
 
 # 2. CANCELLA la config di default di Nginx per evitare conflitti
 RUN rm /etc/nginx/conf.d/default.conf
