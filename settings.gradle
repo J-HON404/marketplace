@@ -3,5 +3,3 @@ include 'marketplace-auth-module'
 include 'marketplace-backend-api'
 include 'marketplace-frontend'
 include 'marketplace-gateway-api'
-
-git
