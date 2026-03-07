@@ -40,20 +40,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String gatewayRole = request.getHeader("X-Role");
         String gatewayShopId = request.getHeader("X-Shop-Id");
 
-        if (gatewayProfileId != null && gatewayRole != null) {
-            // Authentication leggero direttamente dalle info del gateway
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + gatewayRole);
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                            new JwtPrincipal(Long.parseLong(gatewayProfileId),
-                                    gatewayRole,
-                                    gatewayShopId != null ? Long.parseLong(gatewayShopId) : null),
-                            null,
-                            Collections.singletonList(authority)
-                    );
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            filterChain.doFilter(request, response);
-            return;
+        if (gatewayProfileId != null && !gatewayProfileId.isEmpty() && gatewayRole != null && !gatewayRole.isEmpty()) {
+            try {
+                // Parsing sicuro del ProfileId e dello ShopId (gestendo stringhe vuote o nulle)
+                Long profileId = Long.parseLong(gatewayProfileId);
+                Long shopId = (gatewayShopId != null && !gatewayShopId.isEmpty()) ? Long.parseLong(gatewayShopId) : null;
+
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + gatewayRole);
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(
+                                new JwtPrincipal(profileId, gatewayRole, shopId),
+                                null,
+                                Collections.singletonList(authority)
+                        );
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                filterChain.doFilter(request, response);
+                return;
+            } catch (NumberFormatException e) {
+                // Se i dati sono malformati, logga l'errore e prosegue verso il controllo JWT standard
+                logger.error("Errore nel parsing degli header del Gateway: " + e.getMessage());
+            }
         }
         // legge JWT dall'header Authorization
         String authHeader = request.getHeader("Authorization");
