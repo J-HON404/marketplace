@@ -5,194 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff7a1a67-e23e-49f3-9ee6-3da03ff1b240" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/AuthModuleMarketplaceApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/dto/ApiResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/dto/auth/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/dto/auth/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/dto/auth/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/exception/MarketplaceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/model/Profile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/model/Shop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/model/enums/ProfileRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/model/enums/ShopCategory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/repository/ProfileRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/security/CustomUserDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/security/CustomUserDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/security/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/security/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/service/ProfileService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-auth-module/src/test/java/com/unicam/cs/progettoweb/marketplace/auth/AuthModuleMarketplaceApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/MarketplaceApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/profile/ProfileController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/profile/ProfileOrderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/profile/ProfileOrderHistoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/profile/ProfileShopController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/shop/ShopOrderHistoryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/shop/ShopProductController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/controller/shop/ShopProductNoticeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/dto/ApiResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/dto/CartItemRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/dto/ShopRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/dto/product/ProductNoticeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/dto/product/ProductRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/exception/MarketplaceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/Profile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/Shop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/cart/Cart.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/cart/CartItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/enums/OrderStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/enums/ProfileRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/enums/ShopCategory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/enums/TypeProductNotice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/order/Order.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/order/OrderItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/product/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/model/product/ProductNotice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/repository/CartRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/repository/OrderRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/repository/ProfileRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/repository/ShopRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/repository/product/ProductNoticeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/repository/product/ProductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/CustomUserDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/CustomUserDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/CustomerSecurity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/ShopSecurity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/CartService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/OrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/product/ProductNoticeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/product/ProductService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/profile/ProfileOrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/profile/ProfileService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/profile/SellerShopService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/shop/ShopOrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/shop/ShopProductNoticeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/service/shop/ShopProductService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/angular.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/docker-entrypoint.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/nginx.conf.template" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/proxy.conf.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/app.config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/app.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/app.routes.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/app.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/app.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/app.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/common/components/orders-table.component/orders-table.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/common/components/orders-table.component/orders-table.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/common/components/orders-table.component/orders-table.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/common/components/orders-table.component/orders-table.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/common/helpers/notice-helper.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/common/helpers/order-helper.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/area-riservata/area-riservata.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/area-riservata/area-riservata.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/cart/cart.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/cart/cart.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/home/home.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/home/home.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/login/login.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/login/login.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/product-details/product-details.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/product-details/product-details.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/product-form/product-form.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/product-form/product-form.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/product-list/product-list.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/product-list/product-list.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/register/register.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/register/register.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/shop-form/shop-form.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/shop-form/shop-form.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/shop-list/shop-list.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/controllers/shop-list/shop-list.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/core/interceptors/auth.interceptor.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/core/services/auth.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/core/services/auth.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/core/services/profile.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/core/services/token.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/core/services/token.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/api-response.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/cart-item.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/cart.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/order.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/product-notice.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/product.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/profile.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/models/interfaces/shops.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/services/cart.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/services/order.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/services/product-notice.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/services/product.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/services/profile.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/services/shop.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/area-riservata/area-riservata.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/area-riservata/area-riservata.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/cart/cart.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/cart/cart.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/home/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/home/home.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/login/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/login/login.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/product-details/product-details.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/product-details/product-details.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/product-form/product-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/product-form/product-form.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/product-list/product-list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/product-list/product-list.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/register/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/register/register.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/shop-form/shop-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/shop-form/shop-form.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/shop-list/shop-list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/app/views/shop-list/shop-list.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/assets/images/marketplace-background.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/main.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/src/styles.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/tsconfig.app.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-frontend/tsconfig.spec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/java/com/marketplace/api_gateway/ApiGatewayApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/java/com/marketplace/api_gateway/security/JwtGatewayFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/java/com/marketplace/api_gateway/security/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/java/com/marketplace/api_gateway/security/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/test/java/com/marketplace/api_gateway/ApiGatewayApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/marketplace-schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/marketplace-frontend/nginx.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-auth-module/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-auth-module/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-backend-api/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-backend-api/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-backend-api/src/main/java/com/unicam/cs/progettoweb/marketplace/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-frontend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-frontend/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-frontend/docker-entrypoint.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-frontend/nginx.conf.template" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-gateway-api/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-gateway-api/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,7 +36,12 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="marketplace-modular-service" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -240,26 +72,27 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.marketplace-frontend/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/JHON/Desktop/PROGRAMMAZIONE_UNI/APPLICAZIONI_WEB/marketplace-modular-service&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.marketplace-frontend/Dockerfile.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "final/modular-marketplace",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/JHON/Desktop/PROGRAMMAZIONE_UNI/marketplace/marketplace-frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\JHON\Desktop\PROGRAMMAZIONE_UNI\marketplace\marketplace-frontend" />
       <recent name="D:\JHON\Desktop\PROGRAMMAZIONE_UNI\APPLICAZIONI_WEB\marketplace-modular-service" />
       <recent name="D:\JHON\Desktop\PROGRAMMAZIONE_UNI\APPLICAZIONI_WEB\marketplace-modular-service\marketplace-backend-api" />
       <recent name="D:\JHON\Desktop\PROGRAMMAZIONE_UNI\APPLICAZIONI_WEB\auth-module-marketplace\marketplace-modular-service" />
@@ -338,6 +171,7 @@
       <workItem from="1772872768590" duration="741000" />
       <workItem from="1772873516955" duration="4620000" />
       <workItem from="1772879970222" duration="570000" />
+      <workItem from="1772894156865" duration="4516000" />
     </task>
     <servers />
   </component>

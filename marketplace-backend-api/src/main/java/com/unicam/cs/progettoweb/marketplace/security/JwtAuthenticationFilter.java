@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -91,17 +92,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.getWriter().flush();
     }
     /*** Classe interna per rappresentare principal “leggero” basato sulle info del gateway.**/
+    @Getter
     public static class JwtPrincipal {
-        private final Long profileId;
+        private final Long id;
         private final String role;
         private final Long shopId;
         public JwtPrincipal(Long profileId, String role, Long shopId) {
-            this.profileId = profileId;
+            this.id = profileId;
             this.role = role;
             this.shopId = shopId;
         }
-        public Long getProfileId() { return profileId; }
-        public String getRole() { return role; }
-        public Long getShopId() { return shopId; }
     }
 }

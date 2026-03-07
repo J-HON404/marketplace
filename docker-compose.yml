@@ -6,7 +6,7 @@ services:
     image: mariadb:12
     container_name: marketplace-db
     restart: always
-    env_file: .env
+    env_file: .env.example
     ports:
       - "3307:3306"
     volumes:
@@ -21,7 +21,7 @@ services:
       dockerfile: marketplace-auth-module/Dockerfile
     container_name: marketplace-auth
     restart: on-failure
-    env_file: .env
+    env_file: .env.example
     ports:
       - "${AUTH_PORT}:${AUTH_PORT}"
     depends_on:
@@ -33,9 +33,9 @@ services:
     build:
       context: .
       dockerfile: marketplace-backend-api/Dockerfile
-    container_name: marketplace-backend
+    container_name: marketplace-backend-v2
     restart: on-failure
-    env_file: .env
+    env_file: .env.example
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     depends_on:
@@ -49,7 +49,7 @@ services:
       dockerfile: marketplace-gateway-api/Dockerfile
     container_name: marketplace-gateway
     restart: on-failure
-    env_file: .env
+    env_file: .env.example
     ports:
       - "${GATEWAY_PORT}:${GATEWAY_PORT}"
     depends_on:
@@ -62,11 +62,11 @@ services:
     build:
       context: ./marketplace-frontend
       dockerfile: Dockerfile
-    container_name: marketplace-frontend
-    env_file: .env
+    container_name: marketplace-frontend-v2
+    env_file: .env.example
     restart: on-failure
     ports:
-      - "4200:80"
+      - "4207:80"
     depends_on:
       - marketplace-gateway
     networks:
