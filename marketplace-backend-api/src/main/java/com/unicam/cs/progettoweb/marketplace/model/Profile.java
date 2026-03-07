@@ -1,0 +1,43 @@
+package com.unicam.cs.progettoweb.marketplace.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unicam.cs.progettoweb.marketplace.model.enums.ProfileRole;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * Rappresenta un profilo utente nel marketplace.
+ * Contiene informazioni di autenticazione, indirizzo e ruolo dell'utente.
+ */
+
+@Entity
+@Table(name = "profiles")
+@Data
+@NoArgsConstructor
+public class Profile {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProfileRole role;
+
+    @OneToOne(mappedBy = "seller",cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonIgnore
+    private Shop shop; // solo se il profilo è SELLER
+}

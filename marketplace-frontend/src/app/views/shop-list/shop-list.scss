@@ -1,0 +1,99 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  padding-top: 2rem;
+  background-color: #f9f9f9;
+}
+
+.page-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.header-actions {
+  width: 90%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 90%;
+  max-width: 900px;
+  margin-bottom: 2rem;
+}
+
+.shop-card {
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.shop-category-text {
+  text-transform: lowercase;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+}
+
+.btn-secondary {
+  background-color: white;
+  border: 1px solid #ddd !important;
+  color: #555;
+  &:hover { background-color: #f0f0f0; }
+}
+
+.btn-info {
+  background-color: #3498db;
+  color: white;
+  &:hover { background-color: #2980b9; }
+}
+
+.profile-buttons {
+  margin-top: auto;
+}
+
+.loading-message, .error-message, .no-shops {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.error-message { color: red; }

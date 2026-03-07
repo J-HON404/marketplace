@@ -1,0 +1,44 @@
+<div class="page-container">
+  <div class="form-card">
+    <h2 class="page-title">{{ isEditMode ? 'Modifica Prodotto' : 'Nuovo Prodotto' }}</h2>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="name">Nome Prodotto</label>
+        <input id="name" type="text" formControlName="name" 
+               class="form-control" [ngClass]="{'input-disabled': isEditMode}">
+      </div>
+
+      <div class="form-group">
+        <label for="desc">Descrizione</label>
+        <textarea id="desc" formControlName="description" class="form-control"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="form-group col">
+          <label for="price">Prezzo (€)</label>
+          <input id="price" type="number" formControlName="price" class="form-control" step="0.01" min="0">
+        </div>
+
+        <div class="form-group col">
+          <label for="qty">Quantità</label>
+          <input id="qty" type="number" formControlName="quantity" class="form-control" min="0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Data Disponibilità</label>
+        <input id="date" type="date" formControlName="availabilityDate" 
+               [min]="todayString" class="form-control">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="goBack()">Annulla</button>
+        <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+          {{ isEditMode ? 'Salva Modifiche' : 'Crea Prodotto' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

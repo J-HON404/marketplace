@@ -1,0 +1,60 @@
+<div class="cart-view-container">
+  <h2>Il tuo Carrello</h2>
+
+  <div *ngIf="loading" class="empty-notices">
+    <p>Caricamento in corso...</p>
+  </div>
+
+  <div *ngIf="!loading && (!cart || cart.items.length === 0)" class="empty-notices">
+    Il tuo carrello è vuoto. 
+    <a [routerLink]="['/profiles', profileId, 'shops', shopId, 'products']" class="back-link">Torna allo shopping</a>
+  </div>
+
+  <div *ngIf="cart && cart.items.length > 0">
+    <div class="table-responsive">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Prodotto</th>
+            <th>Prezzo</th>
+            <th>Quantità</th>
+            <th>Subtotale</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cart.items; let i = index">
+            <td class="product-name">{{ item.product.name }}</td>
+            <td class="unit-price">{{ item.product.price | currency:'EUR' }}</td>
+            <td>
+              <input type="number" 
+                     class="qty-input"
+                     [(ngModel)]="item.quantity" 
+                     name="qty-{{i}}"
+                     (change)="onUpdateQuantity(item.product.id, item.quantity)"
+                     min="1">
+            </td>
+            <td class="subtotal">{{ (item.product.price * item.quantity) | currency:'EUR' }}</td>
+            <td>
+              <button class="btn-delete" (click)="onRemoveProduct(item.product.id)">✕</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cart-footer">
+      <div class="summary-card">
+        <div class="total-info">
+          <span class="label">Totale da pagare</span>
+          <span class="amount">{{ getTotal() | currency:'EUR' }}</span>
+        </div>
+        
+        <div class="actions">
+          <button class="btn-secondary" (click)="onClearCart()">Svuota Carrello</button>
+          <button class="btn-primary" (click)="onCheckout()">Procedi al Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

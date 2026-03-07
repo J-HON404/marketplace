@@ -1,0 +1,16 @@
+<div class="card login-card">
+  <h2>Login</h2>
+
+  <input [(ngModel)]="username" placeholder="Username" type="text">
+  <input [(ngModel)]="password" placeholder="Password" type="password">
+
+  <button (click)="onLogin()">Login</button>
+
+  
+  <p class="message" *ngIf="loginMessage">{{ loginMessage }}</p>
+
+    <p class="switch-page">
+    Non hai un account? 
+   <a routerLink="/register">Registrati qui</a>
+  </p>
+</div>
