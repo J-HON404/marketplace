@@ -5,7 +5,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 ---
 
-# 🚀 Obiettivi : Introduzione API Gateway 
+# 🚀 Obiettivi : API Gateway V2
 
 L'obiettivo di questa fase è andare a migliorare l'api-gateway presente nel **branch stage/api-gateway-backend**. Quella versione di gateway usufruiva di un JwtAuthenticationFilter che andasse ad analizzare il token presente nell'header della richiesta e se non valido omancante andasse scartasse la richiesta inoltrando 401 Unauthorized, altrimenti la richiesta  con con all'interno dell'header il token originale verrebbe inoltrata ai servizi backend.
 Adesso però con questa nuova versione, l'obiettivo è limitare le operazioni lato backend, permettendo a questi ultimi di effettuare controlli più specifici sulla richiesta, quindi lasciando al gateway il compito di scartare le richieste non valide perchè prive di autenticazione.
