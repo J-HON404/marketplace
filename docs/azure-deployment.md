@@ -130,7 +130,7 @@ az containerapp secret set \
   --secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/NomeSecret
 ```
 
-## Aggiornamento Mapping secret Frontend-Container
+Aggiornamento Mapping secret Frontend-Container
 
 Il container frontend adesso non conosce il riferimento dei moduli backend, ma sfrutta il riferimento pubblico dell'api-gateway, vanno quindi aggiornati i suoi secret 
 
