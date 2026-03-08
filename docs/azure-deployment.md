@@ -4,7 +4,7 @@ Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'appli
 Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dati o carichi ad alta scala, né per scenari enterprise con requisiti avanzati di performance e concorrenza distribuita. Rappresenta piuttosto una base solida, sicura ed organizzata, adatta a progetti di media dimensione e pronta a future evoluzioni architetturali.
 
 
-# 🚀 Obiettivi Fase 6 : Aggiornamento Infrastuttura Microsoft Azure
+# 🚀 Obiettivi Fase 6 : Aggiornamento INfrastruttura Microsoft Azure
 
 L'obiettivo è aggiornare l'infrastruttura definita nel **branch stage/azure-app**, andando ad aggiungere i moduli introdotti nell'applicazione
 
