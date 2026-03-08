@@ -163,18 +163,15 @@ Questi container ricevono richieste dalla rete pubblica e le filtrano prima di i
 
 ## ⚠️ Considerazioni e criticità
 
-- **Database unico per più moduli:**  
-  Attualmente sia **Auth Module** che **API Backend** condividono lo stesso database.  
-  Questo semplifica la gestione dei dati, ma può diventare un collo di bottiglia in scenari ad alto carico e dove sono necessari accessi concorrenti ai dati.
-  Inoltre comporta i seguenti problemi:
-  
-  -Accoppiamento tra domini: cambiamenti nella struttura dei dati di autenticazione potrebbero impattare la logica applicativa e viceversa.
+### Database unico per più moduli
+Attualmente sia **Auth Module** che **API Backend** condividono lo stesso database.  
+Questo semplifica la gestione dei dati, ma può diventare un collo di bottiglia in scenari ad alto carico e dove sono necessari accessi concorrenti ai dati.  
+Inoltre comporta i seguenti problemi:
 
-   -Scalabilità limitata: non è possibile scalare separatamente i servizi di autenticazione e quelli applicativi in base al carico, perché condividono lo stesso database.
-
-  -Sicurezza e isolamento: eventuali vulnerabilità in un modulo potrebbero esporre dati di autenticazione e dati applicativi contemporaneamente.
-
-  -Mantenibilità: aggiornamenti o migrazioni del database diventano più complessi, perché coinvolgono più moduli insieme.
+- **Accoppiamento tra domini:** cambiamenti nella struttura dei dati di autenticazione potrebbero impattare la logica applicativa e viceversa.  
+- **Scalabilità limitata:** non è possibile scalare separatamente i servizi di autenticazione e quelli applicativi in base al carico, perché condividono lo stesso database.  
+- **Sicurezza e isolamento:** eventuali vulnerabilità in un modulo potrebbero esporre dati di autenticazione e dati applicativi contemporaneamente.  
+- **Mantenibilità:** aggiornamenti o migrazioni del database diventano più complessi, perché coinvolgono più moduli insieme.  
 
 - **Dipendenza tra moduli:**  
   L’API Gateway e l’Auth Module devono essere sempre disponibili per permettere al frontend ed api-backend di funzionare correttamente.  
