@@ -173,13 +173,13 @@ Inoltre comporta i seguenti problemi:
 - **Sicurezza e isolamento:** eventuali vulnerabilità in un modulo potrebbero esporre dati di autenticazione e dati applicativi contemporaneamente.  
 - **Mantenibilità:** aggiornamenti o migrazioni del database diventano più complessi, perché coinvolgono più moduli insieme.  
 
-- **Dipendenza tra moduli:**  
-  L’API Gateway e l’Auth Module devono essere sempre disponibili per permettere al frontend ed api-backend di funzionare correttamente.  
-  Un downtime o un malfunzionamento di questi servizi può bloccare l’intera applicazione.
+### Dipendenza tra moduli
+L’**API Gateway** e l’**Auth Module** devono essere sempre disponibili per permettere al frontend e all’API Backend di funzionare correttamente.  
+Un downtime o un malfunzionamento di questi servizi può bloccare l’intera applicazione.  
 
-  - **Dipendenza URL pubblico:**  
-    Attualmente il frontend comunica con l’API Gateway tramite l’URL pubblico fornito da Azure Container Apps.
-    Anche se internamente il Gateway usa il DNS della rete privata per comunicare con Auth Module e Backend API, il container frontend deve conoscere l’endpoint pubblico del Gateway.
-   Questo significa che eventuali cambi di URL pubblico (per esempio durante il deploy in un nuovo ambiente o aggiornamenti del container) richiedono aggiornamenti del container frontend
+- **Dipendenza URL pubblico:**  
+  Attualmente il frontend comunica con l’API Gateway tramite l’URL pubblico fornito da Azure Container Apps.  
+  Anche se internamente il Gateway usa il DNS della rete privata per comunicare con Auth Module e Backend API, il container frontend deve conoscere l’endpoint pubblico del Gateway.  
+  Questo significa che eventuali cambi di URL pubblico (per esempio durante il deploy in un nuovo ambiente o aggiornamenti del container) richiedono aggiornamenti del container frontend.
 
 
