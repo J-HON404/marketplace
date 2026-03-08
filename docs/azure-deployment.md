@@ -56,7 +56,9 @@ az keyvault secret set --vault-name kv-esame-marketplace --name JWT_SECRET --val
 
 - **Azure Container Apps**
 
-  Creazione Container Api-Gateway
+Sono stati creati ed aggiunti i seguenti container, all'interno dell **Azure Container Apps Environment** creato in precedenza.
+
+  Container Api-Gateway
 ```dockerfile
 az containerapp create ^
   --name api-gateway-backend-esame ^
@@ -76,7 +78,7 @@ az containerapp create ^
     ..ecc....
 ```
 
-  Creazione Container Auth-Module
+  Container Auth-Module
 ```dockerfile
 az containerapp create ^
   --name auth-module-backend-esame ^
