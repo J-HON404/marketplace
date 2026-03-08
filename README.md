@@ -23,7 +23,7 @@ L’obiettivo è evolvere progressivamente verso una struttura più vicina a un�
 
 ---
 
-# Moduli introdotti
+# Moduli Introdotti
 
 In questa versione sono stati integrati i seguenti moduli:
 
@@ -156,8 +156,8 @@ Attualmente questa architettura rappresenta una **fase intermedia tra monolite e
 
 Per diventare completamente orientata ai microservizi sarebbe necessario introdurre:
 
-- **Service Discovery** per individuare dinamicamente i servizi
-- **Config Server** per la gestione centralizzata delle configurazioni
+- **service Discovery** per individuare dinamicamente i servizi
+- **config Server** per la gestione centralizzata delle configurazioni
 - **messaggistica asincrona** tra servizi (es. RabbitMQ)
 - **database separati per servizio**
 
