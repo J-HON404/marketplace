@@ -46,7 +46,7 @@ Questi sono i dati del **Service Principal** con accesso al Container Registry (
 
 # Cos'è il Service Principal
 
-Un Service Principal è un’identità che una pipeline usa per autenticarsi su Azure senza usare il tuo account personale. 
+Un Service Principal è un’identità che una pipeline usa per autenticarsi su Azure senza usare l' account personale. 
  GitHub userà queste credenziali per fare il push dell’immagine nel registry.
 Su Microsoft Azure il Service Principal è gestito tramite Microsoft Entra ID.
 I passaggi per attivare un Service principal sono i seguenti:
