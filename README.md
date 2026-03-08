@@ -86,6 +86,8 @@ Gestisce funzionalità come:
 
 Espone quindi gli endpoint utilizzati dal frontend per interagire con il sistema.
 
+---
+
 ## Frontend Module
 
 Il Frontend Module è l’interfaccia utente dell’applicazione, sviluppata in **Angular** e servita tramite **Nginx** come web server.  
