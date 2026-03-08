@@ -70,9 +70,6 @@ docker run -d \
   marketplace-frontend
 ```
 
-p 4200:80 → Mappa la porta 80 del container sulla porta 4200 dell’host.
-Internamente, il container continua a usare la porta 80, ma Docker ridirige il traffico dalla 4200 dell’host.
-
 ## 📄 Modifica Dockerfile Backend
 
 PRIMA : 
@@ -463,7 +460,7 @@ Lo script sostituisce le variabili di ambiente nel template Nginx al momento del
 
 **Vantaggi principali ottenuti:**  
 
-Flessibilità: la stessa immagine Docker può puntare a backend diversi senza ricostruzione.
+Flessibilità: la stessa immagine Docker può puntare a backend o gateway diversi senza ricostruzione.
 
 Portabilità: la configurazione è adattabile a più ambienti (staging, produzione, test).
 
