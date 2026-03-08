@@ -1,6 +1,6 @@
 # Architettura del Sistema
 
-Questa architettura rappresenta l’evoluzione dei concetti introdotti nei branch precedenti.
+Questa architettura rappresenta l’evoluzione dei concetti e delle criticità introdotte nei branch precedenti.
 
 In particolare deriva dalle architetture presenti in:
 
