@@ -158,7 +158,7 @@ Per diventare completamente orientata ai microservizi sarebbe necessario introdu
 
 - **Service Discovery** per individuare dinamicamente i servizi
 - **Config Server** per la gestione centralizzata delle configurazioni
-- **messaggistica asincrona** tra servizi (es. RabbitMQ o Kafka)
+- **messaggistica asincrona** tra servizi (es. RabbitMQ)
 - **database separati per servizio**
 
 Attualmente infatti il sistema utilizza **un unico database** che contiene sia i dati di autenticazione sia quelli applicativi. In un'architettura a microservizi sarebbe preferibile separare questi domini in database distinti.
