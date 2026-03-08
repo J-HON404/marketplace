@@ -12,7 +12,7 @@ L'obiettivo è prendere l'applicazione presente nel **branch stage/local-docker*
 2.  **Frontend**: Angular (Nginx come Web Server)
 3.  **Database**: MariaDB
 
-Rispetto alla versione dell'applicazione presente nel branch 'stage/local-docker', sono state apportate le segeunti modifiche
+Rispetto alla versione dell'applicazione presente nel branch 'stage/local-docker', sono state apportate le seguenti modifiche
 
 ## 📄 Modifica Dockerfile Frontend
 
