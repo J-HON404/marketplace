@@ -39,18 +39,20 @@ docker push acresamecloud.azurecr.io/auth-module-marketplace-backend:v1
 
 Il container dell’**Auth Module** utilizza i secret per connettersi al database e gestire l’autenticazione JWT:
 
-```bash
+```dockerfile
 az keyvault secret set --vault-name kv-esame-marketplace --name DB_URL --value "xxxxx"
 az keyvault secret set --vault-name kv-esame-marketplace --name JWT_SECRET --value "xxxx"
+```
 
 ### 🔑 Configurazione Api-Gateway
 
 Il container dell’**API Gateway** utilizza i secret con i riferimenti al modulo di autenticazione ed il modulo api-backend, ed i secret per verficare l’autenticazione JWT.  
 
-```bash
+```dockerfile
 az keyvault secret set --vault-name kv-esame-marketplace --name API_URL --value "xxxxx"
 az keyvault secret set --vault-name kv-esame-marketplace --name BACKEND_URL --value "xxxxx"
 az keyvault secret set --vault-name kv-esame-marketplace --name JWT_SECRET --value "xxxx"
+```
 
 - **Azure Container Apps**
 
@@ -130,28 +132,43 @@ az containerapp secret set \
 ## Modifiche comunicazione tra container
 
 **Rete Interna del Container Apps Environment:**  
-  Rispetto alla versione del **branch stage/azure-app**, viene sfruttata maggiormente la rete interna privata VLAN definita all'interno dell' **Azure Container Apps Environment**, in particolare tutti i container definiti appartengono allo stesso environnement e di conseguenza possono comuncare usufruendo della stessa rete. Questa nuova versione, permette ai container:  **auth-module** e **api-backend**, di essere isolati all'interno di questa rete, senza essere esposti verso l'esterno.
+Rispetto alla versione del **branch stage/azure-app**, viene sfruttata maggiormente la rete interna privata VLAN definita all'interno dell'**Azure Container Apps Environment**.
 
-Il container api-gateway sfrutta il DNS presente all'interno della rete per comunicare con i moduli e proteggendo quindi l'applicazione.
-Di conseguenza, si registra una minore latenza nelle risposte, perché le richieste sfruttando il DNS interno non vengono inoltrate attraverso la rete pubblica.
+In particolare questa configurazione permette a **auth-module** e **api-backend** di essere isolati, senza esposizione verso l’esterno.  
 
-I moduli che per facendo parte della rete interna, sono esposti all'interno dell'architettura, sono:  **frontend-marketplace** e **api-gateway**, dal momento che il loro scopo è ricevere richieste provenienti dalla rete pubblica e saperle filtrare.
+Il container **api-gateway** sfrutta il DNS interno per comunicare con i moduli, proteggendo l’applicazione e riducendo la latenza delle risposte, poiché le richieste non passano dalla rete pubblica.
 
+I moduli esposti pubblicamente all’interno dell’architettura sono:  
+- **frontend-marketplace**  
+- **api-gateway**  
 
+Questi container ricevono richieste dalla rete pubblica e le filtrano prima di inoltrarle ai moduli interni.
+
+---
 
 ## ⚙️ Vantaggi ottenuti
 
-1. **Esposizione dei Container:**  
-   Con questa versione i moduli backend non hanno quindi più ingress type 'external' , ma bensì 'internal' e non saranno accessibili tramite riferimenti pubblici.
+1. **Esposizione sicura dei container:**  
+   I moduli backend hanno ingress type `internal` e non sono accessibili pubblicamente. Solo frontend e API Gateway sono esposti.
 
-2. **Architettura rigida e centralizzata:**  
-     Nella versione attuale, l'applicazione è più modulare e flessibile.  
-      Il backend sfrutta il supporto di moduli separati, non contenendo tutta la logica applicativa all'interno dello stesso container.
-      In particolare il container auth-mdoule si occupa della parte di autenticazione e generazione del token jwt, mentre il container api-backend dell'esposizione degli endpoint api e relative autorizzazioni.
-
-3. **Supporto layer intermedio:**  
-   Il container frontend non comunica direttamente con i container backend, perchè api-gatewat container funge da layer intermedio per instradare le richieste e di verificando le regole di routing.
+2. **Architettura modulare e centralizzata:**  
+   - Backend separato in moduli indipendenti.  
+   - **Auth Module** gestisce autenticazione e token JWT.  
+   - **API Backend** espone gli endpoint e gestisce autorizzazioni.
+   - 
+3. **Layer intermedio per il routing:**  
+   Il container frontend comunica esclusivamente tramite **API Gateway**, che instrada le richieste verso i moduli corretti e applica le regole di sicurezza e autenticazione.  
+   Il container frontend **non deve conoscere direttamente gli endpoint dei backend**, riducendo la complessità, migliorando la sicurezza e semplificando la manutenzione dell’applicazione.
    
 
+## ⚠️ Considerazioni e criticità
+
+- **Database unico per più moduli:**  
+  Attualmente sia **Auth Module** che **API Backend** condividono lo stesso database.  
+  Questo semplifica la gestione dei dati, ma può diventare un collo di bottiglia in scenari ad alto carico e dove sono necessari accessi concorrenti ai dati.
+
+- **Dipendenza tra moduli:**  
+  L’API Gateway e l’Auth Module devono essere sempre disponibili per permettere al frontend ed api-backend di funzionare correttamente.  
+  Un downtime o un malfunzionamento di questi servizi può bloccare l’intera applicazione.
 
 
