@@ -37,6 +37,7 @@ CMD ["/docker-entrypoint.sh"]
 ```
 DOPO:
 ### FRONTEND (Angular)
+```dockerfile
 # --- STAGE 1: Build ---
 FROM node:20 AS build
 WORKDIR /app
@@ -95,6 +96,7 @@ ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
 ```
 DOPO:
 ### BACKEND (Spring boot)
+```dockerfile
 # ---------- Stage 1: Build ----------
 ARG JAVA_VERSION=21
 FROM eclipse-temurin:${JAVA_VERSION}-jdk AS build
