@@ -23,9 +23,9 @@ L’obiettivo è evolvere progressivamente verso una struttura più vicina a un�
 
 ---
 
-# Moduli Introdotti
+# Modifiche Introdotte
 
-In questa versione sono stati integrati i seguenti moduli:
+In questa versione sono stati migliorati i seguenti moduli:
 
 - **Auth Module**  
   introdotto nello stage `stage/auth-service-backend`
@@ -85,6 +85,21 @@ Gestisce funzionalità come:
 - controlli di autorizzazione
 
 Espone quindi gli endpoint utilizzati dal frontend per interagire con il sistema.
+
+## Frontend Module
+
+Il Frontend Module è l’interfaccia utente dell’applicazione, sviluppata in **Angular** e servita tramite **Nginx** come web server.  
+
+**Responsabilità principali:**
+- Gestire l’interfaccia utente per `SELLER` e `CUSTOMER`.
+- Comunicare con il sistema tramite l’**API Gateway**, evitando accessi diretti ai servizi backend.
+- Gestire il **routing lato client** 
+- Configurare il **reverse proxy Nginx** per:
+  - instradare le richieste `/api/` verso l’API Gateway
+  - gestire correttamente CORS e timeout
+  - rendere la SPA indipendente dall’ambiente backend
+
+In questo modo, il frontend rimane **portabile, scalabile e sicuro**, potendo puntare a diversi ambienti senza modificare l’applicazione.
 
 ---
 
