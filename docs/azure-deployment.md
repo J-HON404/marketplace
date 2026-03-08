@@ -171,7 +171,7 @@ Questi container ricevono richieste dalla rete pubblica e le filtrano prima di i
    - Backend separato in moduli indipendenti.  
    - **Auth Module** gestisce autenticazione e token JWT.  
    - **API Backend** espone gli endpoint e gestisce autorizzazioni.
-   - 
+     
 3. **Layer intermedio per il routing:**  
    Il container frontend comunica esclusivamente tramite **API Gateway**, che instrada le richieste verso i moduli corretti e applica le regole di sicurezza e autenticazione.  
    Il container frontend **non deve conoscere direttamente gli endpoint dei backend**, riducendo la complessità, migliorando la sicurezza e semplificando la manutenzione dell’applicazione.
