@@ -1,0 +1,51 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [ final/modular-marketplace ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      #  Checkout del codice
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Login su Azure usando Service Principal
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      #  Imposta numero versione automatico
+      - name: Set IMAGE_VERSION
+        run: echo "IMAGE_VERSION=v${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
+
+      # Build & Push marketplace-auth-module
+      - name: Build & Push auth-module
+        run: |
+          docker build -t acresamecloud.azurecr.io/auth-module-marketplace-backend:${IMAGE_VERSION} ./marketplace-auth-module
+          docker push acresamecloud.azurecr.io/auth-module-marketplace-backend:${IMAGE_VERSION}
+
+      # Build & Push marketplace-backend-api
+      - name: Build & Push backend
+        run: |
+          docker build -t acresamecloud.azurecr.io/backend:${IMAGE_VERSION} ./marketplace-backend-api
+          docker push acresamecloud.azurecr.io/backend:${IMAGE_VERSION}
+
+      # Build & Push marketplace-frontend
+      - name: Build & Push frontend
+        run: |
+          docker build -t acresamecloud.azurecr.io/frontend:${IMAGE_VERSION} ./marketplace-frontend
+          docker push acresamecloud.azurecr.io/frontend:${IMAGE_VERSION}
+
+      # Build & Push marketplace-gateway-api
+      - name: Build & Push gateway-api
+        run: |
+          docker build -t acresamecloud.azurecr.io/api-backend-gateway-marketplace:${IMAGE_VERSION} ./marketplace-gateway-api
+          docker push acresamecloud.azurecr.io/api-backend-gateway-marketplace:${IMAGE_VERSION}
