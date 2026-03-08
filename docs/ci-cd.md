@@ -70,4 +70,4 @@ I passaggi per attivare un Service principal sono i seguenti:
 - vengono **versionate automaticamente**
 - vengono **pubblicate su Azure Container Registry**
 
-Queste immagini possono poi essere utilizzate per il **deploy su Azure Container Apps
+Queste immagini possono poi essere utilizzate per il deploy su Azure Container Apps
