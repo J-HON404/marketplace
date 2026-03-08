@@ -98,6 +98,7 @@ az containerapp create ^
 ----
 
 **Autorizzare le Managed Identity dei Container App con il ruolo Key Vault Secrets User (permessi lettura)**
+
 ```dockerfile
 az role assignment create \
   --assignee auth-module-backend-esame \
@@ -113,20 +114,35 @@ az role assignment create \
 ----
 
 **Mapping secret e variabili Key Vault con Container Apps**
+
 ```dockerfile
 # Esempio di mapping secret
 az containerapp secret set \
   --name api-gateway-backend-esame \
   --resource-group rg-esame-cloud \
-  --secrets db-password=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/NomeSecret
+  --secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/NomeSecret
 ```
 ```dockerfile
 # Esempio di mapping secret
 az containerapp secret set \
   --name auth-module-backend-esame \
   --resource-group rg-esame-cloud \
-  --secrets backend_url=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/NomeSecret
+  --secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/NomeSecret
 ```
+
+## Aggiornamento Mapping secret Frontend-Container
+
+Il container frontend adesso non conosce il riferimento dei moduli backend, ma sfrutta il riferimento pubblico dell'api-gateway, vanno quindi aggiornati i suoi secret 
+
+```dockerfile
+# Esempio di mapping secret
+az containerapp secret set \
+  --name ca-frontend-esane \
+  --resource-group rg-esame-cloud \
+  --secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/GATEWAY_URL
+--secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/GATEWAY_HOST
+```
+
 ----
 
 ## Modifiche comunicazione tra container
