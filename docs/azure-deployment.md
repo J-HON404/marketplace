@@ -159,8 +159,9 @@ Questi container ricevono richieste dalla rete pubblica e le filtrano prima di i
 3. **Layer intermedio per il routing:**  
    Il container frontend comunica esclusivamente tramite **API Gateway**, che instrada le richieste verso i moduli corretti e applica le regole di sicurezza e autenticazione.  
    Il container frontend **non deve conoscere direttamente gli endpoint dei backend**, riducendo la complessità, migliorando la sicurezza e semplificando la manutenzione dell’applicazione.
-   
 
+   ---
+   
 ## ⚠️ Considerazioni e criticità
 
 ### 1) Database unico per più moduli
