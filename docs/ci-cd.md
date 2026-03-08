@@ -44,7 +44,7 @@ Il workflow utilizza i  **GitHub Secrets** per autenticarsi su Azure:
 
 Questi sono i dati del **Service Principal** con accesso al Container Registry (acresamecloud)
 
-*Cos'è il Service Principal*
+**Cos'è il Service Principal**
 
 Un Service Principal è un’identità che una pipeline usa per autenticarsi su Azure senza usare l' account personale. 
  GitHub userà queste credenziali per fare il push dell’immagine nel registry.
@@ -60,7 +60,7 @@ I passaggi per attivare un Service principal sono i seguenti:
 
   Ottendo così i seguenti secret:
 
-**AZURE_CLIENT_ID - AZURE_CLIENT_SECRET - AZURE_TENANT_ID - AZURE_SUBSCRIPTION_ID**
+*AZURE_CLIENT_ID - AZURE_CLIENT_SECRET - AZURE_TENANT_ID - AZURE_SUBSCRIPTION_ID*
 
 ---
 
