@@ -210,7 +210,7 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./marketplace-schema.sql:/docker-entrypoint-initdb.d/marketplace-schema.sql
+      - ./02-data.sql:/docker-entrypoint-initdb.d/02-data.sql
     networks:
       - marketplace-network
   marketplace-backend:
@@ -258,7 +258,7 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./marketplace-schema.sql:/docker-entrypoint-initdb.d/marketplace-schema.sql
+      - ./02-data.sql:/docker-entrypoint-initdb.d/02-data.sql
     networks:
       - marketplace-network
   marketplace-auth:
