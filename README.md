@@ -11,7 +11,7 @@ dove sono stati introdotti i concetti di **containerizzazione dei moduli**, sia 
 
 Rispetto alla versione `stage/rest-version`, questa evoluzione introduce concetti più avanzati legati al **cloud computing** e ad alcune logiche tipiche delle **architetture orientate ai microservizi**.
 
-Non si tratta ancora di una vera architettura a microservizi, ma di una **soluzione ibrida** che introduce alcuni principi dei microservizi mantenendo ancora alcune caratteristiche monolitiche. Rimangono quindi margini di miglioramento in termini di:
+Non si tratta ancora di una vera architettura a microservizi, ma di una **soluzione ibrida** tra un applicazione cloud based e cloud native, poichè introduce alcuni principi dei microservizi mantenendo ancora alcune caratteristiche monolitiche. Rimangono quindi margini di miglioramento in termini di:
 
 - scalabilità
 - performance
