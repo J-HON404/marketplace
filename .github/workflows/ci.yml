@@ -22,6 +22,10 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+       # Login al container registry
+      - name: Login to Azure Container Registry
+        run: az acr login --name acresamecloud
+
       # Imposta numero versione automatico
       - name: Set IMAGE_VERSION
         run: echo "IMAGE_VERSION=v${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
