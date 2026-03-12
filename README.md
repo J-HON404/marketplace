@@ -108,6 +108,7 @@ Determinare il profilo utente e applicare autorizzazioni con @PreAuthorize o con
 *Backend più leggero*: non deve decodificare token JWT per ogni richiesta.
 
 *Flessibilità*: il backend può usare le informazioni del gateway per autorizzazioni rapide, oppure fare controlli aggiuntivi solo se necessario.
+
 ---
 
 ## LIbrerie Springboot utilizzate
