@@ -11,7 +11,7 @@ dove sono stati introdotti i concetti di **containerizzazione dei moduli**, sia 
 
 Rispetto alla versione `stage/rest-version`, questa evoluzione introduce concetti più avanzati legati al **cloud computing** e ad alcune logiche tipiche delle **architetture orientate ai microservizi**.
 
-Non si tratta ancora di una vera architettura a microservizi, ma di una **soluzione ibrida** che introduce alcuni principi dei microservizi mantenendo ancora alcune caratteristiche monolitiche. Rimangono quindi margini di miglioramento in termini di:
+Non si tratta ancora di una vera architettura a microservizi, ma di una **soluzione ibrida** tra un applicazione cloud based e cloud native, poichè introduce alcuni principi dei microservizi mantenendo ancora alcune caratteristiche monolitiche. Rimangono quindi margini di miglioramento in termini di:
 
 - scalabilità
 - performance
@@ -147,7 +147,7 @@ Questo garantisce sicurezza anche nel caso di richieste che non passano dal gate
 
 ---
 
-# Vantaggi dell’architettura
+# Principali caratteristiche
 
 **Sicurezza**
 
@@ -160,11 +160,94 @@ Questo garantisce sicurezza anche nel caso di richieste che non passano dal gate
 - il backend evita query al database per ogni richiesta
 - le informazioni utente vengono passate dal gateway tramite header
 
-**Scalabilità e Manutenibilità**
+**Separazione moduli e Manutenibilità**
 
 - separazione tra autenticazione, gateway e backend applicativo
 - ogni modulo ha una responsabilità chiara (frontend, gateway, business logic)
 
+## Considerazioni sull'Alta Disponibilità e Fault Tolerance
+
+Attualmente, l'applicazione non supporta funzionalità di **Alta Disponibilità** e **Fault Tolerance**. Questa scelta è stata voluta per rispettare la natura e la filosofia dell'applicazione: pur avendo un'architettura più distribuita rispetto alla versione iniziale (stage/rest-version), l'app rimane essenzialmente un **piccolo marketplace**, non progettato per gestire grandi volumi di richieste.  
+
+Per questi motivi, non è stato integrato un **Load Balancer** a supporto dell'**API Gateway**, che avrebbe permesso di distribuire il carico sui moduli backend e abilitare l'**auto-scaling** dei container. L'architettura mantiene quindi la semplicità e la leggerezza caratteristiche delle prime versioni dell'applicazione.
+
+---
+
+# Database condiviso
+
+Attualmente l'applicazione utilizza **un unico database condiviso** tra i moduli backend.  
+Questa scelta non rappresenta l'approccio ideale nel caso di una futura migrazione verso un'**architettura a microservizi**, dove generalmente ogni servizio possiede il proprio database. Tuttavia, nel contesto attuale dell'applicazione, mantenere un database unico è risultato essere il compromesso più conveniente.
+
+Il database contiene:
+
+- gli **schemi logici relativi ai dati dell'API**
+- una **tabella `profiles`** dedicata agli utenti dell'applicazione
+
+Una possibile evoluzione dell'architettura potrebbe prevedere l'introduzione di un **database dedicato all'autenticazione (`DB_AUTH`)**, separando quindi:
+
+- **dati di autenticazione e profilo utente**
+- **dati di dominio dell'API**
+
+Questa separazione potrebbe facilitare una futura **scalabilità indipendente** dei servizi. Tuttavia, nel contesto attuale dell'applicazione, tale scelta introdurrebbe alcune complessità aggiuntive.
+
+#### 1. Maggiore complessità gestionale
+
+Con due database distinti:
+
+- `backend_api` dovrebbe accedere sia a:
+  - `DB_AUTH` → per verificare identità e autorizzazioni dell'utente
+  - `marketplace_db` → per gestire i dati dell'API
+- di conseguenza sarebbe necessario gestire **più connection string** e una maggiore complessità nella configurazione del backend.
+
+#### 2. Duplicazione o sincronizzazione dei dati utente
+
+Se il database di autenticazione contenesse la tabella `profiles`, si presenterebbero due possibili scenari:
+
+**Replica della tabella `profiles` nel database applicativo**
+
+- sarebbe necessario replicare le informazioni utente anche nel `marketplace_db`
+- questo richiederebbe meccanismi di **sincronizzazione tra database**, aumentando la complessità dell'infrastruttura.
+
+**Tabella `profiles` presente solo in `DB_AUTH`**
+
+- il `backend_api` dovrebbe interrogare il database di autenticazione ogni volta che necessita di informazioni utente
+- questo introdurrebbe **dipendenze tra servizi** e maggiore latenza nelle operazioni.
+
+#### 3. Overengineering rispetto ai requisiti attuali
+
+Il database di autenticazione conterrebbe **un solo schema logico**, limitato alla gestione degli utenti.  
+In questa fase del progetto, introdurre un database separato rappresenterebbe quindi una **complessità architetturale non necessaria** per le necessità dell'applicazione.
+
+## Soluzione adottata
+
+Il progetto utilizza **un unico database condiviso** con **separazione logica dei ruoli** tramite utenti MySQL con permessi diversi.
+
+* Cartella `docker-init/` con tre script eseguiti in ordine:
+
+1. **01-schema.sql** – crea schema e tabelle.  
+2. **02-data.sql** – popola le tabelle con dati iniziali .  
+3. **03-users.sql** – crea utenti MySQL e assegna privilegi specifici.
+
+* Utenti MySQL e permessi
+
+- **marketuser** – backend API principale  
+  - Accesso completo a tutte le tabelle  
+  - Gestione completa delle operazioni CRUD  
+
+- **authuser** – servizio di autenticazione  
+  - Accesso limitato a `profiles` e `shops`  
+  - Operazioni: `SELECT`, `INSERT`, `UPDATE`  
+  - Gestione credenziali e generazione token JWT
+
+Il backend-api module si connetterà al db con utente marketuser, per recuperare i dati dell'api ed accedere quando necessario ai dati utenti.
+Il backend-auth-module potrà accedere al db con utente authuser, per poter gestire le credenziali utenti e poter generare token jwt
+
+## Vantaggi
+
+- Maggiore **sicurezza**
+- **Isolamento tra moduli**  
+- **Gestione semplificata** con un unico database
+  
 ---
 
 # Evoluzione verso microservizi
@@ -173,11 +256,9 @@ Attualmente questa architettura rappresenta una **fase intermedia tra monolite e
 
 Per diventare completamente orientata ai microservizi sarebbe necessario introdurre:
 
-- **service Discovery** per individuare dinamicamente i servizi
-- **config Server** per la gestione centralizzata delle configurazioni
-- **messaggistica asincrona** tra servizi (es. RabbitMQ)
-- **database separati per servizio**
-
-Attualmente infatti il sistema utilizza **un unico database** che contiene sia i dati di autenticazione sia quelli applicativi. In un'architettura a microservizi sarebbe preferibile separare questi domini in database distinti.
+- **Service Discovery** per individuare dinamicamente i servizi
+- **Alta disponbilità**
+- **Fault tollerance**
+- **Database separati per servizio**
 
 ---
