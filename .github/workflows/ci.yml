@@ -11,7 +11,6 @@ permissions:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
       # Checkout del codice
       - name: Checkout repository
@@ -30,23 +29,35 @@ jobs:
       # Build & Push marketplace-auth-module
       - name: Build & Push auth-module
         run: |
-          docker build -t acresamecloud.azurecr.io/auth-module-marketplace-backend:${IMAGE_VERSION} ./marketplace-auth-module
+          docker build \
+            -f marketplace-auth-module/Dockerfile \
+            -t acresamecloud.azurecr.io/auth-module-marketplace-backend:${IMAGE_VERSION} \
+            .
           docker push acresamecloud.azurecr.io/auth-module-marketplace-backend:${IMAGE_VERSION}
 
       # Build & Push marketplace-backend-api
       - name: Build & Push backend
         run: |
-          docker build -t acresamecloud.azurecr.io/backend:${IMAGE_VERSION} ./marketplace-backend-api
+          docker build \
+            -f marketplace-backend-api/Dockerfile \
+            -t acresamecloud.azurecr.io/backend:${IMAGE_VERSION} \
+            .
           docker push acresamecloud.azurecr.io/backend:${IMAGE_VERSION}
 
       # Build & Push marketplace-frontend
       - name: Build & Push frontend
         run: |
-          docker build -t acresamecloud.azurecr.io/frontend:${IMAGE_VERSION} ./marketplace-frontend
+          docker build \
+            -f marketplace-frontend/Dockerfile \
+            -t acresamecloud.azurecr.io/frontend:${IMAGE_VERSION} \
+            .
           docker push acresamecloud.azurecr.io/frontend:${IMAGE_VERSION}
 
       # Build & Push marketplace-gateway-api
       - name: Build & Push gateway-api
         run: |
-          docker build -t acresamecloud.azurecr.io/api-backend-gateway-marketplace:${IMAGE_VERSION} ./marketplace-gateway-api
+          docker build \
+            -f marketplace-gateway-api/Dockerfile \
+            -t acresamecloud.azurecr.io/api-backend-gateway-marketplace:${IMAGE_VERSION} \
+            .
           docker push acresamecloud.azurecr.io/api-backend-gateway-marketplace:${IMAGE_VERSION}
