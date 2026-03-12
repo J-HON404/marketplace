@@ -175,6 +175,66 @@ L'applicazione al momento non permette **Alta disponbilità** e **Fault Tolleran
 
 ---
 
+## Database condiviso
+
+## Database condiviso
+
+Attualmente l'applicazione utilizza **un unico database condiviso** tra i moduli backend.  
+Questa scelta non rappresenta l'approccio ideale nel caso di una futura migrazione verso un'**architettura a microservizi**, dove generalmente ogni servizio possiede il proprio database. Tuttavia, nel contesto attuale dell'applicazione, mantenere un database unico è risultato essere il compromesso più semplice e pragmatico.
+
+Il database contiene:
+
+- gli **schemi logici relativi ai dati dell'API**
+- una **tabella `profiles`** dedicata agli utenti dell'applicazione
+
+### Possibile alternativa: `DB_AUTH`
+
+Una possibile evoluzione dell'architettura potrebbe prevedere l'introduzione di un **database dedicato all'autenticazione (`DB_AUTH`)**, separando quindi:
+
+- **dati di autenticazione e profilo utente**
+- **dati di dominio dell'API (marketplace, risorse applicative, ecc.)**
+
+Questa separazione potrebbe facilitare una futura **scalabilità indipendente** dei servizi. Tuttavia, nel contesto attuale dell'applicazione, tale scelta introdurrebbe alcune complessità aggiuntive.
+
+### Svantaggi della separazione dei database
+
+#### 1. Maggiore complessità gestionale
+
+Con due database distinti:
+
+- `backend_api` dovrebbe accedere sia a:
+  - `DB_AUTH` → per verificare identità e autorizzazioni dell'utente
+  - `marketplace_db` → per gestire i dati dell'API
+- di conseguenza sarebbe necessario gestire **più connection string** e una maggiore complessità nella configurazione del backend.
+
+#### 2. Duplicazione o sincronizzazione dei dati utente
+
+Se il database di autenticazione contenesse la tabella `profiles`, si presenterebbero due possibili scenari:
+
+**Replica della tabella `profiles` nel database applicativo**
+
+- sarebbe necessario replicare le informazioni utente anche nel `marketplace_db`
+- questo richiederebbe meccanismi di **sincronizzazione tra database**, aumentando la complessità dell'infrastruttura.
+
+**Tabella `profiles` presente solo in `DB_AUTH`**
+
+- il `backend_api` dovrebbe interrogare il database di autenticazione ogni volta che necessita di informazioni utente
+- questo introdurrebbe **dipendenze tra servizi** e maggiore latenza nelle operazioni.
+
+#### 3. Overengineering rispetto ai requisiti attuali
+
+Il database di autenticazione conterrebbe **un solo schema logico**, limitato alla gestione degli utenti.  
+In questa fase del progetto, introdurre un database separato rappresenterebbe quindi una **complessità architetturale non giustificata** dai reali requisiti dell'applicazione.
+
+### Conclusione
+
+Per questi motivi si è scelto, almeno nella fase attuale del progetto, di mantenere **un database condiviso**.  
+Questa soluzione riduce la complessità operativa e rimane comunque compatibile con una futura evoluzione verso un'architettura a microservizi, qualora i requisiti di scalabilità lo rendessero necessario.
+
+  
+
+---
+
 # Evoluzione verso microservizi
 
 Attualmente questa architettura rappresenta una **fase intermedia tra monolite e microservizi**.
