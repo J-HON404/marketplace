@@ -167,17 +167,23 @@ Questo garantisce sicurezza anche nel caso di richieste che non passano dal gate
 
 ---
 
+---
+
+# Considerazioni
+
+L'applicazione al momento non permette **Alta disponbilità** e **Fault Tollerance***. Questa scelta è stata fatta per rispettare la natura dell'applicazione stessa, che evidenzia un architettura che nonostante è maggiormente distribuita rispetto alla sua prima versione **stage/rest-version**, è rimasta però sempre fedele alla filosofia iniziale, cioè un piccolo marktplace, non pensato per gestire alti carichi di richieste. Per questi motivi non è stato integrato un **Load Balancer** di supporto all' api-gateway, in grado di distribuire il carico verso i moduli backend, gestendo quindi **Auto-scaling** dei container.
+
+---
+
 # Evoluzione verso microservizi
 
 Attualmente questa architettura rappresenta una **fase intermedia tra monolite e microservizi**.
 
 Per diventare completamente orientata ai microservizi sarebbe necessario introdurre:
 
-- **service Discovery** per individuare dinamicamente i servizi
-- **config Server** per la gestione centralizzata delle configurazioni
-- **messaggistica asincrona** tra servizi (es. RabbitMQ)
-- **database separati per servizio**
-
-Attualmente infatti il sistema utilizza **un unico database** che contiene sia i dati di autenticazione sia quelli applicativi. In un'architettura a microservizi sarebbe preferibile separare questi domini in database distinti.
+- **Service Discovery** per individuare dinamicamente i servizi
+- **Alta disponbilità**
+- **Fault tollerance**
+- **Database separati per servizio**
 
 ---
