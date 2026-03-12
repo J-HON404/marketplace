@@ -147,7 +147,7 @@ Questo garantisce sicurezza anche nel caso di richieste che non passano dal gate
 
 ---
 
-# Vantaggi dell’architettura
+# Principali caratteristiche
 
 **Sicurezza**
 
@@ -160,16 +160,12 @@ Questo garantisce sicurezza anche nel caso di richieste che non passano dal gate
 - il backend evita query al database per ogni richiesta
 - le informazioni utente vengono passate dal gateway tramite header
 
-**Scalabilità e Manutenibilità**
+**Separazione moduli e Manutenibilità**
 
 - separazione tra autenticazione, gateway e backend applicativo
 - ogni modulo ha una responsabilità chiara (frontend, gateway, business logic)
 
----
-
----
-
-# Considerazioni sull'Alta Disponibilità e Fault Tolerance
+## Considerazioni sull'Alta Disponibilità e Fault Tolerance
 
 Attualmente, l'applicazione non supporta funzionalità di **Alta Disponibilità** e **Fault Tolerance**. Questa scelta è stata voluta per rispettare la natura e la filosofia dell'applicazione: pur avendo un'architettura più distribuita rispetto alla versione iniziale (stage/rest-version), l'app rimane essenzialmente un **piccolo marketplace**, non progettato per gestire grandi volumi di richieste.  
 
