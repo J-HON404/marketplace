@@ -175,7 +175,7 @@ L'applicazione al momento non permette **Alta disponbilità** e **Fault Tolleran
 
 ---
 
-## Database condiviso
+# Database condiviso
 
 Attualmente l'applicazione utilizza **un unico database condiviso** tra i moduli backend.  
 Questa scelta non rappresenta l'approccio ideale nel caso di una futura migrazione verso un'**architettura a microservizi**, dove generalmente ogni servizio possiede il proprio database. Tuttavia, nel contesto attuale dell'applicazione, mantenere un database unico è risultato essere il compromesso più conveniente.
@@ -184,8 +184,6 @@ Il database contiene:
 
 - gli **schemi logici relativi ai dati dell'API**
 - una **tabella `profiles`** dedicata agli utenti dell'applicazione
-
-### Possibile alternativa: `DB_AUTH`
 
 Una possibile evoluzione dell'architettura potrebbe prevedere l'introduzione di un **database dedicato all'autenticazione (`DB_AUTH`)**, separando quindi:
 
@@ -222,9 +220,7 @@ Se il database di autenticazione contenesse la tabella `profiles`, si presentere
 Il database di autenticazione conterrebbe **un solo schema logico**, limitato alla gestione degli utenti.  
 In questa fase del progetto, introdurre un database separato rappresenterebbe quindi una **complessità architetturale non necessaria** per le necessità dell'applicazione.
 
----
-
-### Soluzione adottata
+## Soluzione adottata
 
 Il progetto utilizza **un unico database condiviso** con **separazione logica dei ruoli** tramite utenti MySQL con permessi diversi.
 
@@ -236,7 +232,7 @@ Cartella `docker-init/` con tre script eseguiti in ordine:
 2. **02-data.sql** – popola le tabelle con dati iniziali .  
 3. **03-users.sql** – crea utenti MySQL e assegna privilegi specifici.
 
-## Utenti MySQL e permessi
+### Utenti MySQL e permessi
 
 - **marketuser** – backend API principale  
   - Accesso completo a tutte le tabelle  
