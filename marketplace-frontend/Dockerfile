@@ -18,7 +18,7 @@ COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
 RUN rm /etc/nginx/conf.d/default.conf
 
 # 3. Prepara lo script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY marketplace-frontend/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
