@@ -94,8 +94,9 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
 
 ```
 
+---
 ### Considerazioni
-La versione precedente del gateway passava il token JWT originale ai microservizi backend. Il backend doveva verificare la validità del token da solo. Se il token era assente o invalido → 401. Se il token era valido → veniva inoltrata la richiesta con il token originale nell’header Authorization. La nuova versione punta a ridurre il carico lato backend, delegando al gateway: Validazione JWT: verifica firma, scadenza e claims principali. Blocco immediato delle richieste non valide (401 Unauthorized). L'api gateway aggiunge nell'header solo i campi necessarie:                                                                                                                                                                                  
+La versione precedente del gateway inoltrava il token JWT originale ai microservizi backend. Il backend doveva verificare la validità del token per ogni richiesta ricevuta. Se il token era assente o invalido → 401. Se il token era valido → veniva inoltrata la richiesta con il token originale nell’header Authorization. La nuova versione punta a ridurre l'autenticazione lato backend, delegando al gateway, il quale: verifica firma, scadenza e claims principali. Blocco immediato delle richieste non valide (401 Unauthorized). L'api gateway in caso di verifica andata a buon fine, aggiunge nell'header i seguenti campi:                                                                                                                                                                                  
  X-Profile-Id , X-Role , X-Shop-Id (se è un seller) .
 In questo modo il backend non deve più decodificare il token JWT originale. Può basarsi direttamente sugli header per:
 Determinare il profilo utente e applicare autorizzazioni con @PreAuthorize o controlli specifici
@@ -107,6 +108,10 @@ Sicurezza centralizzata : il gateway blocca subito le richieste non valide.
 Backend più leggero: non deve decodificare token JWT per ogni richiesta.
 
 Flessibilità: il backend può usare le informazioni del gateway per autorizzazioni rapide, oppure fare controlli aggiuntivi solo se necessario.
+---
+
+## LIbrerie Sprinboot utilizzate
+Ogni richiesta del client viene rievuta da *Spring WebFlux*, una libreria in grado di gestire richieste Http in modo asincrono non bloccando i thread dell'applicazione e creando un oggetto ServerWebExchange che rappresenta la request e response. In supporto è presente *Spring Cloud Gateway* che permette la definizone delle rotte disponibili ed invoca i filtri definiti. In questo caso l'unico filtro in grado di elaborare le richieste è il JwtGatewayFilter.
 
 
 
