@@ -103,14 +103,14 @@ Determinare il profilo utente e applicare autorizzazioni con @PreAuthorize o con
 
 **Vantaggi principali ottenuti:**  
 
-Sicurezza centralizzata : il gateway blocca subito le richieste non valide.
+*Sicurezza centralizzata* : il gateway blocca subito le richieste non valide.
 
-Backend più leggero: non deve decodificare token JWT per ogni richiesta.
+*Backend più leggero*: non deve decodificare token JWT per ogni richiesta.
 
-Flessibilità: il backend può usare le informazioni del gateway per autorizzazioni rapide, oppure fare controlli aggiuntivi solo se necessario.
+*Flessibilità*: il backend può usare le informazioni del gateway per autorizzazioni rapide, oppure fare controlli aggiuntivi solo se necessario.
 ---
 
-## LIbrerie Sprinboot utilizzate
+## LIbrerie Springboot utilizzate
 Ogni richiesta del client viene rievuta da *Spring WebFlux*, una libreria in grado di gestire richieste Http in modo asincrono non bloccando i thread dell'applicazione e creando un oggetto ServerWebExchange che rappresenta la request e response. In supporto è presente *Spring Cloud Gateway* che permette la definizone delle rotte disponibili ed invoca i filtri definiti. In questo caso l'unico filtro in grado di elaborare le richieste è il JwtGatewayFilter.
 
 
