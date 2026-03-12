@@ -169,9 +169,11 @@ Questo garantisce sicurezza anche nel caso di richieste che non passano dal gate
 
 ---
 
-# Considerazioni
+# Considerazioni sull'Alta Disponibilità e Fault Tolerance
 
-L'applicazione al momento non permette **Alta disponbilità** e **Fault Tollerance***. Questa scelta è stata fatta per rispettare la natura dell'applicazione stessa, che evidenzia un architettura che nonostante è maggiormente distribuita rispetto alla sua prima versione **stage/rest-version**, è rimasta però sempre fedele alla filosofia iniziale, cioè un piccolo marktplace, non pensato per gestire alti carichi di richieste. Per questi motivi non è stato integrato un **Load Balancer** di supporto all' api-gateway, in grado di distribuire il carico verso i moduli backend, gestendo quindi **Auto-scaling** dei container.
+Attualmente, l'applicazione non supporta funzionalità di **Alta Disponibilità** e **Fault Tolerance**. Questa scelta è stata voluta per rispettare la natura e la filosofia dell'applicazione: pur avendo un'architettura più distribuita rispetto alla versione iniziale (stage/rest-version), l'app rimane essenzialmente un **piccolo marketplace**, non progettato per gestire grandi volumi di richieste.  
+
+Per questi motivi, non è stato integrato un **Load Balancer** a supporto dell'**API Gateway**, che avrebbe permesso di distribuire il carico sui moduli backend e abilitare l'**auto-scaling** dei container. L'architettura mantiene quindi la semplicità e la leggerezza caratteristiche delle prime versioni dell'applicazione.
 
 ---
 
