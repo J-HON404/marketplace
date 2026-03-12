@@ -60,8 +60,8 @@ services:
 
   marketplace-frontend:
     build:
-      context: ./marketplace-frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: marketplace-frontend/Dockerfile
     container_name: marketplace-frontend-v2
     env_file: .env
     restart: on-failure
