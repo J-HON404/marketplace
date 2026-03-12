@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d738a863-54b5-4232-8c3e-41d17300a412" name="Changes" comment="" />
+    <list default="true" id="d738a863-54b5-4232-8c3e-41d17300a412" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/marketplace-frontend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-frontend/Dockerfile" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +114,7 @@
       <workItem from="1773160760058" duration="350000" />
       <workItem from="1773161367382" duration="5000" />
       <workItem from="1773303811109" duration="279000" />
-      <workItem from="1773314564494" duration="1709000" />
+      <workItem from="1773314564494" duration="2266000" />
     </task>
     <servers />
   </component>
