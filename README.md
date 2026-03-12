@@ -224,11 +224,9 @@ In questa fase del progetto, introdurre un database separato rappresenterebbe qu
 
 ---
 
-# Soluzione adottata
+### Soluzione adottata
 
 Il progetto utilizza **un unico database condiviso** con **separazione logica dei ruoli** tramite utenti MySQL con permessi diversi.
-
----
 
 ## Inizializzazione automatica
 
@@ -237,8 +235,6 @@ Cartella `docker-init/` con tre script eseguiti in ordine:
 1. **01-schema.sql** – crea schema e tabelle.  
 2. **02-data.sql** – popola le tabelle con dati iniziali .  
 3. **03-users.sql** – crea utenti MySQL e assegna privilegi specifici.
-
----
 
 ## Utenti MySQL e permessi
 
@@ -253,8 +249,6 @@ Cartella `docker-init/` con tre script eseguiti in ordine:
 
 Il backend-api module si connetterà al db con utente marketuser, per recuperare i dati dell'api ed accedere quando necessario ai dati utenti.
 Il backend-auth-module potrà accedere al db con utente authuser, per poter gestire le credenziali utenti e poter generare token jwt
-
----
 
 ## Vantaggi
 
