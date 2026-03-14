@@ -10,6 +10,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import java.time.Duration;
+
+
 
 @Component
 public class JwtGatewayFilter implements GlobalFilter, Ordered {
@@ -88,12 +91,20 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
 
             String shopIdStr = shopId != null ? String.valueOf(shopId) : "";
 
-            // salva in cache (best effort)
+            // salva in cache solo se non esiste già
             String cacheKey = "auth:token:" + token;
             String cacheValue = profileId + "|" + role + "|" + shopIdStr;
 
             redisTemplate.opsForValue()
-                    .set(cacheKey, cacheValue)
+                    .get(cacheKey)
+                    .flatMap(existing -> {
+                        if (existing == null) {
+                            return redisTemplate.opsForValue()
+                                    .set(cacheKey, cacheValue, Duration.ofHours(24))
+                                    .then();
+                        }
+                        return Mono.empty();
+                    })
                     .subscribe();
 
             ServerWebExchange mutatedExchange = buildExchange(exchange, String.valueOf(profileId),role, shopIdStr);
