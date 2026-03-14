@@ -2,7 +2,7 @@ name: Build and Push Docker Images
 
 on:
   push:
-    branches: [ final/modular-marketplace ]
+    branches: [ final/distribuited-session-caching ]
 
 permissions:
   id-token: write
