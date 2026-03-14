@@ -192,6 +192,7 @@ volumes:
  **Dipendenze aggiornate (`depends_on`):**  
    - Il gateway adesso dipende anche dal container Redis.  
    - Il modulo auth adesso dipende anche dal container Redis.
+     
 **Aggiunto redis_data volume:**
   - Il container Redis Cache usufruisce del volume `redis_data` per il salvataggio dei token jwt,
     garantendo la persistenza dei dati e prevedendo la perdita di informazioni in caso di riavvio o aggiornamento del container.
