@@ -96,7 +96,7 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
 
 ---
 ### Considerazioni
-La versione precedente del gateway inoltrava il token JWT originale ai microservizi backend. Il backend doveva verificare la validità del token per ogni richiesta ricevuta. Se il token era assente o invalido → 401. Se il token era valido → veniva inoltrata la richiesta con il token originale nell’header Authorization. La nuova versione punta a ridurre l'autenticazione lato backend, delegando al gateway, il quale: verifica firma, scadenza e claims principali. Blocco immediato delle richieste non valide (401 Unauthorized). L'api gateway in caso di verifica andata a buon fine, aggiunge nell'header i seguenti campi:                                                                                                                                                                                  
+La versione precedente del gateway inoltrava unicamente il token JWT originale ai microservizi backend. Il backend doveva verificare la validità del token per ogni richiesta ricevuta. Se il token era assente o invalido → 401. Se il token era valido → veniva inoltrata la richiesta con il token originale nell’header Authorization. La nuova versione punta a ridurre l'autenticazione lato backend, delegando al gateway, il quale: verifica firma, scadenza e claims principali. Avviene un blocco immediato delle richieste non valide (401 Unauthorized). L'api gateway in caso di verifica andata a buon fine, aggiunge nell'header i seguenti campi:                                                                                                                                                                                  
  X-Profile-Id , X-Role , X-Shop-Id (se è un seller) .
 In questo modo il backend non deve più decodificare il token JWT originale. Può basarsi direttamente sugli header per:
 Determinare il profilo utente e applicare autorizzazioni con @PreAuthorize o controlli specifici
@@ -113,6 +113,40 @@ Determinare il profilo utente e applicare autorizzazioni con @PreAuthorize o con
 
 ## LIbrerie Springboot utilizzate
 Ogni richiesta del client viene rievuta da *Spring WebFlux*, una libreria in grado di gestire richieste Http in modo asincrono non bloccando i thread dell'applicazione e creando un oggetto ServerWebExchange che rappresenta la request e response. In supporto è presente *Spring Cloud Gateway* che permette la definizone delle rotte disponibili ed invoca i filtri definiti. In questo caso l'unico filtro in grado di elaborare le richieste è il JwtGatewayFilter.
+
+---
+
+# JWT Gateway Filter – Flusso e gestione dell’immutabilità
+
+Questo filtro nel Gateway ha il compito di **controllare il token JWT delle richieste in ingresso** e, se il token è valido, **inoltrare alcune informazioni dell’utente ai microservizi tramite header HTTP**.
+
+Quando una richiesta arriva al Gateway,la prima cosa che viene controllata è il **path della richiesta**. Se la richiesta è diretta verso `/api/auth`, il filtro **salta completamente la validazione del token** perché queste rotte servono per login o registrazione. In questo caso la richiesta viene semplicemente inoltrata al servizio di autenticazione.
+
+Per tutte le altre richieste il filtro controlla la presenza dell’header `Authorization`. Se l’header non esiste oppure non inizia con `Bearer`, la richiesta viene immediatamente bloccata con **HTTP 401 Unauthorized**.
+
+Se l’header è presente, il token viene estratto e validato tramite `JwtUtil`. Se il token non è valido o genera un’eccezione, la richiesta viene nuovamente bloccata con **401**. Se invece il token è valido, dal token vengono estratte alcune informazioni importanti (claims), come ad esempio:
+
+- `profileId`
+- `role`
+- `shopId`
+
+Queste informazioni servono ai microservizi per sapere **chi sta facendo la richiesta e con quali permessi**, senza dover decodificare il JWT ogni volta.
+
+A questo punto il Gateway deve **aggiungere queste informazioni come header HTTP** alla richiesta prima di inoltrarla ai microservizi.
+
+Qui entra in gioco un concetto importante di **Spring WebFlux**: le richieste HTTP sono **immutabili**.
+
+Immutabile significa che **l’oggetto request non può essere modificato dopo essere stato creato**. Non è quindi possibile aggiungere header direttamente alla richiesta originale. Questo design è stato scelto per garantire sicurezza nei thread e per supportare il modello di programmazione **reattivo e non bloccante**.
+
+Per gestire questa limitazione, Spring mette a disposizione il metodo `mutate()`. Questo metodo **non modifica la richiesta originale**, ma crea **una nuova copia della richiesta basata su quella originale**, permettendo di applicare modifiche come l’aggiunta di header.
+
+Il filtro quindi crea una **nuova request mutata** con gli header `X-Profile-Id`, `X-Role` e `X-Shop-Id`.
+
+Dato che anche l’oggetto `ServerWebExchange` è immutabile, viene creato anche un **nuovo exchange** che contiene la richiesta mutata.
+
+Infine il filtro passa questo nuovo exchange alla catena dei filtri (`chain.filter(mutatedExchange)`), e il Gateway inoltra la richiesta ai microservizi.
+
+Dal punto di vista del microservizio, la richiesta arriverà normalmente ma con alcuni header aggiuntivi contenenti le informazioni dell’utente estratte dal JWT.
 
 
 
