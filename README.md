@@ -116,10 +116,16 @@ private void saveTokenInRedis(String token, Long profileId, ProfileRole role, Lo
 ```
 ---
 
-## Modificato Gateway Filter 
-L'obiettivo di questa modifica è intercettare la richiesta, verificare se i dati dell'utente sono già presenti in memoria (Redis) e, in caso negativo, popolare la cache dopo la validazione standard del JWT.
+# 🚀 Modifica Gateway Filter
 
-**Scenario 1:** 
+L'obiettivo di questa modifica è ottimizzare le prestazioni del gateway intercettando le richieste in entrata. Il sistema verifica se i dati dell'utente sono già presenti in memoria Redis) e solo in caso di "cache miss", procede con la validazione standard del JWT, popolando poi la cache per le chiamate successive.
+
+---
+
+## 🔍 Scenario 1: Lettura dalla Cache
+
+Prima di eseguire il parsing del JWT (operazione CPU-intensive), il filtro interroga Redis utilizzando il token come chiave. Se il token è presente, le informazioni vengono estratte direttamente dalla memoria.
+
 ```bash
 private Mono<Void> checkCache(String token, ServerWebExchange exchange, GatewayFilterChain chain) {
     String cacheKey = "auth:token:" + token;
@@ -138,11 +144,12 @@ private Mono<Void> checkCache(String token, ServerWebExchange exchange, GatewayF
             });
 }
 ```
-Prima di eseguire qualsiasi operazione di parsing del JWT (operazione CPU-intensive), il filtro interroga Redis utilizzando il token come chiave.
-Se il token è in cache, i microservizi a valle ricevono gli header X-Profile-Id e X-Role senza che il Gateway debba decriptare il JWT, poichè preleva tutte 
-le informazioni dell'header da costruire (X-Profile-Id, X-Role, X-Shop-Id) direttamente dalla memoria chache.
+ I microservizi a valle ricevono gli header X-Profile-Id, X-Role e X-Shop-Id senza che il Gateway debba decodificare il JWT, riducendo drasticamente la latenza.
 
-**Scenario 2:** 
+## 🔍 Scenario 2: Validazione e Fallback
+
+Se il token non è presente in Redis, il sistema esegue la validazione JWT standard. Una volta confermata la validità, i dati vengono memorizzati in modo asincrono per ottimizzare le richieste future.
+
 ```bash
 // Estratto da handleJwtValidation
 String cacheKey = "auth:token:" + token;
@@ -150,9 +157,13 @@ String cacheValue = profileId + "|" + role + "|" + shopIdStr;
 
 redisTemplate.opsForValue()
     .setIfAbsent(cacheKey, cacheValue, Duration.ofHours(24)) // Salva con TTL di 24h
-    .subscribe(); 
+    .subscribe(); // Operazione asincrona non bloccante
 ```
-Se il token non è presente in Redis , il sistema procede con la validazione JWT standard e memorizza il risultato in modo asincrono per le richieste successive. 
-Questo è il meccanismo di Fallback.
+Il salvataggio avviene con un TTL (Time-To-Live) di 24 ore, garantendo che la sessione in cache scada automaticamente.
 
-Successivamente il gateway come descritto già precedentemente, andrà a costruire l'hader della richiesta per poi inoltrala al modulo api-backend, che effettuerà controlli di autorizzazioni
+---
+
+🔗 Flusso Finale
+Dopo il recupero dei dati (sia da cache che da validazione diretta), il Gateway costruisce gli header della richiesta e la inoltra al modulo api-backend. Quest'ultimo si occuperà esclusivamente dei controlli di autorizzazione specifici per l'endpoint richiesto.
+
+---
