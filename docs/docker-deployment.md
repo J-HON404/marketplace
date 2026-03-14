@@ -11,7 +11,6 @@ L'obiettivo principale di questa fase è ottimizzare l'architettura Docker (FASE
 ## 📄 Modifica Docker Compose
 
 PRIMA : 
-### BACKEND (Spring boot)
 ```dockerfile
 version: '3.8'
 services:
