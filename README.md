@@ -118,6 +118,7 @@ private void saveTokenInRedis(String token, Long profileId, ProfileRole role, Lo
 
 ## Modificato Gateway Filter 
 L'obiettivo di questa modifica è intercettare la richiesta, verificare se i dati dell'utente sono già presenti in memoria (Redis) e, in caso negativo, popolare la cache dopo la validazione standard del JWT.
+
 **Scenario 1:** 
 ```bash
 private Mono<Void> checkCache(String token, ServerWebExchange exchange, GatewayFilterChain chain) {
