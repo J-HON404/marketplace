@@ -163,7 +163,8 @@ Il salvataggio avviene con un TTL (Time-To-Live) di 24 ore, garantendo che la se
 
 ---
 
-🔗 Flusso Finale
+## 🔗 Flusso Finale
+
 Dopo il recupero dei dati (sia da cache che da validazione diretta), il Gateway costruisce gli header della richiesta e la inoltra al modulo api-backend. Quest'ultimo si occuperà esclusivamente dei controlli di autorizzazione specifici per l'endpoint richiesto.
 
 ---
