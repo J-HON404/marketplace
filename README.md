@@ -1,14 +1,7 @@
-# Architettura del Sistema
-
-Questa architettura rappresenta un upgrade di caching rispetto i concetti descritti nel branch  `final/modular-marketplace` .
-
-Rispetto alla versione citata, è stato introdotto un meccanismo di caching con l’obiettivo  di migliorare le prestazioni del sistema e quindi la latenza , andando inoltre a semplificare la modalità di lavoro e logica dell' api-gateway-backend precedentemente descritto con il suo jwt filter.
-
----
 
 # Modifiche Introdotte
 
-In questa versione è stato inserito un container dedicato per la gestione di una memoria cache, con lo scopo di isolare e velocizzare la fase di controllo del token per ogni richiesta ricevuta. Questo è stato possibile con una cache Redis
+rispetto i concetti descritti nel branch  `final/modular-marketplace`  è stato inserito un container dedicato per la gestione di una memoria cache, con lo scopo di isolare e velocizzare la fase di controllo del token per ogni richiesta ricevuta.
 
 ## 📌 Cos'è Redis?
 
