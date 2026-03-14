@@ -6,7 +6,7 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi Fase 7: Ottimizzazione e Caching
 
-L'obiettivo principale di questa fase è ottimizzare l'architettura Azure descritta nel `docs/azure-deployment del branch` del branch `final/modular-marketplace` è l'introduzione di **Redis** come database in-memory per gestire la cache dei token JWT. Questo permette di ridurre drasticamente il carico computazionale del Gateway e abilita la revoca istantanea delle sessioni utente.
+L'obiettivo principale di questa fase è ottimizzare l'architettura Azure (FASE 6) descritta nel `docs/azure-deployment ` del branch `final/modular-marketplace` , con l'introduzione di **Redis** come database in-memory per gestire la cache dei token JWT. Questo permette di ridurre drasticamente il carico computazionale del Gateway e abilita la revoca istantanea delle sessioni utente.
 
 > *Nota:* I comandi inseriti sono solo a scopo descrittivo, non rappresentano tutte le configurazioni associate per ogni singolo componente.
 
