@@ -6,15 +6,18 @@ Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dat
 
 # 🚀 Obiettivi Fase 7: Ottimizzazione e Caching
 
-L'obiettivo principale di questa fase è l'introduzione di **Redis** come database in-memory per gestire la cache dei token JWT. Questo permette di ridurre drasticamente il carico computazionale del Gateway e abilita la revoca istantanea delle sessioni utente.
+L'obiettivo principale di questa fase è ottimizzare l'architettura Azure descritta nel `docs/azure-deployment del branch` del branch `final/modular-marketplace` è l'introduzione di **Redis** come database in-memory per gestire la cache dei token JWT. Questo permette di ridurre drasticamente il carico computazionale del Gateway e abilita la revoca istantanea delle sessioni utente.
+
+> *Nota:* I comandi inseriti sono solo a scopo descrittivo, non rappresentano tutte le configurazioni associate per ogni singolo componente.
 
 ## 🏗️ Architettura del Sistema
 
 L'architettura si evolve da un modello semplice Frontend-Backend a una struttura modulare protetta e scalabile:
 
 * **Frontend**: Esposto pubblicamente, funge da interfaccia utente e comunica esclusivamente con il Gateway.
-* **API Gateway**: Esposto pubblicamente, gestisce il routing e la validazione ultra-rapida dei token interrogando Redis.
-* **Auth Module**: Modulo interno, responsabile del login, della generazione dei JWT e della scrittura dei dati di sessione su Redis.
+* **API Gateway**: Esposto pubblicamente, gestisce il routing e la validazione rapida dei token interrogando Redis.
+* **Auth Module**: Modulo interno, responsabile dell'autenticazione, della generazione dei JWT e della scrittura dei dati di sessione su Redis.
+* * **API Backend Module**: Modulo **interno**, espone gli endpoint per la gestione del marketplace (prodotti, ordini, shop).
 * **Redis Cache**: Database interno che fornisce storage Key-Value ad alte prestazioni via protocollo TCP.
 
 ---
