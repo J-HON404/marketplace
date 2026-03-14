@@ -190,22 +190,4 @@ volumes:
 
 --- 
 
-### 🛠️ Considerazioni
-
-In precedenza, il Dockerfile Angular serviva l’app tramite Nginx usava riferimento diretto del modulo backend, adesso la richiesta viene inoltrata all Api-Gateway.  
-
-Lo script sostituisce le variabili di ambiente nel template Nginx al momento dell’avvio del container, generando il **file di configurazione finale**.  
-
-**Vantaggi principali ottenuti:**  
-
-Flessibilità: la stessa immagine Docker può puntare a backend o gateway diversi senza ricostruzione.
-
-Portabilità: la configurazione è adattabile a più ambienti (staging, produzione, test).
-
-Semplicità nel deploy: basta impostare le variabili di ambiente corrette su Azure,AWS o in qualsiasi altro ambiente.
-
-Sicurezza e manutenzione: evita modifiche manuali al file statico e riduce errori di configurazione.
-
-In questo modo, l’app Angular rimane indipendente dall’ambiente backend specifico e può essere distribuita più facilmente in ambienti diversi.  
-
 
