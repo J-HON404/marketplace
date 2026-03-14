@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dc90308c-d84c-4cb7-b491-6c0ba9074467" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace-auth-module/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-auth-module/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/java/com/unicam/cs/progettoweb/marketplace/auth/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace-auth-module/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-auth-module/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace-gateway-api/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-gateway-api/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace-gateway-api/src/main/java/com/marketplace/api_gateway/security/JwtGatewayFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/java/com/marketplace/api_gateway/security/JwtGatewayFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/marketplace-gateway-api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/marketplace-gateway-api/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +189,7 @@
       <workItem from="1773472736457" duration="1961000" />
       <workItem from="1773474739569" duration="438000" />
       <workItem from="1773475209147" duration="341000" />
-      <workItem from="1773475575111" duration="3327000" />
+      <workItem from="1773475575111" duration="3833000" />
     </task>
     <servers />
   </component>
