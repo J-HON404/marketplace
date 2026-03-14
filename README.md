@@ -99,3 +99,59 @@ TTL auth:token:eyJhbGciOiJIUzI1...
 * **`-2`:** Il token **non esiste** (è già scaduto, è stato rimosso manualmente o non è mai stato creato).
 * **`-1`:** Il token esiste ma **non ha una scadenza** definita (è persistente in memoria).
 ---
+
+## Modificato Auth Controller 
+Al momento di un login avvenuto con successo, il sistema genera un token JWT e invoca il metodo privato `saveTokenInRedis` per persistere lo stato della sessione.
+```bash
+private void saveTokenInRedis(String token, Long profileId, ProfileRole role, Long shopId) {
+    // Formato: profileId|ROLE|shopId
+    String cacheValue = profileId + "|" + role.name() + "|" + (shopId != null ? shopId : "");
+    try {
+        // Salvataggio con Time-To-Live (TTL) di 24 ore
+        redisTemplate.opsForValue().set("auth:token:" + token, cacheValue, 24, TimeUnit.HOURS);
+    } catch (Exception e) {
+        System.err.println("Errore salvataggio Redis: " + e.getMessage());
+    }
+}
+```
+---
+
+## Modificato Gateway Filter 
+L'obiettivo di questa modifica è intercettare la richiesta, verificare se i dati dell'utente sono già presenti in memoria (Redis) e, in caso negativo, popolare la cache dopo la validazione standard del JWT.
+**Scenario 1:** 
+```bash
+private Mono<Void> checkCache(String token, ServerWebExchange exchange, GatewayFilterChain chain) {
+    String cacheKey = "auth:token:" + token;
+
+    return redisTemplate.opsForValue()
+            .get(cacheKey) // Recupera il valore: "profileId|ROLE|shopId"
+            .flatMap(cachedData -> {
+                String[] parts = cachedData.split("\\|");
+                String profileId = parts[0];
+                String role = parts[1];
+                String shopId = parts.length > 2 ? parts[2] : "";
+                
+                // Muta la richiesta con i dati estratti dalla cache
+                ServerWebExchange mutatedExchange = buildExchange(exchange, profileId, role, shopId);
+                return chain.filter(mutatedExchange);
+            });
+}
+```
+Prima di eseguire qualsiasi operazione di parsing del JWT (operazione CPU-intensive), il filtro interroga Redis utilizzando il token come chiave.
+Se il token è in cache, i microservizi a valle ricevono gli header X-Profile-Id e X-Role senza che il Gateway debba decriptare il JWT, poichè preleva tutte 
+le informazioni dell'header da costruire (X-Profile-Id, X-Role, X-Shop-Id) direttamente dalla memoria chache.
+
+**Scenario 2:** 
+```bash
+// Estratto da handleJwtValidation
+String cacheKey = "auth:token:" + token;
+String cacheValue = profileId + "|" + role + "|" + shopIdStr;
+
+redisTemplate.opsForValue()
+    .setIfAbsent(cacheKey, cacheValue, Duration.ofHours(24)) // Salva con TTL di 24h
+    .subscribe(); 
+```
+Se il token non è presente in Redis , il sistema procede con la validazione JWT standard e memorizza il risultato in modo asincrono per le richieste successive. 
+Questo è il meccanismo di Fallback.
+
+Successivamente il gateway come descritto già precedentemente, andrà a costruire l'hader della richiesta per poi inoltrala al modulo api-backend, che effettuerà controlli di autorizzazioni
