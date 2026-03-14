@@ -4,44 +4,43 @@ Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'appli
 Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dati o carichi ad alta scala, né per scenari enterprise con requisiti avanzati di performance e concorrenza distribuita. Rappresenta piuttosto una base solida, sicura ed organizzata, adatta a progetti di media dimensione e pronta a future evoluzioni architetturali.
 
 
-# 🚀 Obiettivi Fase 6 : Aggiornamento Infrastruttura Microsoft Azure
+# 🚀 Obiettivi Fase 7: Ottimizzazione e Caching
 
-L'obiettivo è aggiornare l'infrastruttura definita nel **branch stage/azure-app**, andando ad aggiungere i moduli introdotti nell'applicazione
+L'obiettivo principale di questa fase è l'introduzione di **Redis** come database in-memory per gestire la cache dei token JWT. Questo permette di ridurre drasticamente il carico computazionale del Gateway e abilita la revoca istantanea delle sessioni utente.
 
-## Architettura del sistema
+## 🏗️ Architettura del Sistema
 
-In particolare al momento l'architettura è composta solo da container backend e container frontend. Di conseguenza è necessario introdurre i moduli: Api-Gateway e Auth-module affinché possano interagire correttamente con i container già definiti precedentemente.
+L'architettura si evolve da un modello semplice Frontend-Backend a una struttura modulare protetta e scalabile:
 
-> *Nota:* I comandi inseriti sono solo a scopo descrittivo, non rappresentano tutte le configurazioni associate per ogni singolo componente.
+* **Frontend**: Esposto pubblicamente, funge da interfaccia utente e comunica esclusivamente con il Gateway.
+* **API Gateway**: Esposto pubblicamente, gestisce il routing e la validazione ultra-rapida dei token interrogando Redis.
+* **Auth Module**: Modulo interno, responsabile del login, della generazione dei JWT e della scrittura dei dati di sessione su Redis.
+* **Redis Cache**: Database interno che fornisce storage Key-Value ad alte prestazioni via protocollo TCP.
+
+---
 
 - **Azure Container Registry**
   
- Nel registro responsabile per le immagini docker inserite nell'ambiente Azure ed utilizzate dai container-app, sono state aggiunte le seguenti immagini:
+ Nel registro responsabile per le immagini docker inserite nell'ambiente Azure ed utilizzate dai container-app, è stata aggiunte la seguenti immagine:
   
-Immagine container Api-Gateway
+Immagine container Redis-cache
 ```dockerfile
 az acr login --name acresamecloud 
-docker tag api-backend-gateway-marketplace:v1 acresamecloud.azurecr.io/api-backend-gateway-marketplace:v1
-docker push acresamecloud.azurecr.io/api-backend-gateway-marketplace:v1
-```
-Immagine container Auth-module
-```dockerfile
-az acr login --name acresamecloud 
-docker tag auth-module-marketplace-backend:v1 acresamecloud.azurecr.io/auth-module-marketplace-backend:v1
-docker push acresamecloud.azurecr.io/auth-module-marketplace-backend:v1
+docker tag redis:alpine acresamecloud.azurecr.io/marketplace-redis:v1
+docker push acresamecloud.azurecr.io/marketplace-redis:v1
 ```
 
 - **Azure Key Vault**
   
-  Sono stati aggiunti i seguenti secret per concedere l’accesso ai dati da parte dei container introdotti
+  Sono stati aggiunti i seguenti secret per concedere l’accesso ai dati da parte dei container api-gateway-backend ed auth-module-backend
 
 ### 🔑 Configurazione Auth-module
 
-Il container dell’**Auth Module** utilizza i secret per connettersi al database e gestire l’autenticazione JWT:
+Il container dell’**Auth Module** utilizza i secret per connettersi al container Redis e gestire l’autenticazione JWT:
 
 ```dockerfile
-az keyvault secret set --vault-name kv-esame-marketplace --name DB_URL --value "xxxxx"
-az keyvault secret set --vault-name kv-esame-marketplace --name JWT_SECRET --value "xxxx"
+az keyvault secret set --vault-name kv-esame-marketplace --name REDIS_HOST --value "xxxxx"
+az keyvault secret set --vault-name kv-esame-marketplace --name REDIS_PORT  --value "6379"
 ```
 
 ### 🔑 Configurazione Api-Gateway
@@ -49,69 +48,25 @@ az keyvault secret set --vault-name kv-esame-marketplace --name JWT_SECRET --val
 Il container dell’**API Gateway** utilizza i secret con i riferimenti al modulo di autenticazione ed il modulo api-backend, ed i secret per verficare l’autenticazione JWT.  
 
 ```dockerfile
-az keyvault secret set --vault-name kv-esame-marketplace --name API_URL --value "xxxxx"
-az keyvault secret set --vault-name kv-esame-marketplace --name BACKEND_URL --value "xxxxx"
-az keyvault secret set --vault-name kv-esame-marketplace --name JWT_SECRET --value "xxxx"
+az keyvault secret set --vault-name kv-esame-marketplace --name REDIS_HOST --value "xxxxx"
+az keyvault secret set --vault-name kv-esame-marketplace --name REDIS_PORT  --value "6379"
 ```
 
 - **Azure Container Apps**
 
-Sono stati creati ed aggiunti i seguenti container, all'interno dell **Azure Container Apps Environment** creato in precedenza.
+È stato creato all'interno dell **Azure Container Apps Environment** il seguente container.
 
-  Container Api-Gateway
+  Container Redis
 ```dockerfile
 az containerapp create ^
-  --name api-gateway-backend-esame ^
+  --name marketplace-redis-cache ^
   --resource-group rg-esame-cloud ^
   --environment managedEnvironment-rgesamecloud-8803 ^
-  --image acresamecloud.azurecr.io/backend:v1 ^
-  --registry-server acresamecloud.azurecr.io ^
-  --registry-username %ACR_USER% ^
-  --registry-password %ACR_PASS% ^
-  --ingress external ^
-  --target-port 8082 ^
-  --cpu 0.25 ^
-  --memory 0.5Gi ^
-  --set-env-vars ^
-    API_URL = 
-    BACKEND_URL = 
-    ..ecc....
-```
-
-  Container Auth-Module
-```dockerfile
-az containerapp create ^
-  --name auth-module-backend-esame ^
-  --resource-group rg-esame-cloud ^
-  --environment managedEnvironment-rgesamecloud-8803 ^
-  --image acresamecloud.azurecr.io/backend:v1 ^
-  --registry-server acresamecloud.azurecr.io ^
-  --registry-username %ACR_USER% ^
-  --registry-password %ACR_PASS% ^
-  --ingress external ^
-  --target-port 8081 ^
-  --cpu 0.25 ^
-  --memory 0.5Gi ^
-  --set-env-vars ^
-    DB_URL = 
-    JWT_SECRET = 
-    ..ecc....
-```
-----
-
-**Autorizzare le Managed Identity dei Container App con il ruolo Key Vault Secrets User (permessi lettura)**
-
-```dockerfile
-az role assignment create \
-  --assignee auth-module-backend-esame \
-  --role "Key Vault Secrets User" \
-  --scope /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/rg-esame-cloud/providers/Microsoft.KeyVault/vaults/<KEY_VAULT_NAME>
-```
-```dockerfile
-az role assignment create \
-  --assignee api-gateway-backend-esame \
-  --role "Key Vault Secrets User" \
-  --scope /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/rg-esame-cloud/providers/Microsoft.KeyVault/vaults/<KEY_VAULT_NAME>
+  --image redis:alpine ^
+  --ingress internal ^
+  --target-port 6379 ^
+  --transport tcp ^
+  --cpu 0.25 --memory 0.5Gi
 ```
 ----
 
@@ -132,77 +87,12 @@ az containerapp secret set \
   --secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/NomeSecret
 ```
 
-Aggiornamento Mapping secret Frontend-Container
-
-Il container frontend adesso non conosce il riferimento dei moduli backend, ma sfrutta il riferimento pubblico dell'api-gateway, vanno quindi aggiornati i suoi secret 
-
-```dockerfile
-# Esempio di mapping secret
-az containerapp secret set \
-  --name ca-frontend-esane \
-  --resource-group rg-esame-cloud \
-  --secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/GATEWAY_URL
---secrets secret=keyvaultref:https://kv-esame-marketplace.vault.azure.net/secrets/GATEWAY_HOST
-```
-
 ----
 
-## Modifiche comunicazione tra container
+## 🌐 Analisi comunicazione tra container
 
-**Rete Interna del Container Apps Environment:**  
-Rispetto alla versione del **branch stage/azure-app**, viene sfruttata maggiormente la rete interna privata VLAN definita all'interno dell'**Azure Container Apps Environment**.
-
-In particolare questa configurazione permette a **auth-module** e **api-backend** di essere isolati, senza esposizione verso l’esterno.  
-
-Il container **api-gateway** sfrutta il DNS interno per comunicare con i moduli, proteggendo l’applicazione e riducendo la latenza delle risposte, poiché le richieste non passano dalla rete pubblica.
-
-I moduli esposti pubblicamente all’interno dell’architettura sono:  
-- **frontend-marketplace**  
-- **api-gateway**  
-
-Questi container ricevono richieste dalla rete pubblica e le filtrano prima di inoltrarle ai moduli interni.
+* **Isolamento Totale:** I moduli `auth-module`, `api-backend` e il nuovo container `marketplace-redis-cache` sono ora completamente isolati. Non possiedono un IP pubblico e non sono raggiungibili dall'esterno.
+* **Comunicazione via DNS Interno:** L'**API Gateway** comunica con i microservizi e con la cache Redis tramite DNS interno (es. `marketplace-redis-cache:6379`). Questo riduce drasticamente la latenza ed evita che il traffico sensibile transiti sulla rete pubblica.
+* **Protocollo TCP:** La comunicazione tra i moduli backend e Redis avviene via **TCP diretto**, ottimizzando le performance rispetto alle classiche chiamate HTTP.
 
 ---
-
-## ⚙️ Vantaggi ottenuti
-
-1. **Esposizione sicura dei container:**  
-   I moduli backend hanno ingress type `internal` e non sono accessibili pubblicamente. Solo frontend e API Gateway sono esposti.
-
-2. **Architettura modulare e centralizzata:**  
-   - Backend separato in moduli indipendenti.  
-   - **Auth Module** gestisce autenticazione e token JWT.  
-   - **API Backend** espone gli endpoint e gestisce autorizzazioni.
-     
-3. **Layer intermedio per il routing:**  
-   Il container frontend comunica esclusivamente tramite **API Gateway**, che instrada le richieste verso i moduli corretti e applica le regole di sicurezza e autenticazione.  
-   Il container frontend **non deve conoscere direttamente gli endpoint dei backend**, riducendo la complessità, migliorando la sicurezza e semplificando la manutenzione dell’applicazione.
-
-   ---
-   
-## ⚠️ Considerazioni e criticità
-
-### 1) Database unico per più moduli
-Attualmente sia **Auth Module** che **API Backend** condividono lo stesso database.  
-Questo semplifica la gestione dei dati, ma può diventare un collo di bottiglia in scenari ad alto carico e dove sono necessari accessi concorrenti ai dati.  
-Inoltre comporta i seguenti problemi:
-
-- **Accoppiamento tra domini:** cambiamenti nella struttura dei dati di autenticazione potrebbero impattare la logica applicativa e viceversa.  
-- **Scalabilità limitata:** non è possibile scalare separatamente i servizi di autenticazione e quelli applicativi in base al carico, perché condividono lo stesso database.  
-- **Sicurezza e isolamento:** eventuali vulnerabilità in un modulo potrebbero esporre dati di autenticazione e dati applicativi contemporaneamente.  
-- **Mantenibilità:** aggiornamenti o migrazioni del database diventano più complessi, perché coinvolgono più moduli insieme.  
-
----
-
-### 2) Dipendenza tra moduli
-L’**API Gateway** e l’**Auth Module** devono essere sempre disponibili per permettere al frontend e all’API Backend di funzionare correttamente.  
-Un downtime o un malfunzionamento di questi servizi può bloccare l’intera applicazione.  
-
----
-
-### 3) Dipendenza URL pubblico
-Attualmente il frontend comunica con l’**API Gateway** tramite l’URL pubblico fornito da Azure Container Apps.  
-Anche se internamente il Gateway usa il DNS della rete privata per comunicare con Auth Module e Backend API, il container frontend deve conoscere l’endpoint pubblico del Gateway.  
-Questo significa che eventuali cambi di URL pubblico (per esempio durante il deploy in un nuovo ambiente o aggiornamenti del container) richiedono aggiornamenti del container frontend.
-
-
