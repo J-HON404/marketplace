@@ -88,6 +88,7 @@ volumes:
 ```
 DOPO:
 ```dockerfile
+
 version: '3.8'
 
 services:
@@ -98,7 +99,7 @@ services:
     restart: always
     env_file: .env
     ports:
-      - "3307:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./docker-init:/docker-entrypoint-initdb.d
@@ -158,7 +159,7 @@ services:
     env_file: .env
     restart: on-failure
     ports:
-      - "4207:80"
+      - "${FRONTEND_PORT}:80"
     depends_on:
       - marketplace-gateway
     networks:
@@ -184,7 +185,6 @@ volumes:
     driver: local
   redis_data:
     driver: local
-
 ```
 ---
 
