@@ -1,7 +1,12 @@
 
 # Modifiche Introdotte
 
-rispetto i concetti descritti nel branch  `final/modular-marketplace`  è stato inserito un container dedicato per la gestione di una memoria cache, con lo scopo di isolare e velocizzare la fase di controllo del token per ogni richiesta ricevuta.
+rispetto i concetti descritti nel branch  `final/modular-marketplace`  sono state apportate le seguenti modifiche:
+1) è stato inserito un container dedicato per la gestione di una memoria cache, con lo scopo di isolare e velocizzare la fase di controllo del token per ogni richiesta ricevuta.
+2) migliorata la logica di logout per prevenire l’uso di token scaduti o già invalidati.
+  Ora il logout cancella esplicitamente il token lato backend (Redis) oltre che lato client.
+  In questo modo, anche se l’utente tenta di riutilizzare lo stesso token dopo il logout, il gateway lo invalida immediatamente.
+   Previene problemi di sicurezza legati a sessioni attive o token residui. 
 
 ## 📌 Cos'è Redis?
 
@@ -70,6 +75,12 @@ I container comunicano sulla stessa rete bridge (`marketplace-network`):
 
 ## 🛠️ Esempi di Comandi Redis (CLI)
 
+### Visualizzare operazioni effettuate nella cache Redis
+ ```bash
+    redis-cli
+   MONITOR
+```
+
 ### Inserimento di un Token
 Inserisce un token con claims e scadenza a 24 ore.
 ```bash
@@ -113,6 +124,23 @@ private void saveTokenInRedis(String token, Long profileId, ProfileRole role, Lo
         System.err.println("Errore salvataggio Redis: " + e.getMessage());
     }
 }
+```
+Inoltre è stato introdotto il seguente enpoint logout per eseguire la cancellazione del token jwt in modo sicuro 
+```bash
+ @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7); // rimuove "Bearer "
+                redisTemplate.delete("auth:token:" + token); // cancella il token dalla cache
+                return ResponseEntity.ok(ApiResponse.success(null));
+            } else {
+                return ResponseEntity.badRequest().body(ApiResponse.error("Authorization header mancante o non valido"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(ApiResponse.error("Errore durante il logout: " + e.getMessage()));
+        }
+    }
 ```
 ---
 
