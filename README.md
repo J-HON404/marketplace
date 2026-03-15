@@ -147,10 +147,12 @@ docker compose version
    ```bash
    git clone [https://github.com/J-HON404/marketplace.git](https://github.com/J-HON404/marketplace.git)
   ```
+  ```
 
 2. **Entrare nella directory del progetto:**
    ```bash
    cd marketplace
+ ```
   ```
 
 3. **Configurazione delle variabili d'ambiente:**
