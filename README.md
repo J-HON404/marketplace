@@ -214,6 +214,6 @@ Per consentire un corretto funzionamento è consigliato ai fini dell'applicazion
 
 L’applicazione è stata distribuita su **Azure Container Instances**. I container possono essere avviati dal portale di Azure.
 
-**Politica pay-for-use:** per l’accesso, contattarmi.
+**Politica pay-for-use:** per utilizzare l’applicazione su Azure, contattare l'autore(io).
 
-Documentazione aggiuntiva su architettura e configurazioni disponibile nei branch del repository.
+Documentazione aggiuntiva su architettura e configurazioni è disponibile nei branch descritti.
