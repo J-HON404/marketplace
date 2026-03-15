@@ -77,10 +77,25 @@ public class AuthController {
                 shopId
         );
 
-        // Salva il token in Redis (metodo separato)
+        // Salva il token in Redis
         saveTokenInRedis(token, profile.getId(), profile.getRole(), shopId);
 
         return ResponseEntity.ok(ApiResponse.success(token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader("Authorization") String authHeader) {
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7); // rimuove "Bearer "
+                redisTemplate.delete("auth:token:" + token); // cancella il token dalla cache
+                return ResponseEntity.ok(ApiResponse.success(null));
+            } else {
+                return ResponseEntity.badRequest().body(ApiResponse.error("Authorization header mancante o non valido"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(ApiResponse.error("Errore durante il logout: " + e.getMessage()));
+        }
     }
 
     /**

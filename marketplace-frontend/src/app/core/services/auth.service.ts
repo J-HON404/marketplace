@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Profile, UserRole } from '../../models/interfaces/profile'; 
-import { ApiResponse } from '../../models/interfaces/api-response'; // Importa l'interfaccia
+import { Observable, of } from 'rxjs'; // <-- importa 'of'
+import { TokenService } from './token.service'; // <-- importa TokenService
+import { Profile, UserRole } from '../../models/interfaces/profile';
+import { ApiResponse } from '../../models/interfaces/api-response';
 
 /**
  * Servizio di autenticazione per Angular.
@@ -27,14 +28,29 @@ export interface RegisterPayload {
 export class AuthService {
   private baseUrl = '/api/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService // <-- inietta TokenService
+  ) {}
 
   register(payload: RegisterPayload): Observable<ApiResponse<Profile>> {
     return this.http.post<ApiResponse<Profile>>(`${this.baseUrl}/register`, payload);
   }
 
-
   login(username: string, password: string): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(`${this.baseUrl}/login`, { username, password });
+  }
+
+  logout(): Observable<ApiResponse<void>> {
+    const token = this.tokenService.getToken();
+    if (!token) {
+      return of({ success: true, message: 'No token to logout', data: undefined } as ApiResponse<void>);
+    }
+
+    return this.http.post<ApiResponse<void>>(
+      `${this.baseUrl}/logout`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
   }
 }
