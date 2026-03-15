@@ -55,7 +55,7 @@ I dati vengono salvati in un formato stringa semplice, ottimizzato per operazion
 * **High Availability:** Se Redis non risponde, il sistema scala automaticamente sulla validazione JWT standard.
 * **Auto-Cleanup:** Il meccanismo di TTL (Time To Live) elimina i token scaduti automaticamente.
 * **Statelessness:** La sessione è centralizzata in Redis, il Gateway rimane senza stato.
-* * **Migliore User Experience:** La navigazione tra le varie pagine all'interno del sito è più fulminea.
+* **Migliore User Experience:** La navigazione tra le varie pagine all'interno del sito è più fulminea.
 
 ---
 
