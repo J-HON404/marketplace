@@ -178,7 +178,7 @@ docker compose version
   ```
 6.**Stato dei container:**
  ```bash
-     docker compose ps
+     docker compose ps 
   ```
 
 7.**Arresto dell'applicazione:**
@@ -186,14 +186,19 @@ docker compose version
      docker compose down
   ```
 
-8..**Verificare spazio utilizzato:**
+8.**Verificare le immagini dell'applicazione:**
  ```bash
-     docker system df
+    docker compose images
   ```
 
-Per consentire un corretto funzionamento è consigliato ai fini dell'applicazione avere disponibili almeno 2.6 GB, considerando immagini, volumi e container
+8.**Visualizzare i log dell'applicazione:**
+ ```bash
+    docker compose logs -f
+  ```
 
-Arrestare i container e rimuove anche i volumi associati.
+Per consentire un corretto funzionamento è consigliato ai fini dell'applicazione avere disponibili almeno 2 GB, considerando immagini, volumi e container
+
+10.Arrestare i container e rimuove anche i volumi associati.
 
  ```bash
    docker compose down -v
