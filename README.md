@@ -1,91 +1,149 @@
 # 🛒 Marketplace Web Application
 
-Progetto marketplace full-stack basato su **Spring Boot** e **Angular**. L'applicazione gestisce un sistema multi-venditore in cui gli utenti possono operare come `SELLER` o `CUSTOMER` per gestire shop, prodotti e ordini in tempo reale. La versione attuale è sviluppata seguendo una struttura modulare e facilmente estendibile.
-Tuttavia, il sistema non è pensato per gestire un’elevata complessità di dati o carichi ad alta scala, né per scenari enterprise con requisiti avanzati di performance e concorrenza distribuita. Rappresenta piuttosto una base solida, sicura ed organizzata, adatta a progetti di media dimensione e pronta a future evoluzioni architetturali.
+Un marketplace full-stack basato su **Spring Boot** e **Angular**, progettato per un sistema multi-venditore in cui gli utenti possono operare come `SELLER` o `CUSTOMER` per gestire shop, prodotti e ordini in tempo reale.  
+
+> ⚠️ Nota: Il sistema non è pensato per gestire carichi ad alta scala o scenari enterprise complessi, ma rappresenta una base sicura, modulare e facilmente estendibile per progetti di media dimensione.
 
 ---
 
 ## 🚀 Panoramica del Progetto
 
-L'obiettivo è fornire una piattaforma completa con gestione separata dei ruoli e una logica di business che permetta dal caricamento del prodotto , alla vendita fino alla conferma di ricezione dell’ordine.
+L'applicazione permette di gestire tutto il processo di vendita, dalla creazione del prodotto fino alla conferma della ricezione dell’ordine.
 
-* **Architettura:** REST a livelli (Controller, Service, Repository).
-* **Frontend:** Single Page Application (SPA) .
-* **Sicurezza:** Autenticazione  basata su **JWT** con Spring Security.
+**Architettura principale:**
+- REST a livelli (Controller, Service, Repository)
+- Single Page Application (SPA) con Angular
+- Sicurezza basata su **JWT** e Spring Security
+- Containerizzazione tramite Docker e orchestrazione con Docker Compose
 
 ---
 
 ## ⚙️ Funzionalità Principali
 
 ### 🔐 Autenticazione e Sicurezza
-* Registrazione e login con distinzione ruoli (`SELLER` / `CUSTOMER`).
-* Generazione e validazione dei token **JWT**.
-* Controllo degli accessi basato su ruoli.
-* Protezione delle API tramite filtri Spring Security.
+- Registrazione e login con distinzione ruoli (`SELLER` / `CUSTOMER`)
+- Generazione e validazione dei token **JWT**
+- Controllo degli accessi basato su ruoli
+- Protezione delle API tramite filtri Spring Security
 
 ### 🏪 Area Venditore (SELLER)
-* **Shop Management:** Gestione completa del profilo negozio.
-* **Gestione Catalogo:** CRUD prodotti, gestione stock e date di disponibilità.
-* **Logistica:** Monitoraggio ordini, inserimento **Tracking ID** e data di consegna stimata.
-* **Alert:** Creazione di avvisi, promozioni ed annunci sui prodotti venduti.
+- **Gestione Shop:** Profilo negozio completo
+- **Catalogo Prodotti:** CRUD prodotti, gestione stock e date di disponibilità
+- **Logistica:** Monitoraggio ordini, inserimento Tracking ID e data consegna stimata
+- **Alert:** Creazione di promozioni e avvisi sui prodotti
 
 ### 🛍 Area Acquirente (CUSTOMER)
-* **Shopping:** Navigazione tra negozi e prodotti disponibili.
-* **Carrello:** Gestione dinamica delle quantità e processo di checkout.
-* **Tracking:** Storico ordini e conferma di ricezione consegna.
-* **Alert:** Ricezione di annunci e promozioni dedicate.
+- **Shopping:** Navigazione tra negozi e prodotti
+- **Carrello:** Gestione dinamica delle quantità e checkout
+- **Tracking:** Storico ordini e conferma ricezione consegna
+- **Alert:** Ricezione di annunci e promozioni dedicate
 
 ---
 
 ## 🧱 Architettura Tecnica
 
-### **Backend**
-* **Java 21** & **Spring Boot 3.5.8**
-* **Persistenza:** Spring Data JPA con **MariaDB**.
-* **Pattern:** DTO, Global Exception Handling, Server-side Validation.
+### Backend
+- **Linguaggio:** Java 21 & Spring Boot 3.5.8
+- **Database:** MariaDB con Spring Data JPA
+- **Pattern:** DTO, gestione globale eccezioni, validazione lato server
 
-### **Frontend**
-* **Angular 20.3** & **TypeScript**.
-* **Core:** Standalone Components e Angular Routing.
-* **Networking:** HttpInterceptor per l’iniezione automatica del token JWT.
-* **Reattività:** Gestione asincrona tramite **RxJS** (Observable).
+### Frontend
+- **Framework:** Angular 20.3 & TypeScript
+- **Core:** Standalone Components, Angular Routing
+- **Networking:** HttpInterceptor per iniezione automatica JWT
+- **Reattività:** Gestione asincrona tramite **RxJS** (Observable)
 
 ---
 
 ## 🗄 Struttura del Database
 
-
-
 | Entità | Descrizione |
-| :--- | :--- |
-| **Profile** | Anagrafica utenti, credenziali e ruoli. |
-| **Shop** | Dettagli del negozio associato a un venditore. |
-| **Product** | Catalogo articoli, prezzi e inventario. |
-| **Cart** | Stato del carrello corrente dell'utente. |
-| **Order** | Dettagli transazione, tracking e stato consegna. |
-| **ProductNotice** | Avvisi e promozioni attive sui prodotti. |
+| ------ | ----------- |
+| **Profile** | Anagrafica utenti, credenziali e ruoli |
+| **Shop** | Dettagli del negozio associato al venditore |
+| **Product** | Catalogo articoli, prezzi e inventario |
+| **Cart** | Stato del carrello corrente dell'utente |
+| **Order** | Dettagli transazione, tracking e stato consegna |
+| **ProductNotice** | Avvisi e promozioni attive sui prodotti |
 
 ---
 
-## 📁 Organizzazione delle Cartelle
+## 📌 Build from Scratch
 
-### **Backend** 
-```text
-└── marketplace
-    ├── controller    # Endpoint REST API
-    ├── dto           # Data Transfer Objects
-    ├── exception     # Handler per errori e risposte personalizzate
-    ├── model         # Entity JPA 
-    ├── repository    # Interfacce Spring Data JPA
-    ├── security      # Configurazione JWT, filtri e permessi
-    └── service       # Logica di business applicativa
-```
-### **Frontend**
-```text
-└── src/app
-    ├── common        # Componenti condivisi
-    ├── core          # Logica di sistema: Interceptor JWT e configurazioni
-    ├── models        # Definizioni di interfacce
-    ├── services      # Servizi per chiamate API (HttpClient) e gestione stato
-    └── views         # Componenti di pagina (Home, Dashboard, Shop, Checkout)
-```
+### Prerequisiti
+- **Docker** e **Docker Desktop**
+- **Git**  
+
+Verifica Docker:
+```bash
+docker --version
+docker compose version
+  ```
+
+# Installazione
+
+1. **Clonare il repository:**
+   ```bash
+   git clone [https://github.com/J-HON404/marketplace.git](https://github.com/J-HON404/marketplace.git)
+  ```
+
+2. **Entrare nella directory del progetto:**
+   ```bash
+   cd marketplace
+  ```
+
+3. **Configurazione delle variabili d'ambiente:**
+  Il progetto utilizza variabili d'ambiente definite in un file .env.
+  Nel repository è presente un file di esempio .env.example
+   Creare il file .env copiando il file di esempio:
+  ```bash
+     cp .env.example .env
+  ```
+  Aprire il file .env ed aggiungere i parametri mancanti
+
+4. **Build dei container:**
+ Il progetto utilizza Docker Compose per costruire e orchestrare tutti i servizi.
+ Per costruire le immagini Docker
+ ```bash
+     docker compose build
+  ```
+
+5. **Avvio dell'applicazione:**
+ Il progetto utilizza Docker Compose per costruire e orchestrare tutti i servizi.
+ Per costruire le immagini Docker
+ ```bash
+     docker compose up
+
+  ```
+6.**Stato dei container:**
+ ```bash
+     docker ps
+  ```
+
+7.**Arresto dell'applicazione:**
+ ```bash
+     docker compose down
+  ```
+
+8..**Verificare spazio utilizzato:**
+ ```bash
+     docker system df
+  ```
+
+Per consentire un corretto funzionamento è consigliato ai fini dell'applicazione avere disponibili almeno 2.6 GB, considerando immagini, volumi e container
+
+Per rimuovere immagini,container e volumi
+
+ ```bash
+   docker compose down -v
+  ```
+
+---
+
+## 🌐 Deploy su Microsoft Azure
+
+L’applicazione è stata distribuita su **Azure Container Instances**. I container possono essere avviati dal portale di Azure.
+
+**Politica pay-for-use:** per l’accesso, contattarmi.
+
+Documentazione aggiuntiva su architettura e configurazioni disponibile nei branch del repository.
