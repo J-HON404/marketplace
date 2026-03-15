@@ -1,8 +1,0 @@
-{ 
-  "/api": {
-    "target": "http://marketplace-backend:8080",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  }
-}
