@@ -125,7 +125,7 @@ private void saveTokenInRedis(String token, Long profileId, ProfileRole role, Lo
     }
 }
 ```
-Inoltre è stato introdotto il seguente enpoint logout per eseguire la cancellazione del token jwt in modo sicuro 
+Inoltre è stato introdotto il seguente enpoint logout per eseguire la cancellazione del token jwt nella cache Redis in modo sicuro 
 ```bash
  @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader("Authorization") String authHeader) {
