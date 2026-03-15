@@ -68,23 +68,64 @@ L'applicazione permette di gestire tutto il processo di vendita, dalla creazione
 
 ---
 
-# 🏗️ Legenda dei branch
-Per comprendere a pieno lo sviluppo dell'applicazione nel tempo e comprendere a pieno l'evoluzione archietturale della sua forma finale, è consigliato prendere visione dei vari branch nel seguente ordine cronologico descritto.
-I branch difatti descrivono e motivano l'evoluzione archietturale dell'applicazione, dalla sua versione base fino alla versione attuale finale, comunque vicina ad un applicazione cloud native orienta ai microservizi. Le fasi dell'applicazione sono rappresentate in modo cronologico dai seguenti branch
+# 🏗️ Legenda dei Branch
 
-- **stage/rest-version:** è la prima versione dell'applicazione, nella sua versione base rest-api
-- **stage/local-docker:** rappresenta il primo approccio di contenerizzazione dell'applicazione in locale con Docker
-- **stage/local-dockerV2:** rappresenta l'evoluzione del primo approccio di contenirizzazione locale Docker, con l'introduzione di concetti e migliorie
-  Successivamente si è sentita la necessità di evolvere l'applicazione, con l'intento di trasformarla in un approccio inizialmente Cloud Based e con il tempo raffinarla per ottenere un archiettura più vicina possibile ad una orientata ai microservizi. Le versioni finali difatti hanno lo scopo di rendere possibile un evoluzione agile dei moduli in un architettura orientata ai microservizi. I seguenti branch rappresentano le versioni più recenti dell'applicazione , i quali esplicitano in modo incrementale l'evoluzione archiettturale di essa
-  - **stage/backend-api:** si concentra sul backend nella sua versione 1.0, con un analisi tecnica delle sue componenti, con l'intento di capire le aree di sviluppo
-  - **stage/marketplace-frontend**: si concentra sul frontend dell'applicazione nella sua versione 1.0, con un analisi tecnica delle sue componenti, con l'intento di capire le aree di sviluppo
-    In seguito l'applicazione è stata costruita sul cloud Microsoft Azure. I branch descritti rappresentano le migliorie strutturali dell'applicazione in questa fase
-    - **stage/azure-app:** rappresenta il primo approccio di deploy con azure, nel seguente branch sono descritte le tecnologie utilizzate e le configurazioni effettuate per la migrazione       dell'applicazione
-    - **stage/api-gateway-backend:** definisce la prima versione di un api-gateway con il file di disaccoppiare la dipendenza tra container frontend e backend, favorendo così un approccio       maggiormente distribuito e scalabile.
-    - **stage/api-gateway-backendV2:** rappresenta l'evoluzione dell' api-gateway sviluppato, con l'evoluzione della politica di routing e dei controlli di sicurezza
-    - **stage/auth-service-backend:** definisce un modulo di autenticazione, con l'intento di centralizzare la logica di autenticazione del token jwt in un modulo backend dedicato
-    - **final/modular-maketplace:** rappresenta la versione quasi completa dell'applicazione, pronta ad essere costruita in locale con l'ausilio di Docker e in un ambiente cloud come Azure
-    - **final/distribuited-session-caching:** introduce concetti di caching ed aggiornamenti di sicurezza rispetto alla versione precedente. Con lo scopo di raffinare i processi interni dell'applicazione, rendendo il sistema più sicuro e performante
+Per comprendere a pieno lo sviluppo dell'applicazione nel tempo e l'evoluzione architetturale fino alla sua forma finale, è consigliato seguire i branch nell'ordine cronologico descritto di seguito.  
+
+I branch documentano l'evoluzione dell'applicazione, dalla versione base fino alla versione finale, orientata a un'architettura cloud-native e a microservizi.
+
+---
+
+## Versioni iniziali (REST API e contenirizzazione locale)
+
+- **stage/rest-version**  
+  Prima versione dell'applicazione, nella sua forma base come REST API.
+
+- **stage/local-docker**  
+  Primo approccio di contenerizzazione dell'applicazione in locale con Docker.
+
+- **stage/local-dockerV2**  
+  Evoluzione del primo approccio di contenerizzazione locale con Docker, con l'introduzione di concetti e migliorie.
+
+---
+
+## Evoluzione verso architettura cloud
+
+Successivamente, l'applicazione è stata evoluta con l'intento di renderla inizialmente Cloud Based e successivamente affinare l'architettura verso un modello orientato ai microservizi. Le versioni finali permettono una evoluzione agile dei moduli.  
+
+- **stage/backend-api**  
+  Versione 1.0 del backend, con analisi tecnica delle componenti e identificazione delle aree di sviluppo.
+
+- **stage/marketplace-frontend**  
+  Versione 1.0 del frontend, con analisi tecnica delle componenti e identificazione delle aree di sviluppo.
+
+---
+
+## Migliorie e deploy su Microsoft Azure
+
+L'applicazione è stata successivamente costruita e distribuita sul cloud Microsoft Azure. I branch seguenti rappresentano le migliorie strutturali in questa fase:
+
+- **stage/azure-app**  
+  Primo approccio di deploy su Azure, con descrizione delle tecnologie utilizzate e delle configurazioni effettuate per la migrazione.
+
+- **stage/api-gateway-backend**  
+  Prima versione dell'API Gateway, utile a disaccoppiare la dipendenza tra container frontend e backend, favorendo un approccio distribuito e scalabile.
+
+- **stage/api-gateway-backendV2**  
+  Evoluzione dell'API Gateway, con miglioramenti nella politica di routing e nei controlli di sicurezza.
+
+- **stage/auth-service-backend**  
+  Modulo di autenticazione centralizzato, con logica di gestione dei token JWT dedicata al backend.
+
+---
+
+## Versioni finali (modularizzazione e performance)
+
+- **final/modular-maketplace**  
+  Versione quasi completa dell'applicazione, pronta per essere eseguita sia in locale con Docker sia in ambiente cloud come Azure.
+
+- **final/distribuited-session-caching**  
+  Introduzione di caching distribuito e aggiornamenti di sicurezza rispetto alla versione precedente, con l'obiettivo di rendere il sistema più sicuro e performante.
 
 ---
 
