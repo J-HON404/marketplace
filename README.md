@@ -68,7 +68,7 @@ L'applicazione permette di gestire tutto il processo di vendita, dalla creazione
 
 ---
 
-## 📌 Build from Scratch
+# 📌 Build from Scratch
 
 ### Prerequisiti
 - **Docker** e **Docker Desktop**
@@ -80,7 +80,7 @@ docker --version
 docker compose version
   ```
 
-# Installazione
+## Installazione
 
 1. **Clonare il repository:**
    ```bash
