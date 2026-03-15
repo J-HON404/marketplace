@@ -119,9 +119,9 @@ L'applicazione è stata successivamente costruita e distribuita sul cloud Micros
 
 ---
 
-## Versioni finali (modularizzazione e performance)
+## Versioni finali (modularizzazione e scalabilità)
 
-- **final/modular-maketplace**  
+- **final/modular-marketplace**  
   Versione quasi completa dell'applicazione, pronta per essere eseguita sia in locale con Docker sia in ambiente cloud come Azure.
 
 - **final/distribuited-session-caching**  
