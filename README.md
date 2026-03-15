@@ -159,7 +159,7 @@ docker compose version
 
 3. **Configurazione delle variabili d'ambiente:**
   Il progetto utilizza variabili d'ambiente definite in un file .env.
-  Nel repository è presente un file di esempio .env.example
+  Nel repository è presente un file di esempio .env.example.  
    Creare il file .env copiando il file di esempio:
   ```bash
      cp .env.example .env
@@ -167,22 +167,20 @@ docker compose version
   Aprire il file .env ed aggiungere i parametri mancanti
 
 4. **Build dei container:**
- Il progetto utilizza Docker Compose per costruire e orchestrare tutti i servizi.
- Per costruire le immagini Docker
+   Costruzione dei container a partire dalle immagini
  ```bash
      docker compose build
   ```
 
 5. **Avvio dell'applicazione:**
- Il progetto utilizza Docker Compose per costruire e orchestrare tutti i servizi.
- Per costruire le immagini Docker
+ Il progetto utilizza Docker Compose per avviare e orchestrare tutti i servizi.
  ```bash
-     docker compose up
+     docker compose up -d
 
   ```
 6.**Stato dei container:**
  ```bash
-     docker ps
+     docker compose ps
   ```
 
 7.**Arresto dell'applicazione:**
@@ -197,7 +195,7 @@ docker compose version
 
 Per consentire un corretto funzionamento è consigliato ai fini dell'applicazione avere disponibili almeno 2.6 GB, considerando immagini, volumi e container
 
-Per rimuovere immagini,container e volumi
+Arrestare i container e rimuove anche i volumi associati.
 
  ```bash
    docker compose down -v
