@@ -80,6 +80,8 @@ services:
     restart: always
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - redis_data:/data
     networks:
       - marketplace-network
 
@@ -89,4 +91,6 @@ networks:
 
 volumes:
   db_data:
+    driver: local
+  redis_data:
     driver: local

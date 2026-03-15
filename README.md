@@ -1,264 +1,170 @@
-# Architettura del Sistema
-
-Questa architettura rappresenta l’evoluzione dei concetti e delle criticità introdotte nei branch precedenti.
-
-In particolare deriva dalle architetture presenti in:
-
-- `stage/azure-app`
-- `stage/local-dockerV2`
-
-dove sono stati introdotti i concetti di **containerizzazione dei moduli**, sia in locale tramite **Docker** sia nel cloud tramite **Azure**.
-
-Rispetto alla versione `stage/rest-version`, questa evoluzione introduce concetti più avanzati legati al **cloud computing** e ad alcune logiche tipiche delle **architetture orientate ai microservizi**.
-
-Non si tratta ancora di una vera architettura a microservizi, ma di una **soluzione ibrida** tra un applicazione cloud based e cloud native, poichè introduce alcuni principi dei microservizi mantenendo ancora alcune caratteristiche monolitiche. Rimangono quindi margini di miglioramento in termini di:
-
-- scalabilità
-- performance
-- separazione dei domini
-- gestione delle configurazioni
-- comunicazione tra servizi
-
-L’obiettivo è evolvere progressivamente verso una struttura più vicina a un’architettura **microservices-oriented**.
-
----
 
 # Modifiche Introdotte
 
-In questa versione sono stati migliorati i seguenti moduli:
+rispetto i concetti descritti nel branch  `final/modular-marketplace`  è stato inserito un container dedicato per la gestione di una memoria cache, con lo scopo di isolare e velocizzare la fase di controllo del token per ogni richiesta ricevuta.
 
-- **Auth Module**  
-  introdotto nello stage `stage/auth-service-backend`
+## 📌 Cos'è Redis?
 
-- **API Gateway**  
-  proveniente da `stage/api-gateway-backendV2`, migliorato in termini di **sicurezza** e **performance**
+Redis è un database **in-memory** che risiede nella RAM, garantendo performance elevate e isolamento dei dati.
 
-- **Backend API Module**  
-  derivato da `stage/backend-api`, adattato per integrarsi correttamente con il gateway e la gestione dell’autenticazione
-
-- **Frontend Module**  
-  proveniente da `stage/marketplace-frontend`
+* **Protocollo:** Lavora con protocollo **TCP** (non HTTP).
+* **Performance:** Accessi estremamente veloci ai dati, tipicamente **< 1ms**.
+* **Modello:** Database Key-Value ad alta velocità.
 
 ---
 
-# Componenti principali
+## 🏗️ Struttura della Cache
 
-## Auth Module
+I dati vengono salvati in un formato stringa semplice, ottimizzato per operazioni di split rapide.
 
-L’**Auth Module** gestisce l’identità e l’autenticazione degli utenti.
+* **Key:** `auth:token:<stringa_del_token>`
+* **Value:** `profileId|role|shopId`
+* **TTL:** 86400 secondi (Default: 24 ore)
 
-Responsabilità principali:
-
-- registrazione utenti
-- login
-- generazione dei token **JWT**
-
-Quando un utente effettua il login, il servizio verifica le credenziali e genera un **JWT firmato**, che verrà poi utilizzato dal client per autenticare tutte le richieste successive.
+**Esempio:**
+> **KEY:** `auth:token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`  
+> **VALUE:** `21|SELLER|20`
 
 ---
 
-## API Gateway
+## ⚙️ Logica di Funzionamento
 
-L’**API Gateway** rappresenta il **punto di ingresso unico del sistema**.
+### 1. Fase di Autenticazione (Auth Module)
+1. Il client invia le credenziali al **Gateway**.
+2. Il Gateway inoltra la richiesta all'**Auth Module**.
+3. L'Auth Module valida le credenziali su **MySQL** e genera un **JWT**.
+4. L'Auth Module scrive su Redis:  
+   `SET <token> <claims_data> EX 86400`
+5. Il token viene restituito al client.
 
-Gestisce la sicurezza e instrada le richieste verso i servizi interni, evitando che i moduli backend siano esposti direttamente.
+### 2. Richieste Successive (Gateway)
+1. Il Gateway riceve una richiesta con il token e interroga Redis (`GET <token>`).
+2. **Cache Hit:** Se il token è presente, le claims sono già pronte. Il Gateway costruisce gli header per il backend senza decodificare il JWT.
+3. **Cache Miss:** Se il token non è presente, il Gateway esegue la validazione JWT standard (Fallback).
+---
 
-Responsabilità principali:
+## 🚀 Vantaggi dell'Approccio
 
-- validazione dei **JWT**
-- routing delle richieste verso il servizio corretto
-- blocco delle richieste non autorizzate
-
-Solo le richieste con **token valido** vengono inoltrate ai servizi backend.
+* **Risparmio di tempo:** Accesso diretto alla RAM invece di eseguire decodifiche Base64 e verifiche crittografiche.
+* **Revoca istantanea:** È sufficiente eliminare la chiave su Redis per invalidare immediatamente un token.
+* **High Availability:** Se Redis non risponde, il sistema scala automaticamente sulla validazione JWT standard.
+* **Auto-Cleanup:** Il meccanismo di TTL (Time To Live) elimina i token scaduti automaticamente.
+* **Statelessness:** La sessione è centralizzata in Redis, il Gateway rimane senza stato.
+* * **Migliore User Experience:** La navigazione tra le varie pagine all'interno del sito è più fulminea.
 
 ---
 
-## Backend API
+## 🌐 Comunicazione tra Container
 
-Il **Backend API Module** contiene la **business logic dell’applicazione**.
+### Azure Container Apps
+Il service discovery avviene tramite DNS interno all'environment:
+* **Host:** `marketplace-redis-cache:6379`
+* **Tipo:** Connessione TCP diretta (no HTTP/Ingress).
 
-Gestisce funzionalità come:
-
-- gestione shop
-- gestione prodotti
-- gestione ordini
-- controlli di autorizzazione
-
-Espone quindi gli endpoint utilizzati dal frontend per interagire con il sistema.
-
----
-
-## Frontend Module
-
-Il Frontend Module è l’interfaccia utente dell’applicazione, sviluppata in **Angular** e servita tramite **Nginx** come web server.  
-
-**Responsabilità principali:**
-- Gestire l’interfaccia utente per `SELLER` e `CUSTOMER`.
-- Comunicare con il sistema tramite l’**API Gateway**, evitando accessi diretti ai servizi backend.
-- Gestire il **routing lato client** 
-- Configurare il **reverse proxy Nginx** per:
-  - instradare le richieste `/api/` verso l’API Gateway
-  - gestire correttamente CORS e timeout
-  - rendere la SPA indipendente dall’ambiente backend
-
-In questo modo, il frontend rimane **portabile, scalabile e sicuro**, potendo puntare a diversi ambienti senza modificare l’applicazione.
+### Docker (Local)
+I container comunicano sulla stessa rete bridge (`marketplace-network`):
+* **Host:** `marketplace-redis:6379`
+* **Risoluzione:** Il DNS interno di Docker mappa il nome del servizio all'IP privato del container.
 
 ---
 
-# Gestione della sicurezza
+## 🛠️ Esempi di Comandi Redis (CLI)
 
-Il sistema utilizza un approccio a **doppio livello di sicurezza**.
+### Inserimento di un Token
+Inserisce un token con claims e scadenza a 24 ore.
+```bash
+SET auth:token:eyJhbGciOiJIUzI1... "21|SELLER|20" EX 86400
+```
 
-Il primo livello è il **Gateway**, che valida il token JWT prima di inoltrare le richieste ai servizi backend.
+### Lettura di un Token
+Utilizzato dal Gateway per verificare la validità di una sessione e recuperare le claims associate.
+```bash
+# Verifica la presenza del token e restituisce il valore (es. "profileId|role|shopId")
+GET auth:token:eyJhbGciOiJIUzI1...
+```
 
-Il secondo livello è il **Backend API**, che mantiene comunque un controllo indipendente tramite il filtro `JwtAuthenticationFilter`. Questo consente al backend di verificare il token nel caso in cui una richiesta provi a **bypassare il gateway**.
+### Rimozione di un Token
+```bash
+# Rimuove immediatamente la chiave dalla memoria RAM
+DEL auth:token:eyJhbGciOiJIUzI1...
+```
 
-Se il token è assente o non valido, la richiesta viene rifiutata con `401 Unauthorized`.
 
-Questo approccio implementa il principio di **defense-in-depth**, in cui più livelli del sistema contribuiscono alla sicurezza.
+### Controllo scadenza Token (TTL)
+```bash
+# Mostra il tempo residuo (Time To Live) in secondi
+TTL auth:token:eyJhbGciOiJIUzI1...
+```
+* **`n` (Valore positivo):** Indica il numero esatto di **secondi rimanenti** prima della scadenza e cancellazione automatica.
+* **`-2`:** Il token **non esiste** (è già scaduto, è stato rimosso manualmente o non è mai stato creato).
+* **`-1`:** Il token esiste ma **non ha una scadenza** definita (è persistente in memoria).
+---
+
+## Modificato Auth Controller 
+Al momento di un login avvenuto con successo, il sistema genera un token JWT e invoca il metodo privato `saveTokenInRedis` per persistere lo stato della sessione.
+```bash
+private void saveTokenInRedis(String token, Long profileId, ProfileRole role, Long shopId) {
+    // Formato: profileId|ROLE|shopId
+    String cacheValue = profileId + "|" + role.name() + "|" + (shopId != null ? shopId : "");
+    try {
+        // Salvataggio con Time-To-Live (TTL) di 24 ore
+        redisTemplate.opsForValue().set("auth:token:" + token, cacheValue, 24, TimeUnit.HOURS);
+    } catch (Exception e) {
+        System.err.println("Errore salvataggio Redis: " + e.getMessage());
+    }
+}
+```
+---
+
+# 🚀 Modifica Gateway Filter
+
+L'obiettivo di questa modifica è ottimizzare le prestazioni del gateway intercettando le richieste in entrata. Il sistema verifica se i dati dell'utente sono già presenti in memoria Redis) e solo in caso di "cache miss", procede con la validazione standard del JWT, popolando poi la cache per le chiamate successive.
 
 ---
 
-# Ottimizzazione tramite Header Custom
+## 🔍 Scenario 1: Lettura dalla Cache
 
-Per migliorare le performance è stato introdotto un meccanismo di comunicazione tra **Gateway** e **Backend** tramite **header custom**.
+Prima di eseguire il parsing del JWT (operazione CPU-intensive), il filtro interroga Redis utilizzando il token come chiave. Se il token è presente, le informazioni vengono estratte direttamente dalla memoria.
 
-Quando il Gateway valida il JWT, estrae alcune informazioni dal token e le inoltra al backend tramite header come:
+```bash
+private Mono<Void> checkCache(String token, ServerWebExchange exchange, GatewayFilterChain chain) {
+    String cacheKey = "auth:token:" + token;
 
-- `X-Profile-Id`
-- `X-Role`
-- `X-Shop-Id`
+    return redisTemplate.opsForValue()
+            .get(cacheKey) // Recupera il valore: "profileId|ROLE|shopId"
+            .flatMap(cachedData -> {
+                String[] parts = cachedData.split("\\|");
+                String profileId = parts[0];
+                String role = parts[1];
+                String shopId = parts.length > 2 ? parts[2] : "";
+                
+                // Muta la richiesta con i dati estratti dalla cache
+                ServerWebExchange mutatedExchange = buildExchange(exchange, profileId, role, shopId);
+                return chain.filter(mutatedExchange);
+            });
+}
+```
+ I microservizi a valle ricevono gli header X-Profile-Id, X-Role e X-Shop-Id senza che il Gateway debba decodificare il JWT, riducendo drasticamente la latenza.
 
-In questo caso il backend non deve:
+## 🔍 Scenario 2: Validazione e Fallback
 
-- decodificare il JWT
-- interrogare il database
+Se il token non è presente in Redis, il sistema esegue la validazione JWT standard. Una volta confermata la validità, i dati vengono memorizzati in modo asincrono per ottimizzare le richieste future.
 
-e può costruire direttamente un oggetto `Authentication` leggero per i controlli di autorizzazione.
+```bash
+// Estratto da handleJwtValidation
+String cacheKey = "auth:token:" + token;
+String cacheValue = profileId + "|" + role + "|" + shopIdStr;
 
-Se invece gli header non sono presenti, il backend attiva un **fallback completo**:
-
-1. legge il JWT dall'header `Authorization`
-2. verifica firma e scadenza
-3. carica l’utente dal database tramite `CustomUserDetailsService`
-4. popola il `SecurityContext`
-
-Questo garantisce sicurezza anche nel caso di richieste che non passano dal gateway.
-
----
-
-# Principali caratteristiche
-
-**Sicurezza**
-
-- il gateway filtra le richieste non autorizzate
-- il backend mantiene una validazione indipendente del token
-- i servizi interni non sono esposti direttamente
-
-**Performance**
-
-- il backend evita query al database per ogni richiesta
-- le informazioni utente vengono passate dal gateway tramite header
-
-**Separazione moduli e Manutenibilità**
-
-- separazione tra autenticazione, gateway e backend applicativo
-- ogni modulo ha una responsabilità chiara (frontend, gateway, business logic)
-
-## Considerazioni sull'Alta Disponibilità e Fault Tolerance
-
-Attualmente, l'applicazione non supporta funzionalità di **Alta Disponibilità** e **Fault Tolerance**. Questa scelta è stata voluta per rispettare la natura e la filosofia dell'applicazione: pur avendo un'architettura più distribuita rispetto alla versione iniziale (stage/rest-version), l'app rimane essenzialmente un **piccolo marketplace**, non progettato per gestire grandi volumi di richieste.  
-
-Per questi motivi, non è stato integrato un **Load Balancer** a supporto dell'**API Gateway**, che avrebbe permesso di distribuire il carico sui moduli backend e abilitare l'**auto-scaling** dei container. L'architettura mantiene quindi la semplicità e la leggerezza caratteristiche delle prime versioni dell'applicazione.
+redisTemplate.opsForValue()
+    .setIfAbsent(cacheKey, cacheValue, Duration.ofHours(24)) // Salva con TTL di 24h
+    .subscribe(); // Operazione asincrona non bloccante
+```
+Il salvataggio avviene con un TTL (Time-To-Live) di 24 ore, garantendo che la sessione in cache scada automaticamente.
 
 ---
 
-# Database condiviso
+## 🔗 Flusso Finale
 
-Attualmente l'applicazione utilizza **un unico database condiviso** tra i moduli backend.  
-Questa scelta non rappresenta l'approccio ideale nel caso di una futura migrazione verso un'**architettura a microservizi**, dove generalmente ogni servizio possiede il proprio database. Tuttavia, nel contesto attuale dell'applicazione, mantenere un database unico è risultato essere il compromesso più conveniente.
-
-Il database contiene:
-
-- gli **schemi logici relativi ai dati dell'API**
-- una **tabella `profiles`** dedicata agli utenti dell'applicazione
-
-Una possibile evoluzione dell'architettura potrebbe prevedere l'introduzione di un **database dedicato all'autenticazione (`DB_AUTH`)**, separando quindi:
-
-- **dati di autenticazione e profilo utente**
-- **dati di dominio dell'API**
-
-Questa separazione potrebbe facilitare una futura **scalabilità indipendente** dei servizi. Tuttavia, nel contesto attuale dell'applicazione, tale scelta introdurrebbe alcune complessità aggiuntive.
-
-#### 1. Maggiore complessità gestionale
-
-Con due database distinti:
-
-- `backend_api` dovrebbe accedere sia a:
-  - `DB_AUTH` → per verificare identità e autorizzazioni dell'utente
-  - `marketplace_db` → per gestire i dati dell'API
-- di conseguenza sarebbe necessario gestire **più connection string** e una maggiore complessità nella configurazione del backend.
-
-#### 2. Duplicazione o sincronizzazione dei dati utente
-
-Se il database di autenticazione contenesse la tabella `profiles`, si presenterebbero due possibili scenari:
-
-**Replica della tabella `profiles` nel database applicativo**
-
-- sarebbe necessario replicare le informazioni utente anche nel `marketplace_db`
-- questo richiederebbe meccanismi di **sincronizzazione tra database**, aumentando la complessità dell'infrastruttura.
-
-**Tabella `profiles` presente solo in `DB_AUTH`**
-
-- il `backend_api` dovrebbe interrogare il database di autenticazione ogni volta che necessita di informazioni utente
-- questo introdurrebbe **dipendenze tra servizi** e maggiore latenza nelle operazioni.
-
-#### 3. Overengineering rispetto ai requisiti attuali
-
-Il database di autenticazione conterrebbe **un solo schema logico**, limitato alla gestione degli utenti.  
-In questa fase del progetto, introdurre un database separato rappresenterebbe quindi una **complessità architetturale non necessaria** per le necessità dell'applicazione.
-
-## Soluzione adottata
-
-Il progetto utilizza **un unico database condiviso** con **separazione logica dei ruoli** tramite utenti MySQL con permessi diversi.
-
-* Cartella `docker-init/` con tre script eseguiti in ordine:
-
-1. **01-schema.sql** – crea schema e tabelle.  
-2. **02-data.sql** – popola le tabelle con dati iniziali .  
-3. **03-users.sql** – crea utenti MySQL e assegna privilegi specifici.
-
-* Utenti MySQL e permessi
-
-- **marketuser** – backend API principale  
-  - Accesso completo a tutte le tabelle  
-  - Gestione completa delle operazioni CRUD  
-
-- **authuser** – servizio di autenticazione  
-  - Accesso limitato a `profiles` e `shops`  
-  - Operazioni: `SELECT`, `INSERT`, `UPDATE`  
-  - Gestione credenziali e generazione token JWT
-
-Il backend-api module si connetterà al db con utente marketuser, per recuperare i dati dell'api ed accedere quando necessario ai dati utenti.
-Il backend-auth-module potrà accedere al db con utente authuser, per poter gestire le credenziali utenti e poter generare token jwt
-
-## Vantaggi
-
-- Maggiore **sicurezza**
-- **Isolamento tra moduli**  
-- **Gestione semplificata** con un unico database
-  
----
-
-# Evoluzione verso microservizi
-
-Attualmente questa architettura rappresenta una **fase intermedia tra monolite e microservizi**.
-
-Per diventare completamente orientata ai microservizi sarebbe necessario introdurre:
-
-- **Service Discovery** per individuare dinamicamente i servizi
-- **Alta disponbilità**
-- **Fault tollerance**
-- **Database separati per servizio**
+Dopo il recupero dei dati (sia da cache che da validazione diretta), il Gateway costruisce gli header della richiesta e la inoltra al modulo api-backend. Quest'ultimo si occuperà esclusivamente dei controlli di autorizzazione specifici per l'endpoint richiesto.
 
 ---

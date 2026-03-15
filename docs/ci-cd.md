@@ -33,6 +33,7 @@ La pipeline costruisce e pubblica le immagini Docker dei seguenti servizi:
 | Backend API | `marketplace-backend-api` | `acresamecloud.azurecr.io/backend` |
 | Frontend | `marketplace-frontend` | `acresamecloud.azurecr.io/frontend` |
 | Gateway API | `marketplace-gateway-api` | `acresamecloud.azurecr.io/api-backend-gateway-marketplace` |
+| Redis cache | `marketplace-redis-cache` | `acresamecloud.azurecr.io/marketplace-redis` |
 
 Ogni immagine viene taggata con la versione generata: acresamecloud.azurecr.io/<image-name>:v<run-number>
 
