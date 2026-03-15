@@ -17,7 +17,7 @@ L'architettura si evolve da un modello semplice Frontend-Backend a una struttura
 * **Frontend**: Esposto pubblicamente, funge da interfaccia utente e comunica esclusivamente con il Gateway.
 * **API Gateway**: Esposto pubblicamente, gestisce il routing e la validazione rapida dei token interrogando Redis.
 * **Auth Module**: Modulo interno, responsabile dell'autenticazione, della generazione dei JWT e della scrittura dei dati di sessione su Redis.
-* * **API Backend Module**: Modulo **interno**, espone gli endpoint per la gestione del marketplace (prodotti, ordini, shop).
+* **API Backend Module**: Modulo **interno**, espone gli endpoint per la gestione del marketplace (prodotti, ordini, shop).
 * **Redis Cache**: Database interno che fornisce storage Key-Value ad alte prestazioni via protocollo TCP.
 
 ---
