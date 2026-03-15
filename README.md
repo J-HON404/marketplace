@@ -152,12 +152,12 @@ docker compose version
 
     # Oppure il branch 'final/distribuited-session-caching'
     git clone --branch final/distribuited-session-caching https://github.com/J-HON404/marketplace.git
-  ```    ```
+  ``'```
 
 2. **Entrare nella directory del progetto:**
    ```bash
    cd marketplace
- ``` ```
+ ```'`
 
 3. **Configurazione delle variabili d'ambiente:**
   Il progetto utilizza variabili d'ambiente definite in un file .env.
