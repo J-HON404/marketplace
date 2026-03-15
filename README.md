@@ -146,16 +146,14 @@ docker compose version
 ## Installazione
 
 1. **Clonare il repository:**
-   ```bash
+   ```text
     git clone https://github.com/J-HON404/marketplace.git
-  ```
-  ```
+  ```    ```
 
 2. **Entrare nella directory del progetto:**
    ```bash
    cd marketplace
- ```
-  ```
+ ``` ```
 
 3. **Configurazione delle variabili d'ambiente:**
   Il progetto utilizza variabili d'ambiente definite in un file .env.
