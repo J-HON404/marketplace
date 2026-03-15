@@ -147,7 +147,7 @@ docker compose version
 
 1. **Clonare il repository:**
    ```bash
-   git clone [https://github.com/J-HON404/marketplace.git](https://github.com/J-HON404/marketplace.git)
+    git clone https://github.com/J-HON404/marketplace.git
   ```
   ```
 
