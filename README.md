@@ -131,6 +131,8 @@ L'applicazione è stata successivamente costruita e distribuita sul cloud Micros
 
 # 📌 Build from Scratch
 
+È possibile andare a costruire l'applicazione in locale per quanto rigudarda le sue versioni finali **final/modular-marketplace**  e **final/distribuited-session-caching**, in locale con Dokcer
+
 ### Prerequisiti
 - **Docker** e **Docker Desktop**
 - **Git**  
