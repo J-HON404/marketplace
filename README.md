@@ -76,7 +76,7 @@ I branch documentano l'evoluzione dell'applicazione, dalla versione base fino al
 
 ---
 
-## Versioni iniziali (REST API e contenirizzazione locale)
+  ## Versioni iniziali (REST API e contenirizzazione Docker)
 
 - **stage/rest-version**  
   Prima versione dell'applicazione, nella sua forma base come REST API.
