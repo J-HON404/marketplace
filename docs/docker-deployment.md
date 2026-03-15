@@ -248,52 +248,57 @@ volumes:
 DOPO:
 ```dockerfile
 version: '3.8'
+
 services:
+
   marketplace-db:
     image: mariadb:12
     container_name: marketplace-db
     restart: always
-    env_file: .env.example
+    env_file: .env
     ports:
-      - "3307:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./02-data.sql:/docker-entrypoint-initdb.d/02-data.sql
+      - ./docker-init:/docker-entrypoint-initdb.d
     networks:
       - marketplace-network
+
   marketplace-auth:
     build:
       context: .
       dockerfile: marketplace-auth-module/Dockerfile
     container_name: marketplace-auth
     restart: on-failure
-    env_file: .env.example
+    env_file: .env
     ports:
       - "${AUTH_PORT}:${AUTH_PORT}"
     depends_on:
       - marketplace-db
     networks:
       - marketplace-network
+
   marketplace-backend:
     build:
       context: .
       dockerfile: marketplace-backend-api/Dockerfile
     container_name: marketplace-backend-v2
     restart: on-failure
-    env_file: .env.example
+    env_file: .env
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     depends_on:
       - marketplace-db
     networks:
       - marketplace-network
+
   marketplace-gateway:
     build:
       context: .
       dockerfile: marketplace-gateway-api/Dockerfile
     container_name: marketplace-gateway
     restart: on-failure
-    env_file: .env.example
+    env_file: .env
     ports:
       - "${GATEWAY_PORT}:${GATEWAY_PORT}"
     depends_on:
@@ -301,22 +306,25 @@ services:
       - marketplace-backend
     networks:
       - marketplace-network
+
   marketplace-frontend:
     build:
-      context: ./marketplace-frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: marketplace-frontend/Dockerfile
     container_name: marketplace-frontend-v2
-    env_file: .env.example
+    env_file: .env
     restart: on-failure
     ports:
-      - "4207:80"
+      - "${FRONTEND_PORT}:80"
     depends_on:
       - marketplace-gateway
     networks:
       - marketplace-network
+
 networks:
   marketplace-network:
     driver: bridge
+
 volumes:
   db_data:
     driver: local
