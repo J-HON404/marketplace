@@ -72,7 +72,7 @@ L'applicazione permette di gestire tutto il processo di vendita, dalla creazione
 
 Per comprendere a pieno lo sviluppo dell'applicazione nel tempo e l'evoluzione architetturale fino alla sua forma finale, è consigliato seguire i branch nell'ordine cronologico descritto di seguito.  
 
-I branch documentano l'evoluzione dell'applicazione, dalla versione base fino alla versione finale, orientata a un'architettura cloud-native e a microservizi.
+I branch documentano l'evoluzione dell'applicazione, dalla versione base fino alla versione finale, orientata a diventare un'architettura cloud-native e a microservizi.
 
 ---
 
@@ -125,13 +125,13 @@ L'applicazione è stata successivamente costruita e distribuita sul cloud Micros
   Versione quasi completa dell'applicazione, pronta per essere eseguita sia in locale con Docker sia in ambiente cloud come Azure.
 
 - **final/distribuited-session-caching**  
-  Introduzione di caching distribuito e aggiornamenti di sicurezza rispetto alla versione precedente, con l'obiettivo di rendere il sistema più sicuro e performante.
+  Versione completa con introduzione di caching e aggiornamenti di sicurezza rispetto alla versione precedente, con l'obiettivo di rendere il sistema più sicuro e performante.
 
 ---
 
 # 📌 Build from Scratch
 
-È possibile andare a costruire l'applicazione in locale per quanto rigudarda le sue versioni finali **final/modular-marketplace**  e **final/distribuited-session-caching**, in locale con Dokcer
+È possibile andare a costruire l'applicazione in locale per le sue versioni finali **final/modular-marketplace** , **final/distribuited-session-caching** con Docker
 
 ### Prerequisiti
 - **Docker** e **Docker Desktop**
@@ -145,9 +145,13 @@ docker compose version
 
 ## Installazione
 
-1. **Clonare il repository:**
+1. **Clonare il branch:**
    ```text
-    git clone https://github.com/J-HON404/marketplace.git
+    # Clonare il branch 'final/modular-marketplace'
+    git clone --branch final/modular-marketplace https://github.com/J-HON404/marketplace.git
+
+    # Oppure il branch 'final/distribuited-session-caching'
+    git clone --branch final/distribuited-session-caching https://github.com/J-HON404/marketplace.git
   ```    ```
 
 2. **Entrare nella directory del progetto:**
@@ -198,7 +202,7 @@ docker compose version
 
 Per consentire un corretto funzionamento è consigliato ai fini dell'applicazione avere disponibili almeno 2 GB, considerando immagini, volumi e container
 
-10.Arrestare i container e rimuove anche i volumi associati.
+10.**Arrestare container e volumi associati:**
 
  ```bash
    docker compose down -v
