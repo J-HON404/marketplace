@@ -91,7 +91,7 @@ I branch documentano l'evoluzione dell'applicazione, dalla versione base fino al
 
 ## Evoluzione verso architettura cloud
 
-Successivamente, l'applicazione è stata evoluta con l'intento di renderla inizialmente Cloud Based e successivamente affinare l'architettura verso un modello orientato ai microservizi. Le versioni finali permettono una evoluzione agile dei moduli.  
+Successivamente, l’applicazione è stata evoluta con l’obiettivo di renderla inizialmente cloud-based e, in una fase successiva, affinare l’architettura verso un modello più vicino a quello orientato ai microservizi. Le versioni finali consentono un’evoluzione agile dei moduli.
 
 - **stage/backend-api**  
   Versione 1.0 del backend, con analisi tecnica delle componenti e identificazione delle aree di sviluppo.
