@@ -8,7 +8,7 @@ rispetto i concetti descritti nel branch  `final/modular-marketplace`  sono stat
   In questo modo, anche se l’utente tenta di riutilizzare lo stesso token dopo il logout, il gateway lo invalida immediatamente.
    Previene problemi di sicurezza legati a sessioni attive o token residui.
 
-Questi aggiornamenti hanno lo scopo di ridurre il rischio d'effetto collo di bottoglia nei confronti dell'api-gateway, il quale più logica ha da gestire , più il sistema diventa lento e sopratutto si perde lo scopo reale del componente, cioè instradare le richieste verso i moduli interni.
+Questi aggiornamenti hanno lo scopo di ridurre il rischio di effetto collo di bottiglia sull’API Gateway: più logica è costretto a gestire, più il sistema tende a rallentare e si perde lo scopo principale del componente, ovvero instradare le richieste verso i moduli interni.
 
 ## 📌 Cos'è Redis?
 
