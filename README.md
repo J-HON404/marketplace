@@ -177,7 +177,7 @@ docker compose version
 5. **Avvio dell'applicazione:**
  Il progetto utilizza Docker Compose per avviare e orchestrare tutti i servizi.
  ```bash
-     docker compose up -d
+     docker compose up 
 
   ```
 6.**Stato dei container:**
