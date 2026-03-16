@@ -177,7 +177,7 @@ docker compose version
 5. **Avvio dell'applicazione:**
  Il progetto utilizza Docker Compose per avviare e orchestrare tutti i servizi.
  ```bash
-     docker compose up 
+     docker compose up -d
 
   ```
 6.**Stato dei container:**
@@ -195,14 +195,26 @@ docker compose version
     docker compose images
   ```
 
-8.**Visualizzare i log dell'applicazione:**
+9.**Visualizzare i log dell'applicazione:**
  ```bash
     docker compose logs -f
   ```
 
 Per consentire un corretto funzionamento è consigliato ai fini dell'applicazione avere disponibili almeno 2 GB, considerando immagini, volumi e container
 
-10.**Arrestare container e volumi associati:**
+10.**Arrestare container:**
+
+ ```bash
+   docker compose stop
+  ```
+
+11.**Arrestare ed eliminare container:**
+
+ ```bash
+   docker compose down
+  ```
+
+12.**Arrestare, eliminare container e volumi:**
 
  ```bash
    docker compose down -v
