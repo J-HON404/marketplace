@@ -2,7 +2,7 @@
 
 Questa pipeline GitHub Actions esegue automaticamente il **build e il push delle immagini Docker** dei servizi del marketplace su **Azure Container Registry (ACR)**.
 
-La pipeline si attiva ogni volta che viene fatto un **push sul branch `final/modular-marketplace`**.
+La pipeline si attiva ogni volta che viene fatto un **push sul branch `final/distribuited-session-caching`**.
 
 ---
 
