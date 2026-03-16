@@ -166,7 +166,7 @@ docker compose version
   ```bash
      cp .env.example .env
   ```
-  Aprire il file .env ed aggiungere i parametri mancanti
+  ⚠️ Aprire il file .env ed aggiungere i parametri mancanti (come le password)
 
 4. **Build dei container:**
    Costruzione dei container a partire dalle immagini
