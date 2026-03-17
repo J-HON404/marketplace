@@ -167,6 +167,7 @@ docker compose version
      cp .env.example .env
   ```
   ⚠️ Aprire il file .env ed aggiungere i parametri mancanti (come le password)
+  ⚠️Assicurarsi che il file `docker-entrypoint.sh` (nel modulo `marketplace-frontend`) sia salvato in formato LF (Unix) e non CRLF (Windows).
 
 4. **Build dei container:**
    Costruzione dei container a partire dalle immagini
